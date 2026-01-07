@@ -13,6 +13,10 @@
         :root {
             --primary-color: #A65E00;
             --primary-light: #F0C090; /* لون فاتح من اللون الأساسي */
+            --secondary-light: #E8F4FD; /* لون ثانوي فاتح للمراجعة */
+            --save-color: #E8D0B3; /* لون فاتح بني للحفظ */
+            --review-color: #FFD8A6; /* لون برتقالي فاتح للمراجعة */
+            --save-review-color: #A65E00; /* اللون الأساسي للحفظ والمراجعة */
             --light-bg: #ffffff;
             --light-text: #333333;
             --dark-bg: #0F0600;
@@ -444,7 +448,7 @@
             background-color: #6c757d;
         }
 
-        .action-btn.notes {
+        .action-btn.details {
             background-color: #6c757d;
             font-size: 0.85rem;
             padding: 6px 12px;
@@ -456,7 +460,7 @@
             padding: 6px 12px;
         }
 
-        .has-notes {
+        .has-details {
             background-color: var(--primary-color) !important;
             color: white !important;
         }
@@ -778,6 +782,71 @@
             border-radius: 5px;
             margin: 0 5px;
         }
+
+        /* أزرار تفاصيل التسميع */
+        .details-options {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .detail-option {
+            display: inline-block;
+        }
+
+        .detail-option input[type="radio"] {
+            display: none;
+        }
+
+        .detail-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .detail-option input[type="radio"]:checked + .detail-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        body.dark-mode .detail-btn {
+            color: var(--dark-text);
+            border-color: var(--dark-border-color);
+        }
+
+        body.dark-mode .detail-option input[type="radio"]:checked + .detail-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* تخصيص ألوان أزرار التفاصيل عند التحديد */
+        .detail-option input[type="radio"][value="حفظ"]:checked + .detail-btn {
+            background-color: var(--save-color);
+            color: #333;
+        }
+
+        .detail-option input[type="radio"][value="مراجعة"]:checked + .detail-btn {
+            background-color: var(--review-color);
+            color: #333;
+        }
+
+        .detail-option input[type="radio"][value="حفظ ومراجعة"]:checked + .detail-btn {
+            background-color: var(--save-review-color);
+            color: white;
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -815,6 +884,37 @@
             <div class="modal-actions">
                 <button id="confirmReturnBtn" class="modal-btn save">موافق</button>
                 <button id="cancelReturnBtn" class="modal-btn cancel">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة تفاصيل التسميع -->
+    <div id="detailsModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">تفاصيل التسميع</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="details-options" id="detailsOptions">
+                    <label class="detail-option">
+                        <input type="radio" name="tarteebType" value="حفظ">
+                        <span class="detail-btn">حفظ</span>
+                    </label>
+                    <label class="detail-option">
+                        <input type="radio" name="tarteebType" value="مراجعة">
+                        <span class="detail-btn">مراجعة</span>
+                    </label>
+                    <label class="detail-option">
+                        <input type="radio" name="tarteebType" value="حفظ ومراجعة">
+                        <span class="detail-btn">حفظ ومراجعة</span>
+                    </label>
+                </div>
+                <textarea id="detailsTextarea" class="notes-textarea" placeholder="اكتب ملاحظاتك عن تسميع الطالب هنا..."></textarea>
+            </div>
+            <div class="modal-actions">
+                <button id="saveDetailsBtn" class="modal-btn save">حفظ</button>
+                <button id="cancelDetailsBtn" class="modal-btn cancel">إلغاء</button>
             </div>
         </div>
     </div>
@@ -962,7 +1062,7 @@
 
     <div class="app-footer">
         تم التطوير بواسطة أحمد بن ماضي <br>
-        لا تنسوني ووالداي وجميع المسلمين من دعواتكم 🤍
+        لا تنسوني ووالدي وجميع المسلمين من دعواتكم 🤍
     </div>
 
     <script>
@@ -984,6 +1084,10 @@
         // متغيرات لتأكيد الإرجاع
         let currentReturnDate = '';
         let currentReturnStudent = '';
+
+        // متغيرات للتفاصيل
+        let currentDetailsDate = '';
+        let currentDetailsStudent = '';
 
         // DOM العناصر
         const pages = {
@@ -1016,6 +1120,14 @@
         const confirmReturnBtn = document.getElementById('confirmReturnBtn');
         const cancelReturnBtn = document.getElementById('cancelReturnBtn');
         const closeReturnModalBtn = confirmReturnModal.querySelector('.close-modal');
+
+        // عناصر نافذة التفاصيل
+        const detailsModal = document.getElementById('detailsModal');
+        const detailsTextarea = document.getElementById('detailsTextarea');
+        const saveDetailsBtn = document.getElementById('saveDetailsBtn');
+        const cancelDetailsBtn = document.getElementById('cancelDetailsBtn');
+        const closeDetailsModalBtn = detailsModal.querySelector('.close-modal');
+        const detailsOptions = document.getElementById('detailsOptions');
 
         // تهيئة التطبيق
         document.addEventListener('DOMContentLoaded', () => {
@@ -1304,7 +1416,9 @@
             if (!appData.tarteeb[date]) {
                 appData.tarteeb[date] = {
                     order: [],
-                    completed: []
+                    completed: [],
+                    studentStatus: {}, // لتخزين حالة الطالب (حفظ/مراجعة)
+                    completedStatus: {} // لتخزين حالة الطالب في القائمة المكتملة
                 };
                 saveData();
             }
@@ -1337,12 +1451,24 @@
                     const actionsDiv = document.createElement('div');
                     actionsDiv.className = 'student-actions';
                     
-                    const addBtn = document.createElement('button');
-                    addBtn.textContent = 'إضافة';
-                    addBtn.className = 'action-btn';
-                    addBtn.onclick = () => addToTarteeb(student, date);
+                    const saveBtn = document.createElement('button');
+                    saveBtn.textContent = 'حفظ';
+                    saveBtn.className = 'action-btn';
+                    saveBtn.onclick = () => {
+                        // إضافة الطالب إلى دور التسميع مع تحديد النوع
+                        addToTarteeb(student, date, 'حفظ');
+                    };
                     
-                    actionsDiv.appendChild(addBtn);
+                    const reviewBtn = document.createElement('button');
+                    reviewBtn.textContent = 'مراجعة';
+                    reviewBtn.className = 'action-btn';
+                    reviewBtn.onclick = () => {
+                        // إضافة الطالب إلى دور التسميع مع تحديد النوع
+                        addToTarteeb(student, date, 'مراجعة');
+                    };
+                    
+                    actionsDiv.appendChild(saveBtn);
+                    actionsDiv.appendChild(reviewBtn);
                     li.appendChild(nameSpan);
                     li.appendChild(actionsDiv);
                     presentStudents.appendChild(li);
@@ -1360,6 +1486,14 @@
                 appData.tarteeb[date].order.forEach(student => {
                     const li = document.createElement('li');
                     li.className = 'student-item';
+                    
+                    // التحقق من نوع التسميع وتلوين الخلفية
+                    const studentType = appData.tarteeb[date].studentStatus ? appData.tarteeb[date].studentStatus[student] : null;
+                    if (studentType === 'حفظ') {
+                        li.style.backgroundColor = 'var(--save-color)';
+                    } else if (studentType === 'مراجعة') {
+                        li.style.backgroundColor = 'var(--review-color)';
+                    }
                     
                     const nameSpan = document.createElement('span');
                     nameSpan.className = 'student-name';
@@ -1398,6 +1532,20 @@
                     const li = document.createElement('li');
                     li.className = 'student-item';
                     
+                    // التحقق من نوع التسميع وتلوين الخلفية
+                    const studentType = appData.tarteeb[date].completedStatus ? appData.tarteeb[date].completedStatus[student] : null;
+                    if (studentType === 'حفظ') {
+                        li.style.backgroundColor = 'var(--save-color)';
+                        li.style.color = '#333';
+                    } else if (studentType === 'مراجعة') {
+                        li.style.backgroundColor = 'var(--review-color)';
+                        li.style.color = '#333';
+                    } else if (studentType === 'حفظ ومراجعة') {
+                        li.style.backgroundColor = 'var(--save-review-color)';
+                        li.style.color = 'white';
+                        li.style.border = 'none';
+                    }
+                    
                     const nameSpan = document.createElement('span');
                     nameSpan.className = 'student-name';
                     nameSpan.textContent = student;
@@ -1405,21 +1553,21 @@
                     const actionsDiv = document.createElement('div');
                     actionsDiv.className = 'student-actions';
                     
-                    // زر الملاحظات
-                    const notesBtn = document.createElement('button');
-                    notesBtn.textContent = 'ملاحظات';
-                    notesBtn.className = 'action-btn notes';
+                    // زر التفاصيل
+                    const detailsBtn = document.createElement('button');
+                    detailsBtn.textContent = 'التفاصيل';
+                    detailsBtn.className = 'action-btn details';
                     
                     // التحقق إذا كانت هناك ملاحظات لهذا الطالب في هذا التاريخ
                     const noteKey = `${date}-${student}`;
                     if (appData.notes[noteKey] && appData.notes[noteKey].trim() !== '') {
-                        notesBtn.classList.add('has-notes');
-                        notesBtn.title = 'هناك ملاحظات مضافة - انقر لعرضها أو تعديلها';
+                        detailsBtn.classList.add('has-details');
+                        detailsBtn.title = 'هناك تفاصيل مضافة - انقر لعرضها أو تعديلها';
                     } else {
-                        notesBtn.title = 'إضافة ملاحظات';
+                        detailsBtn.title = 'إضافة تفاصيل';
                     }
                     
-                    notesBtn.onclick = () => openNotesModal(student, date);
+                    detailsBtn.onclick = () => openDetailsModal(student, date);
                     
                     // زر الرجوع إلى دور التسميع
                     const returnBtn = document.createElement('button');
@@ -1428,7 +1576,7 @@
                     returnBtn.title = 'إرجاع الطالب إلى دور التسميع';
                     returnBtn.onclick = () => openConfirmReturnModal(student, date);
                     
-                    actionsDiv.appendChild(notesBtn);
+                    actionsDiv.appendChild(detailsBtn);
                     actionsDiv.appendChild(returnBtn);
                     li.appendChild(nameSpan);
                     li.appendChild(actionsDiv);
@@ -1444,19 +1592,47 @@
         }
 
         // إضافة طالب إلى دور التسميع
-        function addToTarteeb(student, date) {
-            // إضافة الطالب إلى قائمة الترتيب
-            appData.tarteeb[date].order.push(student);
-            saveData();
-            renderTarteebPage();
+        function addToTarteeb(student, date, type) {
+            // التحقق إذا كان الطالب مضافاً بالفعل
+            if (!appData.tarteeb[date].order.includes(student)) {
+                // إضافة الطالب إلى قائمة الترتيب
+                appData.tarteeb[date].order.push(student);
+                
+                // تخزين نوع التسميع
+                if (!appData.tarteeb[date].studentStatus) {
+                    appData.tarteeb[date].studentStatus = {};
+                }
+                appData.tarteeb[date].studentStatus[student] = type;
+                
+                saveData();
+                renderTarteebPage();
+            }
         }
 
         // تمييز الطالب كمكتمل التسميع
         function markAsCompleted(student, date) {
             const studentIndex = appData.tarteeb[date].order.indexOf(student);
             if (studentIndex !== -1) {
+                // الحصول على نوع التسميع قبل النقل
+                const studentType = appData.tarteeb[date].studentStatus ? appData.tarteeb[date].studentStatus[student] : null;
+                
+                // نقل الطالب
                 appData.tarteeb[date].order.splice(studentIndex, 1);
                 appData.tarteeb[date].completed.push(student);
+                
+                // الاحتفاظ بنوع التسميع في القائمة المكتملة
+                if (studentType) {
+                    if (!appData.tarteeb[date].completedStatus) {
+                        appData.tarteeb[date].completedStatus = {};
+                    }
+                    appData.tarteeb[date].completedStatus[student] = studentType;
+                    
+                    // إزالة من القائمة الأصلية
+                    if (appData.tarteeb[date].studentStatus) {
+                        delete appData.tarteeb[date].studentStatus[student];
+                    }
+                }
+                
                 saveData();
                 renderTarteebPage();
             }
@@ -1467,6 +1643,10 @@
             const studentIndex = appData.tarteeb[date].order.indexOf(student);
             if (studentIndex !== -1) {
                 appData.tarteeb[date].order.splice(studentIndex, 1);
+                // إزالة حالة الطالب عند إرجاعه
+                if (appData.tarteeb[date].studentStatus && appData.tarteeb[date].studentStatus[student]) {
+                    delete appData.tarteeb[date].studentStatus[student];
+                }
                 saveData();
                 renderTarteebPage();
             }
@@ -1476,8 +1656,27 @@
         function returnToOrder() {
             const studentIndex = appData.tarteeb[currentReturnDate].completed.indexOf(currentReturnStudent);
             if (studentIndex !== -1) {
+                // الحصول على نوع التسميع من القائمة المكتملة
+                const studentType = appData.tarteeb[currentReturnDate].completedStatus ? 
+                                  appData.tarteeb[currentReturnDate].completedStatus[currentReturnStudent] : null;
+                
+                // نقل الطالب
                 appData.tarteeb[currentReturnDate].completed.splice(studentIndex, 1);
                 appData.tarteeb[currentReturnDate].order.push(currentReturnStudent);
+                
+                // استعادة نوع التسميع
+                if (studentType) {
+                    if (!appData.tarteeb[currentReturnDate].studentStatus) {
+                        appData.tarteeb[currentReturnDate].studentStatus = {};
+                    }
+                    appData.tarteeb[currentReturnDate].studentStatus[currentReturnStudent] = studentType;
+                    
+                    // إزالة من القائمة المكتملة
+                    if (appData.tarteeb[currentReturnDate].completedStatus) {
+                        delete appData.tarteeb[currentReturnDate].completedStatus[currentReturnStudent];
+                    }
+                }
+                
                 saveData();
                 renderTarteebPage();
             }
@@ -1512,6 +1711,32 @@
             confirmReturnModal.classList.add('active');
         }
 
+        // فتح نافذة التفاصيل
+        function openDetailsModal(student, date) {
+            currentDetailsStudent = student;
+            currentDetailsDate = date;
+            
+            const noteKey = `${date}-${student}`;
+            const currentNote = appData.notes[noteKey] || '';
+            const currentType = appData.tarteeb[date].completedStatus ? 
+                               appData.tarteeb[date].completedStatus[student] : null;
+            
+            detailsTextarea.value = currentNote;
+            
+            // تحديد الزر المختار بناءً على نوع التسميع
+            const radioButtons = detailsOptions.querySelectorAll('input[name="tarteebType"]');
+            radioButtons.forEach(radio => {
+                radio.checked = (radio.value === currentType);
+            });
+            
+            // تحديث عنوان النافذة
+            detailsModal.querySelector('.modal-title').textContent = `تفاصيل تسميع: ${student}`;
+            
+            // إظهار النافذة
+            detailsModal.classList.add('active');
+            detailsTextarea.focus();
+        }
+
         // حفظ الملاحظات
         function saveNotes() {
             const noteText = notesTextarea.value.trim();
@@ -1529,6 +1754,34 @@
             renderTarteebPage(); // لتحديث زر الملاحظات
         }
 
+        // حفظ التفاصيل
+        function saveDetails() {
+            const noteText = detailsTextarea.value.trim();
+            const noteKey = `${currentDetailsDate}-${currentDetailsStudent}`;
+            const selectedRadio = detailsOptions.querySelector('input[name="tarteebType"]:checked');
+            const selectedType = selectedRadio ? selectedRadio.value : null;
+            
+            // حفظ الملاحظات
+            if (noteText) {
+                appData.notes[noteKey] = noteText;
+            } else {
+                // إذا كانت الملاحظة فارغة، احذفها
+                delete appData.notes[noteKey];
+            }
+            
+            // حفظ نوع التسميع
+            if (selectedType) {
+                if (!appData.tarteeb[currentDetailsDate].completedStatus) {
+                    appData.tarteeb[currentDetailsDate].completedStatus = {};
+                }
+                appData.tarteeb[currentDetailsDate].completedStatus[currentDetailsStudent] = selectedType;
+            }
+            
+            saveData();
+            closeDetailsModal();
+            renderTarteebPage(); // لتحديث لون الطالب
+        }
+
         // إغلاق نافذة الملاحظات
         function closeNotesModal() {
             notesModal.classList.remove('active');
@@ -1544,6 +1797,14 @@
             currentReturnDate = '';
         }
 
+        // إغلاق نافذة التفاصيل
+        function closeDetailsModal() {
+            detailsModal.classList.remove('active');
+            detailsTextarea.value = '';
+            currentDetailsStudent = '';
+            currentDetailsDate = '';
+        }
+
         // إعداد نوافذ المنبثقة
         function setupModals() {
             // نافذة الملاحظات
@@ -1555,6 +1816,11 @@
             confirmReturnBtn.addEventListener('click', returnToOrder);
             cancelReturnBtn.addEventListener('click', closeConfirmReturnModal);
             closeReturnModalBtn.addEventListener('click', closeConfirmReturnModal);
+            
+            // نافذة التفاصيل
+            saveDetailsBtn.addEventListener('click', saveDetails);
+            cancelDetailsBtn.addEventListener('click', closeDetailsModal);
+            closeDetailsModalBtn.addEventListener('click', closeDetailsModal);
             
             // إغلاق النوافذ بالنقر خارجها
             notesModal.addEventListener('click', (e) => {
@@ -1569,6 +1835,12 @@
                 }
             });
             
+            detailsModal.addEventListener('click', (e) => {
+                if (e.target === detailsModal) {
+                    closeDetailsModal();
+                }
+            });
+            
             // إغلاق النوافذ بالضغط على Esc
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
@@ -1577,6 +1849,9 @@
                     }
                     if (confirmReturnModal.classList.contains('active')) {
                         closeConfirmReturnModal();
+                    }
+                    if (detailsModal.classList.contains('active')) {
+                        closeDetailsModal();
                     }
                 }
             });
@@ -1613,4 +1888,3 @@
     </script>
 </body>
 </html>
-
