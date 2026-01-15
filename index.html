@@ -7,6 +7,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- مكتبات PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <title>إدارة حلقة قرآنية</title>
     <style>
         /* متغيرات الألوان */
@@ -1150,6 +1153,25 @@
         #harvest .weekly-table tbody tr {
             transition: background-color 0.2s ease;
         }
+
+        /* تنسيقات زر تصدير PDF */
+        #exportDailyPdfBtn, #exportWeeklyPdfBtn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        #exportDailyPdfBtn:hover, #exportWeeklyPdfBtn:hover {
+            background-color: #8a4f00;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .save-btn i {
+            margin-left: 8px;
+        }
     </style>
 </head>
 <body>
@@ -1373,8 +1395,8 @@
         
         <!-- علامات التبويب -->
         <div class="harvest-tabs">
-            <button class="harvest-tab active" id="dailyTab">حصاد يومي</button>
-            <button class="harvest-tab" id="weeklyTab">حصاد أسبوعي</button>
+            <button class="harvest-tab active" id="dailyTab">الحصاد اليومي</button>
+            <button class="harvest-tab" id="weeklyTab">الحصاد الأسبوعي</button>
         </div>
         
         <!-- محتوى التبويب اليومي -->
@@ -1397,6 +1419,10 @@
                         <!-- البيانات تظهر هنا -->
                     </tbody>
                 </table>
+                <!-- زر تصدير PDF اليومي -->
+                <button id="exportDailyPdfBtn" class="save-btn" style="margin-top: 20px;">
+                    <i class="fas fa-file-pdf"></i> تحميل تقرير PDF
+                </button>
             </div>
         </div>
         
@@ -1424,12 +1450,57 @@
             <div class="weekly-summary" id="weeklySummary">
                 <!-- التقرير الأسبوعي سيظهر هنا -->
             </div>
+            <!-- زر تصدير PDF الأسبوعي -->
+            <button id="exportWeeklyPdfBtn" class="save-btn" style="margin: 20px auto; display: block;">
+                <i class="fas fa-file-pdf"></i> تحميل تقرير PDF
+            </button>
+        </div>
+    </div>
+
+    <!-- نافذة PDF مخفية تماماً ولا تظهر للمستخدم أبداً -->
+    <div id="pdfReport" style="position: absolute; top: 0; left: 0; width: 800px; height: auto; direction: rtl; font-family: 'Amiri'; padding: 20px; background: #ffffff; z-index: -9999; opacity: 0; pointer-events: none;">
+        <!-- الهيدر -->
+        <div style="text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 3px solid #A65E00;">
+            <div style="background-color: #A65E00; color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h1 style="margin: 0; font-size: 28px; color: white;">الحلقة القرآنية</h1>
+                <h2 id="pdfReportTitle" style="margin: 5px 0 0 0; font-size: 22px; color: #FFD8A6;">تقرير الحصاد</h2>
+            </div>
+            
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; margin: 20px 0;">
+                <div style="flex: 1; min-width: 200px; margin: 10px;">
+                    <h3 style="color: #A65E00; margin-bottom: 5px;">اسم الحلقة</h3>
+                    <p style="background: #ffffff; border: 2px solid #F0C090; padding: 8px; border-radius: 5px;" id="pdfHalqaName"></p>
+                </div>
+                <div style="flex: 1; min-width: 200px; margin: 10px;">
+                    <h3 style="color: #A65E00; margin-bottom: 5px;">اسم المعلم</h3>
+                    <p style="background: #ffffff; border: 2px solid #F0C090; padding: 8px; border-radius: 5px;" id="pdfTeacherName"></p>
+                </div>
+                <div style="flex: 1; min-width: 200px; margin: 10px;">
+                    <h3 style="color: #A65E00; margin-bottom: 5px;">تاريخ التقرير</h3>
+                    <p style="background: #ffffff; border: 2px solid #F0C090; padding: 8px; border-radius: 5px;" id="pdfReportDate"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- جدول التقرير -->
+        <div id="pdfContent" style="margin: 30px 0;">
+            <!-- سيتم ملؤها ديناميكياً -->
+        </div>
+        
+        <!-- مساحة فارغة لتوسيع التقرير -->
+        <div style="height: 150px;"></div>
+        
+        <!-- الفوتر - في أسفل التقرير -->
+        <div id="pdfFooter" style="position: absolute; bottom: 20px; right: 0; left: 0; text-align: center; padding-top: 20px; border-top: 2px solid #A65E00; color: #666;">
+             
+            <p style="margin: 5px 0; font-size: 13px; color: #A65E00;">لا تنسوني ووالداي وجميع المسلمين من دعواتكم</p>
+            <p style="margin: 5px 0; font-size: 12px;">تم إنشاء هذا التقرير تلقائياً من النظام</p>
         </div>
     </div>
 
     <div class="app-footer">
         جميع الحقوق محفوظة أحمد بن ماضي ©<br>
-        لا تنسوني ووالدي وجميع المسلمين من دعواتكم
+        لا تنسوني ووالداي وجميع المسلمين من دعواتكم
     </div>
 
     <script>
@@ -2265,19 +2336,14 @@
                 reviewRate = Math.round(reviewRate);
                 totalRate = Math.round(totalRate);
                 
-                // عرض تفاصيل الحضور
-                let attendanceDisplay = '';
-                if (stats.presentCount > 0 || stats.excusedCount > 0) {
-                    attendanceDisplay = `${stats.attendanceScore}/${maxDays}`;
-                } else {
-                    attendanceDisplay = `0/${maxDays}`;
-                }
+                // عرض تفاصيل الحضور - بدون عدد الأيام
+                let attendanceDisplay = `${stats.attendanceScore}/${maxDays}`;
                 
                 html += `
                     <tr>
                         <td class="student-name">${student}</td>
                         <td class="stat-present">
-                            ${attendanceDisplay}<br>
+                            ${attendanceDisplay}
                         </td>
                         <td class="stat-save">${stats.saveSessions}/${maxDays}</td>
                         <td class="stat-review">${stats.reviewSessions}/${maxDays}</td>
@@ -2341,10 +2407,10 @@
                         </tr>
                     </tfoot>
                 </table>
-                
                 <div class="summary-period">
-                    <p><strong>طريقة حساب النسبة:</strong> (الحضور × ⅓) + (الحفظ × ⅓) + (المراجعة × ⅓) = الإجمالي</p>
-                    <p><strong>ملاحظة:</strong> الحاضر = درجة كاملة (1)، المستأذن = نصف درجة (0.5)، الغائب = صفر (0)</p>
+                    <p style="color: #666666; font-size: 0.95rem; margin-top: 10px;">
+                        <strong>طريقة حساب النسبة:</strong> (الحضور × ⅓) + (الحفظ × ⅓) + (المراجعة × ⅓) = الإجمالي
+                    </p>
                 </div>
             `;
             
@@ -2653,6 +2719,586 @@
             });
         }
 
+        // ============================================
+        // دوال تصدير PDF
+        // ============================================
+
+        // دالة توليد PDF يومي
+        async function generateDailyPdf() {
+            const date = document.getElementById('harvestDate').value;
+            if (!date) {
+                alert('الرجاء اختيار تاريخ أولاً');
+                return;
+            }
+            
+            // تحديث بيانات التقرير
+            updatePdfHeader('يومي', date);
+            
+            // إنشاء محتوى التقرير اليومي
+            createDailyPdfContent(date);
+            
+            // توليد PDF
+            await exportToPdf('اليومي', date);
+        }
+
+        // دالة توليد PDF أسبوعي
+        async function generateWeeklyPdf() {
+            const monthInput = document.getElementById('harvestMonth').value;
+            const weekNumber = document.getElementById('weekNumber').value;
+            
+            if (!monthInput) {
+                alert('الرجاء اختيار شهر أولاً');
+                return;
+            }
+            
+            // تحديث بيانات التقرير
+            const [year, month] = monthInput.split('-');
+            const monthNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+                              "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+            const reportDate = `شهر ${monthNames[parseInt(month)-1]} ${year} - الأسبوع ${weekNumber}`;
+            
+            updatePdfHeader('أسبوعي', reportDate);
+            
+            // إنشاء محتوى التقرير الأسبوعي
+            createWeeklyPdfContent(year, month, weekNumber);
+            
+            // توليد PDF
+            await exportToPdf('الأسبوعي', reportDate);
+        }
+
+        // دالة تحديث هيدر التقرير
+        function updatePdfHeader(type, date) {
+            document.getElementById('pdfHalqaName').textContent = appData.halqaName;
+            
+            let teacherName = appData.teacherName;
+            if (!teacherName.startsWith('أ/')) {
+                teacherName = 'أ/ ' + teacherName;
+            }
+            document.getElementById('pdfTeacherName').textContent = teacherName;
+            
+            document.getElementById('pdfReportDate').textContent = date;
+            
+            // تحديث العنوان الرئيسي
+            document.getElementById('pdfReportTitle').textContent = `تقرير الحصاد ${type}`;
+        }
+
+        // دالة إنشاء محتوى التقرير اليومي
+        function createDailyPdfContent(date) {
+            const pdfContent = document.getElementById('pdfContent');
+            pdfContent.innerHTML = '';
+            
+            // عنوان الجدول
+            const title = document.createElement('h3');
+            title.textContent = 'الحصاد اليومي';
+            title.style.textAlign = 'center';
+            title.style.color = '#A65E00';
+            title.style.marginBottom = '20px';
+            title.style.fontSize = '22px';
+            pdfContent.appendChild(title);
+            
+            // إنشاء الجدول
+            const table = document.createElement('table');
+            table.style.width = '100%';
+            table.style.borderCollapse = 'collapse';
+            table.style.margin = '20px 0';
+            table.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+            
+            // رأس الجدول
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            const headers = ['اسم الطالب', 'الحضور', 'الحفظ', 'المراجعة'];
+            
+            headers.forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                th.style.backgroundColor = '#A65E00';
+                th.style.color = 'white';
+                th.style.padding = '12px 8px';
+                th.style.textAlign = 'center';
+                th.style.border = '1px solid #8a4f00';
+                headerRow.appendChild(th);
+            });
+            
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+            
+            // جسم الجدول
+            const tbody = document.createElement('tbody');
+            
+            // التحقق إذا كان هناك طلاب مسجلين
+            if (appData.students.length === 0) {
+                const emptyRow = document.createElement('tr');
+                const emptyCell = document.createElement('td');
+                emptyCell.colSpan = 4;
+                emptyCell.textContent = 'لا يوجد طلاب مسجلين';
+                emptyCell.style.textAlign = 'center';
+                emptyCell.style.padding = '30px';
+                emptyCell.style.color = '#777';
+                emptyRow.appendChild(emptyCell);
+                tbody.appendChild(emptyRow);
+            } else {
+                // إضافة صف لكل طالب
+                appData.students.forEach((student, index) => {
+                    const row = document.createElement('tr');
+                    row.style.backgroundColor = index % 2 === 0 ? '#fff' : '#f9f9f9';
+                    
+                    // 1. اسم الطالب
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = student;
+                    nameCell.style.padding = '10px 8px';
+                    nameCell.style.border = '1px solid #ddd';
+                    nameCell.style.textAlign = 'right';
+                    
+                    // 2. الحضور
+                    const attendanceCell = document.createElement('td');
+                    const attendance = appData.attendance[date]?.[student] || "غائب";
+                    attendanceCell.textContent = attendance;
+                    attendanceCell.style.padding = '10px 8px';
+                    attendanceCell.style.border = '1px solid #ddd';
+                    attendanceCell.style.textAlign = 'center';
+                    
+                    // تلوين خلية الحضور
+                    switch(attendance) {
+                        case "حاضر":
+                            attendanceCell.style.backgroundColor = '#E8F5E9';
+                            attendanceCell.style.color = '#2E7D32';
+                            attendanceCell.style.fontWeight = 'bold';
+                            break;
+                        case "مستأذن":
+                            attendanceCell.style.backgroundColor = '#FFF3E0';
+                            attendanceCell.style.color = '#EF6C00';
+                            attendanceCell.style.fontWeight = 'bold';
+                            break;
+                        case "غائب":
+                            attendanceCell.style.backgroundColor = '#FFEBEE';
+                            attendanceCell.style.color = '#C62828';
+                            attendanceCell.style.fontWeight = 'bold';
+                            break;
+                    }
+                    
+                    // 3. الحفظ
+                    const saveCell = document.createElement('td');
+                    // 4. المراجعة
+                    const reviewCell = document.createElement('td');
+                    
+                    // الحصول على حالة التسميع للطالب
+                    const tarteebStatus = appData.tarteeb[date]?.completedStatus?.[student];
+                    
+                    if (tarteebStatus) {
+                        switch(tarteebStatus) {
+                            case "حفظ":
+                                saveCell.textContent = 'أتم';
+                                saveCell.style.backgroundColor = '#E8D0B3';
+                                saveCell.style.color = '#333';
+                                saveCell.style.fontWeight = 'bold';
+                                reviewCell.textContent = 'لم يتم';
+                                reviewCell.style.color = '#C62828';
+                                break;
+                            case "مراجعة":
+                                saveCell.textContent = 'لم يتم';
+                                saveCell.style.color = '#C62828';
+                                reviewCell.textContent = 'أتم';
+                                reviewCell.style.backgroundColor = '#FFD8A6';
+                                reviewCell.style.color = '#333';
+                                reviewCell.style.fontWeight = 'bold';
+                                break;
+                            case "حفظ ومراجعة":
+                                saveCell.textContent = 'أتم';
+                                saveCell.style.backgroundColor = '#A65E00';
+                                saveCell.style.color = 'white';
+                                saveCell.style.fontWeight = 'bold';
+                                reviewCell.textContent = 'أتم';
+                                reviewCell.style.backgroundColor = '#A65E00';
+                                reviewCell.style.color = 'white';
+                                reviewCell.style.fontWeight = 'bold';
+                                break;
+                            default:
+                                saveCell.textContent = 'لم يتم';
+                                saveCell.style.color = '#C62828';
+                                reviewCell.textContent = 'لم يتم';
+                                reviewCell.style.color = '#C62828';
+                        }
+                    } else {
+                        saveCell.textContent = 'لم يتم';
+                        saveCell.style.color = '#C62828';
+                        reviewCell.textContent = 'لم يتم';
+                        reviewCell.style.color = '#C62828';
+                    }
+                    
+                    // تنسيق خلايا الحفظ والمراجعة
+                    [saveCell, reviewCell].forEach(cell => {
+                        cell.style.padding = '10px 8px';
+                        cell.style.border = '1px solid #ddd';
+                        cell.style.textAlign = 'center';
+                    });
+                    
+                    row.appendChild(nameCell);
+                    row.appendChild(attendanceCell);
+                    row.appendChild(saveCell);
+                    row.appendChild(reviewCell);
+                    tbody.appendChild(row);
+                });
+            }
+            
+            table.appendChild(tbody);
+            pdfContent.appendChild(table);
+            
+            // إضافة مساحة فارغة قبل الفوتر
+            const spacer = document.createElement('div');
+            spacer.style.height = '150px';
+            pdfContent.appendChild(spacer);
+        }
+
+        // دالة إنشاء محتوى التقرير الأسبوعي
+        function createWeeklyPdfContent(year, month, weekNumber) {
+            const pdfContent = document.getElementById('pdfContent');
+            pdfContent.innerHTML = '';
+            
+            // عنوان التقرير
+            const monthNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+                              "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+            
+            const title = document.createElement('h3');
+            title.textContent = `الحصاد الأسبوعي ${getWeekName(weekNumber)} - شهر ${monthNames[parseInt(month)-1]} ${year}`;
+            title.style.textAlign = 'center';
+            title.style.color = '#A65E00';
+            title.style.marginBottom = '20px';
+            title.style.fontSize = '22px';
+            pdfContent.appendChild(title);
+            
+            // الحصول على تواريخ الأسبوع
+            const weekDates = getWeekDatesByMonth(parseInt(year), parseInt(month), parseInt(weekNumber));
+            
+            if (weekDates.length === 0) {
+                const message = document.createElement('p');
+                message.textContent = 'لا توجد بيانات لهذا الأسبوع';
+                message.style.textAlign = 'center';
+                message.style.padding = '30px';
+                message.style.color = '#777';
+                pdfContent.appendChild(message);
+                return;
+            }
+            
+            // جمع البيانات لكل طالب
+            const studentStats = {};
+            const maxDays = 5;
+            
+            // تهيئة الإحصائيات لكل طالب
+            appData.students.forEach(student => {
+                studentStats[student] = {
+                    name: student,
+                    attendanceScore: 0,
+                    presentCount: 0,
+                    excusedCount: 0,
+                    saveSessions: 0,
+                    reviewSessions: 0
+                };
+            });
+            
+            // جمع البيانات لكل يوم في الأسبوع
+            weekDates.forEach(date => {
+                // بيانات الحضور
+                if (appData.attendance[date]) {
+                    Object.entries(appData.attendance[date]).forEach(([student, status]) => {
+                        if (studentStats[student]) {
+                            if (status === "حاضر") {
+                                studentStats[student].attendanceScore += 1;
+                                studentStats[student].presentCount += 1;
+                            } else if (status === "مستأذن") {
+                                studentStats[student].attendanceScore += 0.5;
+                                studentStats[student].excusedCount += 1;
+                            }
+                        }
+                    });
+                }
+                
+                // بيانات التسميع
+                if (appData.tarteeb[date] && appData.tarteeb[date].completedStatus) {
+                    Object.entries(appData.tarteeb[date].completedStatus).forEach(([student, type]) => {
+                        if (studentStats[student]) {
+                            if (type === "حفظ" || type === "حفظ ومراجعة") {
+                                studentStats[student].saveSessions++;
+                            }
+                            if (type === "مراجعة" || type === "حفظ ومراجعة") {
+                                studentStats[student].reviewSessions++;
+                            }
+                        }
+                    });
+                }
+            });
+            
+            // إنشاء الجدول الأسبوعي
+            const table = document.createElement('table');
+            table.style.width = '100%';
+            table.style.borderCollapse = 'collapse';
+            table.style.margin = '20px 0';
+            table.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+            
+            // رأس الجدول
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            const headers = ['اسم الطالب', 'الحضور', 'الحفظ', 'المراجعة', 'الإجمالي'];
+            
+            headers.forEach(headerText => {
+                const th = document.createElement('th');
+                th.textContent = headerText;
+                th.style.backgroundColor = '#A65E00';
+                th.style.color = 'white';
+                th.style.padding = '12px 8px';
+                th.style.textAlign = 'center';
+                th.style.border = '1px solid #8a4f00';
+                headerRow.appendChild(th);
+            });
+            
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+            
+            // جسم الجدول
+            const tbody = document.createElement('tbody');
+            
+            // حساب الإجماليات
+            let totalAttendanceSum = 0;
+            let totalSaveSum = 0;
+            let totalReviewSum = 0;
+            let totalOverallSum = 0;
+            
+            appData.students.forEach((student, index) => {
+                const stats = studentStats[student];
+                const row = document.createElement('tr');
+                row.style.backgroundColor = index % 2 === 0 ? '#fff' : '#f9f9f9';
+                
+                // 1. اسم الطالب
+                const nameCell = document.createElement('td');
+                nameCell.textContent = student;
+                nameCell.style.padding = '10px 8px';
+                nameCell.style.border = '1px solid #ddd';
+                nameCell.style.textAlign = 'right';
+                nameCell.style.fontWeight = 'bold';
+                
+                // 2. الحضور - بدون نسبة مئوية
+                const attendanceCell = document.createElement('td');
+                const attendanceScore = stats.attendanceScore;
+                attendanceCell.textContent = `${attendanceScore}/${maxDays}`;
+                attendanceCell.style.padding = '10px 8px';
+                attendanceCell.style.border = '1px solid #ddd';
+                attendanceCell.style.textAlign = 'center';
+                attendanceCell.style.fontWeight = 'bold';
+                attendanceCell.style.color = '#A65E00';
+                
+                // 3. الحفظ - بدون نسبة مئوية
+                const saveCell = document.createElement('td');
+                saveCell.textContent = `${stats.saveSessions}/${maxDays}`;
+                saveCell.style.padding = '10px 8px';
+                saveCell.style.border = '1px solid #ddd';
+                saveCell.style.textAlign = 'center';
+                saveCell.style.fontWeight = 'bold';
+                saveCell.style.color = '#A65E00';
+                
+                // 4. المراجعة - بدون نسبة مئوية
+                const reviewCell = document.createElement('td');
+                reviewCell.textContent = `${stats.reviewSessions}/${maxDays}`;
+                reviewCell.style.padding = '10px 8px';
+                reviewCell.style.border = '1px solid #ddd';
+                reviewCell.style.textAlign = 'center';
+                reviewCell.style.fontWeight = 'bold';
+                reviewCell.style.color = '#A65E00';
+                
+                // 5. الإجمالي
+                const totalCell = document.createElement('td');
+                const attendanceRate = (stats.attendanceScore / maxDays) * 100;
+                const saveRate = (stats.saveSessions / maxDays) * 100;
+                const reviewRate = (stats.reviewSessions / maxDays) * 100;
+                const totalRate = (attendanceRate * (1/3)) + (saveRate * (1/3)) + (reviewRate * (1/3));
+                const roundedTotal = Math.round(totalRate);
+                
+                totalCell.innerHTML = `
+                    <div style="text-align: center;">
+                        <div style="font-weight: bold; color: #A65E00; font-size: 18px;">${roundedTotal}%</div>
+                        <div class="progress-bar" style="height: 10px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 5px;">
+                            <div class="progress-fill" style="height: 100%; background-color: #A65E00; border-radius: 5px; width: ${roundedTotal}%"></div>
+                        </div>
+                    </div>
+                `;
+                totalCell.style.padding = '10px 8px';
+                totalCell.style.border = '1px solid #ddd';
+                totalCell.style.textAlign = 'center';
+                
+                // جمع الإجماليات
+                totalAttendanceSum += attendanceRate;
+                totalSaveSum += saveRate;
+                totalReviewSum += reviewRate;
+                totalOverallSum += totalRate;
+                
+                row.appendChild(nameCell);
+                row.appendChild(attendanceCell);
+                row.appendChild(saveCell);
+                row.appendChild(reviewCell);
+                row.appendChild(totalCell);
+                tbody.appendChild(row);
+            });
+            
+            table.appendChild(tbody);
+            
+            // إضافة الإحصائيات الإجمالية
+            if (appData.students.length > 0) {
+                const totalStudents = appData.students.length;
+                const footerRow = document.createElement('tr');
+                footerRow.style.backgroundColor = 'rgba(166, 94, 0, 0.1)';
+                footerRow.style.fontWeight = 'bold';
+                
+                const footerTitle = document.createElement('td');
+                footerTitle.textContent = 'متوسط الفصل';
+                footerTitle.style.padding = '12px 8px';
+                footerTitle.style.border = '2px solid #A65E00';
+                footerTitle.style.textAlign = 'right';
+                footerTitle.style.color = '#A65E00';
+                
+                const footerAttendance = document.createElement('td');
+                footerAttendance.textContent = Math.round(totalAttendanceSum / totalStudents) + '%';
+                footerAttendance.style.padding = '12px 8px';
+                footerAttendance.style.border = '2px solid #A65E00';
+                footerAttendance.style.textAlign = 'center';
+                footerAttendance.style.color = '#A65E00';
+                
+                const footerSave = document.createElement('td');
+                footerSave.textContent = Math.round(totalSaveSum / totalStudents) + '%';
+                footerSave.style.padding = '12px 8px';
+                footerSave.style.border = '2px solid #A65E00';
+                footerSave.style.textAlign = 'center';
+                footerSave.style.color = '#A65E00';
+                
+                const footerReview = document.createElement('td');
+                footerReview.textContent = Math.round(totalReviewSum / totalStudents) + '%';
+                footerReview.style.padding = '12px 8px';
+                footerReview.style.border = '2px solid #A65E00';
+                footerReview.style.textAlign = 'center';
+                footerReview.style.color = '#A65E00';
+                
+                const footerTotal = document.createElement('td');
+                footerTotal.textContent = Math.round(totalOverallSum / totalStudents) + '%';
+                footerTotal.style.padding = '12px 8px';
+                footerTotal.style.border = '2px solid #A65E00';
+                footerTotal.style.textAlign = 'center';
+                footerTotal.style.color = '#A65E00';
+                footerTotal.style.fontSize = '18px';
+                
+                footerRow.appendChild(footerTitle);
+                footerRow.appendChild(footerAttendance);
+                footerRow.appendChild(footerSave);
+                footerRow.appendChild(footerReview);
+                footerRow.appendChild(footerTotal);
+                tbody.appendChild(footerRow);
+            }
+            
+            pdfContent.appendChild(table);
+            
+            // إضافة المعادلة المئوية
+            const equationDiv = document.createElement('div');
+            equationDiv.style.textAlign = 'center';
+            equationDiv.style.marginTop = '30px';
+            equationDiv.style.padding = '15px';
+            equationDiv.style.backgroundColor = '#f8f8f8';
+            equationDiv.style.borderRadius = '8px';
+            equationDiv.style.border = '1px solid #e0e0e0';
+            
+            const equationText = document.createElement('p');
+            equationText.innerHTML = '<strong style="color: #666666;">طريقة حساب النسبة:</strong> (الحضور × ⅓) + (الحفظ × ⅓) + (المراجعة × ⅓) = الإجمالي';
+            equationText.style.color = '#666666';
+            equationText.style.margin = '0';
+            equationText.style.fontSize = '14px';
+            
+            equationDiv.appendChild(equationText);
+            pdfContent.appendChild(equationDiv);
+            
+            // إضافة مساحة فارغة قبل الفوتر
+            const spacer = document.createElement('div');
+            spacer.style.height = '150px';
+            pdfContent.appendChild(spacer);
+        }
+
+        // دالة تصدير إلى PDF
+        async function exportToPdf(type, date) {
+            const element = document.getElementById('pdfReport');
+            
+            // حفظ النمط الأصلي
+            const originalDisplay = element.style.display;
+            const originalPosition = element.style.position;
+            const originalTop = element.style.top;
+            const originalLeft = element.style.left;
+            const originalWidth = element.style.width;
+            const originalHeight = element.style.height;
+            const originalZIndex = element.style.zIndex;
+            const originalOpacity = element.style.opacity;
+            const originalPointerEvents = element.style.pointerEvents;
+            
+            // إعداد التقرير للتصدير
+            element.style.display = 'block';
+            element.style.position = 'absolute';
+            element.style.top = '0';
+            element.style.left = '0';
+            element.style.width = '800px';
+            element.style.height = 'auto';
+            element.style.zIndex = '9999';
+            element.style.opacity = '1';
+            element.style.pointerEvents = 'none';
+            
+            try {
+                // استخدام html2canvas لالتقاط صورة للعنصر بجودة عالية
+                const canvas = await html2canvas(element, {
+                    scale: 3, // زيادة الجودة إلى 3x
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    allowTaint: true,
+                    removeContainer: true
+                });
+                
+                // إعادة العنصر إلى حالته الأصلية
+                element.style.display = originalDisplay;
+                element.style.position = originalPosition;
+                element.style.top = originalTop;
+                element.style.left = originalLeft;
+                element.style.width = originalWidth;
+                element.style.height = originalHeight;
+                element.style.zIndex = originalZIndex;
+                element.style.opacity = originalOpacity;
+                element.style.pointerEvents = originalPointerEvents;
+                
+                // إنشاء PDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgWidth = 190; // عرض الصفحة مع هوامش
+                const pageHeight = 280; // ارتفاع الصفحة مع هوامش
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                // حساب الموضع لتوسيط الصورة
+                const positionX = (210 - imgWidth) / 2; // توسيط أفقي
+                const positionY = 10; // بداية من أعلى الصفحة
+                
+                // إضافة الصورة الأولى
+                pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', positionX, positionY, imgWidth, imgHeight);
+                
+                // حفظ الملف
+                const today = new Date().toISOString().slice(0, 10);
+                const fileName = `تقرير_الحصاد_${type}_${date.replace(/[/\\?%*:|"<>]/g, '-')}_${today}.pdf`;
+                pdf.save(fileName);
+                
+            } catch (error) {
+                console.error('خطأ في إنشاء PDF:', error);
+                alert('حدث خطأ أثناء إنشاء ملف PDF. الرجاء المحاولة مرة أخرى.');
+                // إعادة العنصر إلى حالته الأصلية في حالة الخطأ
+                element.style.display = originalDisplay;
+                element.style.position = originalPosition;
+                element.style.top = originalTop;
+                element.style.left = originalLeft;
+                element.style.width = originalWidth;
+                element.style.height = originalHeight;
+                element.style.zIndex = originalZIndex;
+                element.style.opacity = originalOpacity;
+                element.style.pointerEvents = originalPointerEvents;
+            }
+        }
+
         // إعداد معالجي الأحداث
         function setupEventListeners() {
             // التنقل بين الصفحات
@@ -2695,6 +3341,10 @@
                     addStudent();
                 }
             });
+            
+            // أحداث تصدير PDF
+            document.getElementById('exportDailyPdfBtn').addEventListener('click', generateDailyPdf);
+            document.getElementById('exportWeeklyPdfBtn').addEventListener('click', generateWeeklyPdf);
         }
     </script>
 </body>
