@@ -138,7 +138,7 @@
         .teacher-name {
             font-size: 1.8rem;
             color: var(--primary-color);
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             background-color: rgba(166, 94, 0, 0.1);
             padding: 10px 20px;
             border-radius: 8px;
@@ -146,6 +146,118 @@
 
         body.dark-mode .teacher-name {
             background-color: rgba(237, 209, 175, 0.1);
+        }
+
+        /* تنسيق التاريخ الهجري في الصفحة الرئيسية */
+        .hijri-date-container {
+            margin: 15px 0 30px;
+            padding: 15px;
+            background-color: rgba(166, 94, 0, 0.08);
+            border-radius: 10px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .hijri-date-display {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .hijri-date-display:hover {
+            background-color: rgba(166, 94, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .hijri-date-display:active {
+            transform: translateY(0);
+        }
+
+        .hijri-date-display .hijri-date-text {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .hijri-date-display .hijri-date-label {
+            font-size: 1rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        body.dark-mode .hijri-date-display .hijri-date-label {
+            color: #aaa;
+        }
+
+        .hijri-date-input-container {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .hijri-date-input-container.show {
+            display: block;
+        }
+
+        .hijri-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .hijri-input {
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            text-align: center;
+            width: 120px;
+        }
+
+        .hijri-input-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        body.dark-mode .hijri-input {
+            background-color: #2a1f15;
+            color: var(--dark-text);
+            border-color: var(--dark-border-color);
+        }
+
+        .hijri-date-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .hijri-date-btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .hijri-date-btn.save {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .hijri-date-btn.cancel {
+            background-color: #6c757d;
+            color: white;
         }
 
         .buttons-container {
@@ -169,6 +281,16 @@
         @media (max-width: 768px) {
             .buttons-container {
                 flex-direction: column;
+            }
+            
+            .hijri-input-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hijri-input {
+                width: 100%;
+                max-width: 200px;
             }
         }
 
@@ -344,19 +466,47 @@
             margin-bottom: 30px;
         }
 
-        .date-container input {
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 1.1rem;
-            width: 250px;
-            text-align: center;
+        .current-hijri-date {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            padding: 12px 20px;
+            background-color: rgba(166, 94, 0, 0.08);
+            border-radius: 10px;
+            display: inline-block;
+            margin-bottom: 10px;
         }
 
-        body.dark-mode .date-container input {
-            background-color: #2a1f15;
-            color: var(--dark-text);
-            border-color: var(--dark-border-color);
+        body.dark-mode .current-hijri-date {
+            background-color: rgba(237, 209, 175, 0.1);
+        }
+
+        .date-navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .date-nav-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .date-nav-btn:hover {
+            background-color: #8a4f00;
+            transform: scale(1.1);
         }
 
         .cards-container {
@@ -1172,6 +1322,65 @@
         .save-btn i {
             margin-left: 8px;
         }
+
+        /* عرض التاريخ الهجري في الصفحات */
+        .page-hijri-date {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding: 12px;
+            background-color: rgba(166, 94, 0, 0.08);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .page-hijri-date:hover {
+            background-color: rgba(166, 94, 0, 0.12);
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode .page-hijri-date {
+            background-color: rgba(237, 209, 175, 0.1);
+        }
+
+        /* حاوية تعديل التاريخ الهجري في الصفحات */
+        .hijri-date-selector {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: rgba(166, 94, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        .hijri-date-selector.show {
+            display: block;
+        }
+
+        /* تنسيق للتاريخ الهجري في الحصاد الأسبوعي */
+        .hijri-month-selector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hijri-month-input {
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1.1rem;
+            width: 200px;
+            text-align: center;
+        }
+
+        body.dark-mode .hijri-month-input {
+            background-color: #2a1f15;
+            color: var(--dark-text);
+            border-color: var(--dark-border-color);
+        }
     </style>
 </head>
 <body>
@@ -1261,6 +1470,35 @@
             <h1 class="halqa-name" id="halqaNameDisplay">أبو بكر الصديق</h1>
             <h2 class="teacher-name" id="teacherNameDisplay">أنس الصوب</h2>
             
+            <!-- حاوية التاريخ الهجري -->
+            <div class="hijri-date-container">
+                <div class="hijri-date-display" id="hijriDateDisplay">
+                    <div class="hijri-date-text" id="displayHijriDate">١٤٤٧/٠٦/١٥</div>
+                    <div class="hijri-date-label">انقر لتعديل التاريخ الهجري</div>
+                </div>
+                
+                <div class="hijri-date-input-container" id="hijriDateInputContainer">
+                    <div class="hijri-input-group">
+                        <div>
+                            <input type="number" id="hijriYear" class="hijri-input" placeholder="السنة" min="1300" max="1500" value="1447">
+                            <div class="hijri-input-label">السنة</div>
+                        </div>
+                        <div>
+                            <input type="number" id="hijriMonth" class="hijri-input" placeholder="الشهر" min="1" max="12" value="6">
+                            <div class="hijri-input-label">الشهر</div>
+                        </div>
+                        <div>
+                            <input type="number" id="hijriDay" class="hijri-input" placeholder="اليوم" min="1" max="30" value="15">
+                            <div class="hijri-input-label">اليوم</div>
+                        </div>
+                    </div>
+                    <div class="hijri-date-buttons">
+                        <button class="hijri-date-btn save" id="saveHijriBtn">حفظ</button>
+                        <button class="hijri-date-btn cancel" id="cancelHijriBtn">إلغاء</button>
+                    </div>
+                </div>
+            </div>
+            
             <div class="buttons-container">
                 <button class="main-btn" id="tarteebBtn">
                     <i class="fas fa-sort-amount-down"></i>
@@ -1312,9 +1550,42 @@
     <!-- صفحة ترتيب أدوار التسميع -->
     <div id="tarteeb" class="page">
         <h2 class="page-title">ترتيب أدوار التسميع</h2>
+        <div class="page-hijri-date" id="tarteebHijriDate">اليوم الهجري: ١٤٤٧/٠٦/١٥</div>
         
         <div class="date-container">
-            <input type="date" id="tarteebDate">
+            <div class="current-hijri-date" id="currentTarteebDate">١٤٤٧/٠٦/١٥</div>
+            
+            <div class="date-navigation">
+                <button class="date-nav-btn" id="prevDayBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <span style="font-weight: bold; color: var(--primary-color);">اليوم</span>
+                <button class="date-nav-btn" id="nextDayBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- حاوية تعديل التاريخ الهجري -->
+        <div class="hijri-date-selector" id="tarteebHijriDateSelector">
+            <div class="hijri-input-group">
+                <div>
+                    <input type="number" id="tarteebHijriYear" class="hijri-input" placeholder="السنة" min="1300" max="1500" value="1447">
+                    <div class="hijri-input-label">السنة</div>
+                </div>
+                <div>
+                    <input type="number" id="tarteebHijriMonth" class="hijri-input" placeholder="الشهر" min="1" max="12" value="6">
+                    <div class="hijri-input-label">الشهر</div>
+                </div>
+                <div>
+                    <input type="number" id="tarteebHijriDay" class="hijri-input" placeholder="اليوم" min="1" max="30" value="15">
+                    <div class="hijri-input-label">اليوم</div>
+                </div>
+            </div>
+            <div class="hijri-date-buttons">
+                <button class="hijri-date-btn save" id="tarteebSaveHijriBtn">حفظ</button>
+                <button class="hijri-date-btn cancel" id="tarteebCancelHijriBtn">إلغاء</button>
+            </div>
         </div>
         
         <div class="cards-container">
@@ -1347,9 +1618,42 @@
     <!-- صفحة تسجيل الحضور -->
     <div id="attendance" class="page">
         <h2 class="page-title">تسجيل الحضور</h2>
+        <div class="page-hijri-date" id="attendanceHijriDate">اليوم الهجري: ١٤٤٧/٠٦/١٥</div>
         
         <div class="date-container">
-            <input type="date" id="attendanceDate">
+            <div class="current-hijri-date" id="currentAttendanceDate">١٤٤٧/٠٦/١٥</div>
+            
+            <div class="date-navigation">
+                <button class="date-nav-btn" id="prevAttendanceDayBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+                <span style="font-weight: bold; color: var(--primary-color);">اليوم</span>
+                <button class="date-nav-btn" id="nextAttendanceDayBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- حاوية تعديل التاريخ الهجري -->
+        <div class="hijri-date-selector" id="attendanceHijriDateSelector">
+            <div class="hijri-input-group">
+                <div>
+                    <input type="number" id="attendanceHijriYear" class="hijri-input" placeholder="السنة" min="1300" max="1500" value="1447">
+                    <div class="hijri-input-label">السنة</div>
+                </div>
+                <div>
+                    <input type="number" id="attendanceHijriMonth" class="hijri-input" placeholder="الشهر" min="1" max="12" value="6">
+                    <div class="hijri-input-label">الشهر</div>
+                </div>
+                <div>
+                    <input type="number" id="attendanceHijriDay" class="hijri-input" placeholder="اليوم" min="1" max="30" value="15">
+                    <div class="hijri-input-label">اليوم</div>
+                </div>
+            </div>
+            <div class="hijri-date-buttons">
+                <button class="hijri-date-btn save" id="attendanceSaveHijriBtn">حفظ</button>
+                <button class="hijri-date-btn cancel" id="attendanceCancelHijriBtn">إلغاء</button>
+            </div>
         </div>
         
         <div class="attendance-container">
@@ -1370,6 +1674,7 @@
     <!-- صفحة إدارة الطلاب -->
     <div id="students" class="page">
         <h2 class="page-title">إدارة الطلاب</h2>
+        <div class="page-hijri-date" id="studentsHijriDate">اليوم الهجري: ١٤٤٧/٠٦/١٥</div>
         
         <div class="add-student-form">
             <input type="text" id="newStudent" class="add-student-input" placeholder="أدخل اسم الطالب">
@@ -1392,6 +1697,7 @@
     <!-- صفحة قوائم الحصاد -->
     <div id="harvest" class="page">
         <h2 class="page-title">قوائم الحصاد</h2>
+        <div class="page-hijri-date" id="harvestHijriDate">اليوم الهجري: ١٤٤٧/٠٦/١٥</div>
         
         <!-- علامات التبويب -->
         <div class="harvest-tabs">
@@ -1402,7 +1708,39 @@
         <!-- محتوى التبويب اليومي -->
         <div class="tab-content active" id="dailyTabContent">
             <div class="date-container">
-                <input type="date" id="harvestDate">
+                <div class="current-hijri-date" id="currentHarvestDate">١٤٤٧/٠٦/١٥</div>
+                
+                <div class="date-navigation">
+                    <button class="date-nav-btn" id="prevHarvestDayBtn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <span style="font-weight: bold; color: var(--primary-color);">اليوم</span>
+                    <button class="date-nav-btn" id="nextHarvestDayBtn">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- حاوية تعديل التاريخ الهجري -->
+            <div class="hijri-date-selector" id="harvestHijriDateSelector">
+                <div class="hijri-input-group">
+                    <div>
+                        <input type="number" id="harvestHijriYear" class="hijri-input" placeholder="السنة" min="1300" max="1500" value="1447">
+                        <div class="hijri-input-label">السنة</div>
+                    </div>
+                    <div>
+                        <input type="number" id="harvestHijriMonth" class="hijri-input" placeholder="الشهر" min="1" max="12" value="6">
+                        <div class="hijri-input-label">الشهر</div>
+                    </div>
+                    <div>
+                        <input type="number" id="harvestHijriDay" class="hijri-input" placeholder="اليوم" min="1" max="30" value="15">
+                        <div class="hijri-input-label">اليوم</div>
+                    </div>
+                </div>
+                <div class="hijri-date-buttons">
+                    <button class="hijri-date-btn save" id="harvestSaveHijriBtn">حفظ</button>
+                    <button class="hijri-date-btn cancel" id="harvestCancelHijriBtn">إلغاء</button>
+                </div>
             </div>
             
             <div class="attendance-container">
@@ -1430,19 +1768,23 @@
         <div class="tab-content" id="weeklyTabContent">
             <div class="week-container">
                 <div class="month-week-selector">
-                    <div class="month-selector">
-                        <label for="harvestMonth">اختر الشهر:</label>
-                        <input type="month" id="harvestMonth" class="month-input">
-                    </div>
-                    <div class="week-selector">
-                        <label for="weekNumber">اختر أسبوع الشهر:</label>
-                        <select id="weekNumber" class="week-select">
-                            <option value="1">الأسبوع الأول (1-7)</option>
-                            <option value="2">الأسبوع الثاني (8-14)</option>
-                            <option value="3">الأسبوع الثالث (15-21)</option>
-                            <option value="4">الأسبوع الرابع (22-28)</option>
-                            <option value="5">الأسبوع الخامس (29-31)</option>
+                    <div>
+                        <label for="hijriWeekSelect">اختر الأسبوع:</label>
+                        <select id="hijriWeekSelect" class="week-select">
+                            <option value="1">الأول</option>
+                            <option value="2">الثاني</option>
+                            <option value="3">الثالث</option>
+                            <option value="4">الرابع</option>
+                            <option value="5">الخامس</option>
                         </select>
+                    </div>
+                    <div>
+                        <label for="hijriMonthSelect">اختر الشهر:</label>
+                        <input type="number" id="hijriMonthSelect" class="month-input" placeholder="الشهر (1-12)" min="1" max="12" value="6">
+                    </div>
+                    <div>
+                        <label for="hijriYearSelect">اختر السنة:</label>
+                        <input type="number" id="hijriYearSelect" class="month-input" placeholder="السنة (مثال: 1447)" min="1300" max="1500" value="1447">
                     </div>
                 </div>
             </div>
@@ -1476,8 +1818,8 @@
                     <p style="background: #ffffff; border: 2px solid #F0C090; padding: 8px; border-radius: 5px;" id="pdfTeacherName"></p>
                 </div>
                 <div style="flex: 1; min-width: 200px; margin: 10px;">
-                    <h3 style="color: #A65E00; margin-bottom: 5px;">تاريخ التقرير</h3>
-                    <p style="background: #ffffff; border: 2px solid #F0C090; padding: 8px; border-radius: 5px;" id="pdfReportDate"></p>
+                    <h3 style="color: #A65E00; margin-bottom: 5px;">التاريخ الهجري</h3>
+                    <p style="background: #ffffff; border: 2px solid #F0C090; padding: 8px; border-radius: 5px;" id="pdfReportDate">١٤٤٧/٠٦/١٥</p>
                 </div>
             </div>
         </div>
@@ -1504,7 +1846,9 @@
     </div>
 
     <script>
+        // ============================================
         // بيانات التطبيق
+        // ============================================
         let appData = {
             halqaName: 'اسم الحلقة',
             teacherName: 'اسم المعلم',
@@ -1512,8 +1856,18 @@
             students: [],
             attendance: {},
             tarteeb: {},
-            notes: {}
+            notes: {},
+            hijriDate: {
+                year: 1447,
+                month: 6,
+                day: 15
+            }
         };
+
+        // التاريخ الهجري الحالي لكل صفحة
+        let currentTarteebDate = { ...appData.hijriDate };
+        let currentAttendanceDate = { ...appData.hijriDate };
+        let currentHarvestDate = { ...appData.hijriDate };
 
         // متغيرات للملاحظات
         let currentNoteDate = '';
@@ -1537,102 +1891,297 @@
             harvest: document.getElementById('harvest')
         };
 
-        // عناصر التحكم
-        const settingsBtn = document.getElementById('settingsBtn');
-        const backBtn = document.getElementById('backBtn');
-        const tarteebBtn = document.getElementById('tarteebBtn');
-        const attendanceBtn = document.getElementById('attendanceBtn');
-        const studentsBtn = document.getElementById('studentsBtn');
-        const harvestBtn = document.getElementById('harvestBtn');
-        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-        const addStudentBtn = document.getElementById('addStudentBtn');
+        // ============================================
+        // دوال التاريخ الهجري
+        // ============================================
 
-        // عناصر نافذة الملاحظات
-        const notesModal = document.getElementById('notesModal');
-        const notesTextarea = document.getElementById('notesTextarea');
-        const saveNotesBtn = document.getElementById('saveNotesBtn');
-        const cancelNotesBtn = document.getElementById('cancelNotesBtn');
-        const closeNotesModalBtn = notesModal.querySelector('.close-modal');
+        // دالة تحويل الأرقام العربية إلى هندية
+        function toArabicNumbers(num) {
+            const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+            return num.toString().replace(/\d/g, digit => arabicNumbers[digit]);
+        }
 
-        // عناصر نافذة تأكيد الإرجاع
-        const confirmReturnModal = document.getElementById('confirmReturnModal');
-        const studentNameInConfirm = document.getElementById('studentNameInConfirm');
-        const confirmReturnBtn = document.getElementById('confirmReturnBtn');
-        const cancelReturnBtn = document.getElementById('cancelReturnBtn');
-        const closeReturnModalBtn = confirmReturnModal.querySelector('.close-modal');
+        // دالة تنسيق التاريخ الهجري للعرض
+        function formatHijriDate(year, month, day) {
+            const yearStr = toArabicNumbers(year);
+            const monthStr = toArabicNumbers(month.toString().padStart(2, '0'));
+            const dayStr = toArabicNumbers(day.toString().padStart(2, '0'));
+            return `${yearStr}/${monthStr}/${dayStr}`;
+        }
 
-        // عناصر نافذة التفاصيل
-        const detailsModal = document.getElementById('detailsModal');
-        const detailsTextarea = document.getElementById('detailsTextarea');
-        const saveDetailsBtn = document.getElementById('saveDetailsBtn');
-        const cancelDetailsBtn = document.getElementById('cancelDetailsBtn');
-        const closeDetailsModalBtn = detailsModal.querySelector('.close-modal');
-        const detailsOptions = document.getElementById('detailsOptions');
+        // دالة إنشاء مفتاح التاريخ الهجري للتخزين
+        function createHijriDateKey(year, month, day) {
+            return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        }
+
+        // دالة زيادة يوم هجري
+        function addHijriDay(date, days = 1) {
+            const newDate = { ...date };
+            newDate.day += days;
+            
+            if (newDate.day > 30) {
+                newDate.day -= 30;
+                newDate.month += 1;
+                
+                if (newDate.month > 12) {
+                    newDate.month = 1;
+                    newDate.year += 1;
+                }
+            }
+            
+            return newDate;
+        }
+
+        // دالة تقليل يوم هجري
+        function subtractHijriDay(date, days = 1) {
+            const newDate = { ...date };
+            newDate.day -= days;
+            
+            if (newDate.day < 1) {
+                newDate.day += 30;
+                newDate.month -= 1;
+                
+                if (newDate.month < 1) {
+                    newDate.month = 12;
+                    newDate.year -= 1;
+                }
+            }
+            
+            return newDate;
+        }
+
+        // دالة تحديث عرض التاريخ الهجري في جميع الصفحات
+        function updateHijriDateDisplay() {
+            const hijri = appData.hijriDate;
+            const formattedDate = formatHijriDate(hijri.year, hijri.month, hijri.day);
+            
+            // تحديث الصفحة الرئيسية
+            document.getElementById('displayHijriDate').textContent = formattedDate;
+            
+            // تحديث جميع الصفحات الأخرى
+            document.getElementById('tarteebHijriDate').textContent = `اليوم الهجري: ${formattedDate}`;
+            document.getElementById('attendanceHijriDate').textContent = `اليوم الهجري: ${formattedDate}`;
+            document.getElementById('studentsHijriDate').textContent = `اليوم الهجري: ${formattedDate}`;
+            document.getElementById('harvestHijriDate').textContent = `اليوم الهجري: ${formattedDate}`;
+            
+            // تحديث PDF
+            document.getElementById('pdfReportDate').textContent = formattedDate;
+            
+            // تحديث التاريخ الحالي في كل صفحة
+            updateCurrentDatesDisplay();
+        }
+
+        // دالة تحديث عرض التواريخ الحالية في كل صفحة
+        function updateCurrentDatesDisplay() {
+            // صفحة ترتيب أدوار التسميع
+            const tarteebFormatted = formatHijriDate(currentTarteebDate.year, currentTarteebDate.month, currentTarteebDate.day);
+            document.getElementById('currentTarteebDate').textContent = tarteebFormatted;
+            
+            // صفحة تسجيل الحضور
+            const attendanceFormatted = formatHijriDate(currentAttendanceDate.year, currentAttendanceDate.month, currentAttendanceDate.day);
+            document.getElementById('currentAttendanceDate').textContent = attendanceFormatted;
+            
+            // صفحة الحصاد اليومي
+            const harvestFormatted = formatHijriDate(currentHarvestDate.year, currentHarvestDate.month, currentHarvestDate.day);
+            document.getElementById('currentHarvestDate').textContent = harvestFormatted;
+        }
+
+        // دالة حفظ التاريخ الهجري الرئيسي
+        function saveHijriDate() {
+            const year = parseInt(document.getElementById('hijriYear').value);
+            const month = parseInt(document.getElementById('hijriMonth').value);
+            const day = parseInt(document.getElementById('hijriDay').value);
+            
+            if (year < 1300 || year > 1500) {
+                alert('السنة يجب أن تكون بين 1300 و 1500 هـ');
+                return;
+            }
+            
+            if (month < 1 || month > 12) {
+                alert('الشهر يجب أن يكون بين 1 و 12');
+                return;
+            }
+            
+            if (day < 1 || day > 30) {
+                alert('اليوم يجب أن يكون بين 1 و 30');
+                return;
+            }
+            
+            // حفظ التاريخ الرئيسي
+            appData.hijriDate = { year, month, day };
+            
+            // تحديث التواريخ الحالية في الصفحات
+            currentTarteebDate = { year, month, day };
+            currentAttendanceDate = { year, month, day };
+            currentHarvestDate = { year, month, day };
+            
+            saveData();
+            
+            // تحديث العرض
+            updateHijriDateDisplay();
+            
+            // إعادة تحميل الصفحات
+            if (pages.tarteeb.classList.contains('active')) {
+                renderTarteebPage();
+            }
+            if (pages.attendance.classList.contains('active')) {
+                renderAttendancePage();
+            }
+            if (pages.harvest.classList.contains('active')) {
+                generateHarvestReport();
+            }
+            
+            // إخفاء حقول الإدخال
+            document.getElementById('hijriDateInputContainer').classList.remove('show');
+        }
+
+        // دالة حفظ التاريخ الهجري لصفحة ترتيب التسميع
+        function saveTarteebHijriDate() {
+            const year = parseInt(document.getElementById('tarteebHijriYear').value);
+            const month = parseInt(document.getElementById('tarteebHijriMonth').value);
+            const day = parseInt(document.getElementById('tarteebHijriDay').value);
+            
+            if (year < 1300 || year > 1500) {
+                alert('السنة يجب أن تكون بين 1300 و 1500 هـ');
+                return;
+            }
+            
+            if (month < 1 || month > 12) {
+                alert('الشهر يجب أن يكون بين 1 و 12');
+                return;
+            }
+            
+            if (day < 1 || day > 30) {
+                alert('اليوم يجب أن يكون بين 1 و 30');
+                return;
+            }
+            
+            // تحديث تاريخ صفحة ترتيب التسميع
+            currentTarteebDate = { year, month, day };
+            
+            // تحديث العرض
+            updateCurrentDatesDisplay();
+            
+            // إعادة تحميل الصفحة
+            renderTarteebPage();
+            
+            // إخفاء محرر التاريخ
+            document.getElementById('tarteebHijriDateSelector').classList.remove('show');
+        }
+
+        // دالة حفظ التاريخ الهجري لصفحة الحضور
+        function saveAttendanceHijriDate() {
+            const year = parseInt(document.getElementById('attendanceHijriYear').value);
+            const month = parseInt(document.getElementById('attendanceHijriMonth').value);
+            const day = parseInt(document.getElementById('attendanceHijriDay').value);
+            
+            if (year < 1300 || year > 1500) {
+                alert('السنة يجب أن تكون بين 1300 و 1500 هـ');
+                return;
+            }
+            
+            if (month < 1 || month > 12) {
+                alert('الشهر يجب أن يكون بين 1 و 12');
+                return;
+            }
+            
+            if (day < 1 || day > 30) {
+                alert('اليوم يجب أن يكون بين 1 و 30');
+                return;
+            }
+            
+            // تحديث تاريخ صفحة الحضور
+            currentAttendanceDate = { year, month, day };
+            
+            // تحديث العرض
+            updateCurrentDatesDisplay();
+            
+            // إعادة تحميل الصفحة
+            renderAttendancePage();
+            
+            // إخفاء محرر التاريخ
+            document.getElementById('attendanceHijriDateSelector').classList.remove('show');
+        }
+
+        // دالة حفظ التاريخ الهجري لصفحة الحصاد
+        function saveHarvestHijriDate() {
+            const year = parseInt(document.getElementById('harvestHijriYear').value);
+            const month = parseInt(document.getElementById('harvestHijriMonth').value);
+            const day = parseInt(document.getElementById('harvestHijriDay').value);
+            
+            if (year < 1300 || year > 1500) {
+                alert('السنة يجب أن تكون بين 1300 و 1500 هـ');
+                return;
+            }
+            
+            if (month < 1 || month > 12) {
+                alert('الشهر يجب أن يكون بين 1 و 12');
+                return;
+            }
+            
+            if (day < 1 || day > 30) {
+                alert('اليوم يجب أن يكون بين 1 و 30');
+                return;
+            }
+            
+            // تحديث تاريخ صفحة الحصاد
+            currentHarvestDate = { year, month, day };
+            
+            // تحديث العرض
+            updateCurrentDatesDisplay();
+            
+            // إعادة تحميل الصفحة
+            generateHarvestReport();
+            
+            // إخفاء محرر التاريخ
+            document.getElementById('harvestHijriDateSelector').classList.remove('show');
+        }
+
+        // ============================================
+        // دوال التطبيق الرئيسية
+        // ============================================
 
         // تهيئة التطبيق
         document.addEventListener('DOMContentLoaded', () => {
             loadData();
             updateUI();
             renderStudentsList();
-            renderAttendancePage();
-            renderTarteebPage();
             
-            // تعيين تاريخ اليوم كافتراضي
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('tarteebDate').value = today;
-            document.getElementById('attendanceDate').value = today;
-            document.getElementById('harvestDate').value = today;
-            
-            // تعيين الشهر الحالي كافتراضي
-            const currentMonth = new Date().toISOString().slice(0, 7);
-            document.getElementById('harvestMonth').value = currentMonth;
-            
-            // تحديث خيارات الأسابيع
-            updateWeekOptions();
+            // تحديث عرض التاريخ الهجري
+            updateHijriDateDisplay();
             
             // إضافة معالجي الأحداث
             setupEventListeners();
             setupModals();
+            setupHijriDateListeners();
         });
 
         // تحميل البيانات من localStorage
         function loadData() {
             const savedData = localStorage.getItem('halqaAppData');
             if (savedData) {
-                appData = JSON.parse(savedData);
+                const parsedData = JSON.parse(savedData);
                 
-                // تحويل البيانات القديمة
-                convertOldData();
+                // دمج البيانات مع القيم الافتراضية
+                appData = {
+                    ...appData,
+                    ...parsedData
+                };
                 
                 // التأكد من وجود كائن الملاحظات
                 if (!appData.notes) {
                     appData.notes = {};
                 }
-            }
-        }
-
-        // تحويل البيانات القديمة من النظام السابق
-        function convertOldData() {
-            // تحويل بيانات الحضور القديمة
-            for (const date in appData.attendance) {
-                for (const student in appData.attendance[date]) {
-                    const value = appData.attendance[date][student];
-                    
-                    // إذا كانت القيمة boolean (من النسخة القديمة مع checkbox)
-                    if (typeof value === 'boolean') {
-                        appData.attendance[date][student] = value ? "حاضر" : "";
-                    }
-                    
-                    // إذا كانت القيمة "غائب" نتركها فارغة
-                    if (value === "غائب") {
-                        appData.attendance[date][student] = "";
-                    }
+                
+                // التأكد من وجود التاريخ الهجري
+                if (!appData.hijriDate) {
+                    appData.hijriDate = { year: 1447, month: 6, day: 15 };
                 }
-            }
-            
-            // التأكد من وجود كائن الملاحظات
-            if (!appData.notes) {
-                appData.notes = {};
+                
+                // تعيين التواريخ الحالية
+                currentTarteebDate = { ...appData.hijriDate };
+                currentAttendanceDate = { ...appData.hijriDate };
+                currentHarvestDate = { ...appData.hijriDate };
             }
         }
 
@@ -1703,9 +2252,9 @@
             
             // إظهار زر الرجوع عند الخروج من الصفحة الرئيسية
             if (pageId !== 'home') {
-                backBtn.style.display = 'block';
+                document.getElementById('backBtn').style.display = 'block';
             } else {
-                backBtn.style.display = 'none';
+                document.getElementById('backBtn').style.display = 'none';
             }
             
             // تحديث البيانات عند فتح بعض الصفحات
@@ -1714,11 +2263,20 @@
             } else if (pageId === 'tarteeb') {
                 renderTarteebPage();
             } else if (pageId === 'harvest') {
-                // عرض التبويب اليومي افتراضيًا
                 switchHarvestTab('daily');
-                // توليد تقرير الحصاد اليومي تلقائياً
                 generateHarvestReport();
             }
+            
+            // إخفاء جميع محررات التاريخ عند تغيير الصفحة
+            hideAllHijriDateSelectors();
+        }
+
+        // إخفاء جميع محررات التاريخ
+        function hideAllHijriDateSelectors() {
+            document.querySelectorAll('.hijri-date-selector').forEach(selector => {
+                selector.classList.remove('show');
+            });
+            document.getElementById('hijriDateInputContainer').classList.remove('show');
         }
 
         // إضافة طالب جديد
@@ -1726,23 +2284,33 @@
             const newStudentInput = document.getElementById('newStudent');
             const newStudentName = newStudentInput.value.trim();
             
-            if (newStudentName && !appData.students.includes(newStudentName)) {
-                appData.students.push(newStudentName);
-                newStudentInput.value = '';
+            if (!newStudentName) {
+                alert('الرجاء إدخال اسم الطالب');
+                return;
+            }
+            
+            if (appData.students.includes(newStudentName)) {
+                alert('الطالب موجود بالفعل!');
+                return;
+            }
+            
+            appData.students.push(newStudentName);
+            newStudentInput.value = '';
+            saveData();
+            renderStudentsList();
+            renderAttendancePage();
+            renderTarteebPage();
+        }
+
+        // حذف طالب
+        function deleteStudent(index) {
+            if (confirm(`هل أنت متأكد من حذف الطالب "${appData.students[index]}"؟`)) {
+                appData.students.splice(index, 1);
                 saveData();
                 renderStudentsList();
                 renderAttendancePage();
                 renderTarteebPage();
             }
-        }
-
-        // حذف طالب
-        function deleteStudent(index) {
-            appData.students.splice(index, 1);
-            saveData();
-            renderStudentsList();
-            renderAttendancePage();
-            renderTarteebPage();
         }
 
         // عرض قائمة الطلاب في صفحة الإدارة
@@ -1774,14 +2342,13 @@
         function renderAttendancePage() {
             const attendanceList = document.getElementById('attendanceList');
             attendanceList.innerHTML = '';
-            const date = document.getElementById('attendanceDate').value;
             
-            // الحالات الممكنة للحضور
+            const dateKey = createHijriDateKey(currentAttendanceDate.year, currentAttendanceDate.month, currentAttendanceDate.day);
             const statuses = ["حاضر", "مستأذن", "غائب"];
             
             // تهيئة بيانات الحضور لهذا التاريخ إذا لم تكن موجودة
-            if (!appData.attendance[date]) {
-                appData.attendance[date] = {};
+            if (!appData.attendance[dateKey]) {
+                appData.attendance[dateKey] = {};
                 saveData();
             }
             
@@ -1797,7 +2364,7 @@
                 optionsContainer.className = 'attendance-options';
                 
                 // الحالة الحالية للطالب
-                const currentStatus = appData.attendance[date][student] || "";
+                const currentStatus = appData.attendance[dateKey][student] || "";
                 
                 statuses.forEach(status => {
                     // إنشاء زر لكل حالة
@@ -1839,7 +2406,7 @@
                         }
                         
                         // حفظ الحالة الجديدة
-                        appData.attendance[date][student] = status;
+                        appData.attendance[dateKey][student] = status;
                         saveData();
                     };
                     
@@ -1863,28 +2430,27 @@
             tarteebOrder.innerHTML = '';
             completedStudents.innerHTML = '';
             
-            const date = document.getElementById('tarteebDate').value;
+            const dateKey = createHijriDateKey(currentTarteebDate.year, currentTarteebDate.month, currentTarteebDate.day);
             
             // تهيئة بيانات الترتيب لهذا التاريخ إذا لم تكن موجودة
-            if (!appData.tarteeb[date]) {
-                appData.tarteeb[date] = {
+            if (!appData.tarteeb[dateKey]) {
+                appData.tarteeb[dateKey] = {
                     order: [],
                     completed: [],
-                    studentStatus: {}, // لتخزين حالة الطالب (حفظ/مراجعة)
-                    completedStatus: {} // لتخزين حالة الطالب في القائمة المكتملة
+                    studentStatus: {},
+                    completedStatus: {}
                 };
                 saveData();
             }
             
             // الحصول على الطلاب الحاضرين فقط لهذا اليوم
             const presentStudentsList = [];
-            if (appData.attendance[date]) {
+            if (appData.attendance[dateKey]) {
                 appData.students.forEach(student => {
-                    if (appData.attendance[date][student] === "حاضر") {
-                        // إذا كان الطالب حاضراً ولم يكن في القائمة بعد
+                    if (appData.attendance[dateKey][student] === "حاضر") {
                         if (!presentStudentsList.includes(student) && 
-                            !appData.tarteeb[date].order.includes(student) && 
-                            !appData.tarteeb[date].completed.includes(student)) {
+                            !appData.tarteeb[dateKey].order.includes(student) && 
+                            !appData.tarteeb[dateKey].completed.includes(student)) {
                             presentStudentsList.push(student);
                         }
                     }
@@ -1907,18 +2473,12 @@
                     const saveBtn = document.createElement('button');
                     saveBtn.textContent = 'حفظ';
                     saveBtn.className = 'action-btn';
-                    saveBtn.onclick = () => {
-                        // إضافة الطالب إلى دور التسميع مع تحديد النوع
-                        addToTarteeb(student, date, 'حفظ');
-                    };
+                    saveBtn.onclick = () => addToTarteeb(student, dateKey, 'حفظ');
                     
                     const reviewBtn = document.createElement('button');
                     reviewBtn.textContent = 'مراجعة';
                     reviewBtn.className = 'action-btn';
-                    reviewBtn.onclick = () => {
-                        // إضافة الطالب إلى دور التسميع مع تحديد النوع
-                        addToTarteeb(student, date, 'مراجعة');
-                    };
+                    reviewBtn.onclick = () => addToTarteeb(student, dateKey, 'مراجعة');
                     
                     actionsDiv.appendChild(saveBtn);
                     actionsDiv.appendChild(reviewBtn);
@@ -1935,13 +2495,12 @@
             }
             
             // عرض ترتيب التسميع
-            if (appData.tarteeb[date].order.length > 0) {
-                appData.tarteeb[date].order.forEach(student => {
+            if (appData.tarteeb[dateKey].order.length > 0) {
+                appData.tarteeb[dateKey].order.forEach(student => {
                     const li = document.createElement('li');
                     li.className = 'student-item';
                     
-                    // التحقق من نوع التسميع وتلوين الخلفية باستخدام class
-                    const studentType = appData.tarteeb[date].studentStatus ? appData.tarteeb[date].studentStatus[student] : null;
+                    const studentType = appData.tarteeb[dateKey].studentStatus ? appData.tarteeb[dateKey].studentStatus[student] : null;
                     if (studentType === 'حفظ') {
                         li.classList.add('save-bg');
                     } else if (studentType === 'مراجعة') {
@@ -1958,12 +2517,12 @@
                     const doneBtn = document.createElement('button');
                     doneBtn.textContent = 'تم';
                     doneBtn.className = 'action-btn done';
-                    doneBtn.onclick = () => markAsCompleted(student, date);
+                    doneBtn.onclick = () => markAsCompleted(student, dateKey);
                     
                     const backBtn = document.createElement('button');
                     backBtn.textContent = 'رجوع';
                     backBtn.className = 'action-btn back';
-                    backBtn.onclick = () => moveBackToPresent(student, date);
+                    backBtn.onclick = () => moveBackToPresent(student, dateKey);
                     
                     actionsDiv.appendChild(doneBtn);
                     actionsDiv.appendChild(backBtn);
@@ -1980,13 +2539,12 @@
             }
             
             // عرض الطلاب الذين تم التسميع
-            if (appData.tarteeb[date].completed.length > 0) {
-                appData.tarteeb[date].completed.forEach((student) => {
+            if (appData.tarteeb[dateKey].completed.length > 0) {
+                appData.tarteeb[dateKey].completed.forEach((student) => {
                     const li = document.createElement('li');
                     li.className = 'student-item';
                     
-                    // التحقق من نوع التسميع وتلوين الخلفية باستخدام class
-                    const studentType = appData.tarteeb[date].completedStatus ? appData.tarteeb[date].completedStatus[student] : null;
+                    const studentType = appData.tarteeb[dateKey].completedStatus ? appData.tarteeb[dateKey].completedStatus[student] : null;
                     if (studentType === 'حفظ') {
                         li.classList.add('save-bg');
                     } else if (studentType === 'مراجعة') {
@@ -2004,13 +2562,11 @@
                     const actionsDiv = document.createElement('div');
                     actionsDiv.className = 'student-actions';
                     
-                    // زر التفاصيل
                     const detailsBtn = document.createElement('button');
                     detailsBtn.textContent = 'التفاصيل';
                     detailsBtn.className = 'action-btn details';
                     
-                    // التحقق إذا كانت هناك ملاحظات لهذا الطالب في هذا التاريخ
-                    const noteKey = `${date}-${student}`;
+                    const noteKey = `${dateKey}-${student}`;
                     if (appData.notes[noteKey] && appData.notes[noteKey].trim() !== '') {
                         detailsBtn.classList.add('has-details');
                         detailsBtn.title = 'هناك تفاصيل مضافة - انقر لعرضها أو تعديلها';
@@ -2018,14 +2574,13 @@
                         detailsBtn.title = 'إضافة تفاصيل';
                     }
                     
-                    detailsBtn.onclick = () => openDetailsModal(student, date);
+                    detailsBtn.onclick = () => openDetailsModal(student, dateKey);
                     
-                    // زر الرجوع إلى دور التسميع
                     const returnBtn = document.createElement('button');
                     returnBtn.textContent = 'رجوع';
                     returnBtn.className = 'action-btn return';
                     returnBtn.title = 'إرجاع الطالب إلى دور التسميع';
-                    returnBtn.onclick = () => openConfirmReturnModal(student, date);
+                    returnBtn.onclick = () => openConfirmReturnModal(student, dateKey);
                     
                     actionsDiv.appendChild(detailsBtn);
                     actionsDiv.appendChild(returnBtn);
@@ -2044,33 +2599,24 @@
 
         // توليد جدول الحصاد اليومي
         function generateHarvestReport() {
-            const date = document.getElementById('harvestDate').value;
             const harvestList = document.getElementById('harvestList');
-            
             harvestList.innerHTML = '';
             
-            if (!date) {
-                harvestList.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 30px; color: #777;">الرجاء اختيار تاريخ أولاً</td></tr>';
-                return;
-            }
+            const dateKey = createHijriDateKey(currentHarvestDate.year, currentHarvestDate.month, currentHarvestDate.day);
             
-            // التحقق إذا كان هناك طلاب مسجلين
             if (appData.students.length === 0) {
                 harvestList.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 30px; color: #777;">لا يوجد طلاب مسجلين<br>الرجاء إضافة طلاب من صفحة إدارة الطلاب</td></tr>';
                 return;
             }
             
-            // عرض بيانات كل الطلاب
             appData.students.forEach(student => {
                 const row = document.createElement('tr');
                 
-                // 1. اسم الطالب (من صفحة إدارة الطلاب)
                 const nameCell = document.createElement('td');
                 nameCell.textContent = student;
                 
-                // 2. الحضور (من صفحة تسجيل الحضور)
                 const attendanceCell = document.createElement('td');
-                const attendance = appData.attendance[date]?.[student] || "غائب";
+                const attendance = appData.attendance[dateKey]?.[student] || "غائب";
                 
                 let attendanceClass = '';
                 let attendanceText = '';
@@ -2091,16 +2637,12 @@
                 
                 attendanceCell.innerHTML = `<span class="harvest-text ${attendanceClass}">${attendanceText}</span>`;
                 
-                // 3. الحفظ (من بطاقة تم التسميع)
                 const saveCell = document.createElement('td');
-                // 4. المراجعة (من بطاقة تم التسميع)
                 const reviewCell = document.createElement('td');
                 
-                // الحصول على حالة التسميع للطالب
-                const tarteebStatus = appData.tarteeb[date]?.completedStatus?.[student];
+                const tarteebStatus = appData.tarteeb[dateKey]?.completedStatus?.[student];
                 
                 if (tarteebStatus) {
-                    // إذا كان الطالب في قائمة "تم التسميع"
                     switch(tarteebStatus) {
                         case "حفظ":
                             saveCell.innerHTML = '<span class="harvest-text text-done">أتم</span>';
@@ -2119,7 +2661,6 @@
                             reviewCell.innerHTML = '<span class="harvest-text text-not-done">لم يتم</span>';
                     }
                 } else {
-                    // إذا لم يكن الطالب في "تم التسميع"
                     saveCell.innerHTML = '<span class="harvest-text text-not-done">لم يتم</span>';
                     reviewCell.innerHTML = '<span class="harvest-text text-not-done">لم يتم</span>';
                 }
@@ -2132,148 +2673,50 @@
             });
         }
 
-        // ============================================
-        // دوال الحصاد الأسبوعي (أسابيع الشهر)
-        // ============================================
-
-        // دالة تحديث خيارات الأسابيع بناءً على الشهر المختار
-        function updateWeekOptions() {
-            const monthInput = document.getElementById('harvestMonth').value;
-            const weekSelect = document.getElementById('weekNumber');
-            
-            if (!monthInput) return;
-            
-            const [year, month] = monthInput.split('-').map(num => parseInt(num));
-            const daysInMonth = new Date(year, month, 0).getDate();
-            
-            // حفظ القيمة المحددة حالياً
-            const currentValue = weekSelect.value;
-            
-            // تحديث الخيارات
-            const options = [
-                { value: 1, text: "الأسبوع الأول (1-7)" },
-                { value: 2, text: "الأسبوع الثاني (8-14)" },
-                { value: 3, text: "الأسبوع الثالث (15-21)" },
-                { value: 4, text: "الأسبوع الرابع (22-28)" }
-            ];
-            
-            // إضافة الأسبوع الخامس إذا كان الشهر يحتوي على 29 يومًا أو أكثر
-            if (daysInMonth >= 29) {
-                const endDay = Math.min(31, daysInMonth);
-                options.push({ value: 5, text: `الأسبوع الخامس (29-${endDay})` });
-            }
-            
-            // تحديث قائمة الاختيار
-            weekSelect.innerHTML = '';
-            options.forEach(option => {
-                const optionElement = document.createElement('option');
-                optionElement.value = option.value;
-                optionElement.textContent = option.text;
-                weekSelect.appendChild(optionElement);
-            });
-            
-            // استعادة القيمة المحددة إذا كانت متاحة
-            if (options.some(opt => opt.value.toString() === currentValue)) {
-                weekSelect.value = currentValue;
-            } else {
-                weekSelect.value = 1; // افتراضي
-            }
-            
-            // تحديث التقرير إذا كان تبويب الأسبوعي نشط
-            if (document.getElementById('weeklyTab').classList.contains('active')) {
-                generateWeeklyReport();
-            }
-        }
-
-        // دالة الحصول على تواريخ أسبوع محدد في شهر معين
-        function getWeekDatesByMonth(year, month, weekNumber) {
-            // نطاقات الأسابيع في الشهر
-            const weekRanges = {
-                1: { start: 1, end: 7 },
-                2: { start: 8, end: 14 },
-                3: { start: 15, end: 21 },
-                4: { start: 22, end: 28 },
-                5: { start: 29, end: 31 }
-            };
-            
-            const range = weekRanges[weekNumber];
-            if (!range) return [];
-            
-            const weekDates = [];
-            
-            // التأكد من أن end لا يتجاوز عدد أيام الشهر
-            const daysInMonth = new Date(year, month, 0).getDate();
-            const endDay = Math.min(range.end, daysInMonth);
-            
-            // إنشاء التواريخ من start إلى end
-            for (let day = range.start; day <= endDay; day++) {
-                const dateStr = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-                weekDates.push(dateStr);
-            }
-            
-            return weekDates;
-        }
-
-        // دالة توليد التقرير الأسبوعي بالنظام الجديد المعدل
+        // توليد التقرير الأسبوعي
         function generateWeeklyReport() {
-            const monthInput = document.getElementById('harvestMonth').value;
-            const weekSelect = document.getElementById('weekNumber');
-            const weekNumber = parseInt(weekSelect.value);
+            const month = parseInt(document.getElementById('hijriMonthSelect').value);
+            const year = parseInt(document.getElementById('hijriYearSelect').value);
             const container = document.getElementById('weeklySummary');
             
-            if (!monthInput) {
-                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #777;">الرجاء اختيار شهر أولاً</p>';
+            if (!month || !year) {
+                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #777;">الرجاء اختيار الشهر والسنة الهجرية أولاً</p>';
                 return;
             }
             
-            // تحليل قيمة الشهر
-            const [year, month] = monthInput.split('-').map(num => parseInt(num));
-            
-            // الحصول على تواريخ الأسبوع المحدد
-            const weekDates = getWeekDatesByMonth(year, month, weekNumber);
-            
-            if (weekDates.length === 0) {
-                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #777;">لا توجد بيانات لهذا الأسبوع</p>';
-                return;
-            }
-            
-            // جمع البيانات لكل طالب
+            const daysInMonth = (month % 2 === 1 || month === 12) ? 30 : 29;
             const studentStats = {};
-            const maxDays = 5; // أقصى عدد أيام في الأسبوع (الأحد إلى الخميس)
             
-            // تهيئة الإحصائيات لكل طالب
             appData.students.forEach(student => {
                 studentStats[student] = {
                     name: student,
-                    attendanceScore: 0,  // درجة الحضور (حاضر = 1، مستأذن = 0.5، غائب = 0)
-                    presentCount: 0,     // عدد الأيام الحاضرة (للعرض فقط)
-                    excusedCount: 0,     // عدد الأيام المستأذنة (للعرض فقط)
-                    saveSessions: 0,     // مرات الحفظ
-                    reviewSessions: 0    // مرات المراجعة
+                    attendanceScore: 0,
+                    presentCount: 0,
+                    excusedCount: 0,
+                    saveSessions: 0,
+                    reviewSessions: 0
                 };
             });
             
-            // جمع البيانات لكل يوم في الأسبوع
-            weekDates.forEach(date => {
-                // بيانات الحضور - نعتبر الحاضر والمستأذن بدرجات مختلفة
-                if (appData.attendance[date]) {
-                    Object.entries(appData.attendance[date]).forEach(([student, status]) => {
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateKey = createHijriDateKey(year, month, day);
+                
+                if (appData.attendance[dateKey]) {
+                    Object.entries(appData.attendance[dateKey]).forEach(([student, status]) => {
                         if (studentStats[student]) {
                             if (status === "حاضر") {
-                                studentStats[student].attendanceScore += 1;  // درجة كاملة
+                                studentStats[student].attendanceScore += 1;
                                 studentStats[student].presentCount += 1;
                             } else if (status === "مستأذن") {
-                                studentStats[student].attendanceScore += 0.5;  // نصف درجة
+                                studentStats[student].attendanceScore += 0.5;
                                 studentStats[student].excusedCount += 1;
                             }
-                            // الغائب: لا تضيف أي نقاط
                         }
                     });
                 }
                 
-                // بيانات التسميع
-                if (appData.tarteeb[date] && appData.tarteeb[date].completedStatus) {
-                    Object.entries(appData.tarteeb[date].completedStatus).forEach(([student, type]) => {
+                if (appData.tarteeb[dateKey] && appData.tarteeb[dateKey].completedStatus) {
+                    Object.entries(appData.tarteeb[dateKey].completedStatus).forEach(([student, type]) => {
                         if (studentStats[student]) {
                             if (type === "حفظ" || type === "حفظ ومراجعة") {
                                 studentStats[student].saveSessions++;
@@ -2284,15 +2727,16 @@
                         }
                     });
                 }
-            });
+            }
             
-            // حساب النسبة المئوية الجديدة
-            // بناء HTML للتقرير
-            const monthNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-                              "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+            const hijriMonthNames = [
+                "محرم", "صفر", "ربيع الأول", "ربيع الثاني", 
+                "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", 
+                "رمضان", "شوال", "ذو القعدة", "ذو الحجة"
+            ];
             
             let html = `
-                <h3 class="week-title">تقرير ${getWeekName(weekNumber)} - شهر ${monthNames[month-1]} ${year}</h3>
+                <h3 class="week-title">تقرير شهر ${hijriMonthNames[month-1]} ${year} هـ</h3>
                 
                 <table class="weekly-table">
                     <thead>
@@ -2307,37 +2751,20 @@
                     <tbody>
             `;
             
-            // إضافة صف لكل طالب
             appData.students.forEach(student => {
                 const stats = studentStats[student];
                 
-                // حساب النسب المئوية الجديدة
-                let attendanceRate = 0;
-                let saveRate = 0;
-                let reviewRate = 0;
-                let totalRate = 0;
+                let attendanceRate = (stats.attendanceScore / daysInMonth) * 100;
+                let saveRate = (stats.saveSessions / daysInMonth) * 100;
+                let reviewRate = (stats.reviewSessions / daysInMonth) * 100;
+                let totalRate = (attendanceRate * (1/3)) + (saveRate * (1/3)) + (reviewRate * (1/3));
                 
-                // حساب النسبة لكل قسم (١/٣)
-                // الحضور: (درجة الحضور / 5) × 100
-                attendanceRate = (stats.attendanceScore / maxDays) * 100;
-                
-                // الحفظ: (عدد مرات الحفظ / 5) × 100
-                saveRate = (stats.saveSessions / maxDays) * 100;
-                
-                // المراجعة: (عدد مرات المراجعة / 5) × 100
-                reviewRate = (stats.reviewSessions / maxDays) * 100;
-                
-                // حساب الإجمالي (١/٣ لكل قسم)
-                totalRate = (attendanceRate * (1/3)) + (saveRate * (1/3)) + (reviewRate * (1/3));
-                
-                // تقريب النسب
                 attendanceRate = Math.round(attendanceRate);
                 saveRate = Math.round(saveRate);
                 reviewRate = Math.round(reviewRate);
                 totalRate = Math.round(totalRate);
                 
-                // عرض تفاصيل الحضور - بدون عدد الأيام
-                let attendanceDisplay = `${stats.attendanceScore}/${maxDays}`;
+                let attendanceDisplay = `${stats.attendanceScore}/${daysInMonth}`;
                 
                 html += `
                     <tr>
@@ -2345,8 +2772,8 @@
                         <td class="stat-present">
                             ${attendanceDisplay}
                         </td>
-                        <td class="stat-save">${stats.saveSessions}/${maxDays}</td>
-                        <td class="stat-review">${stats.reviewSessions}/${maxDays}</td>
+                        <td class="stat-save">${stats.saveSessions}/${daysInMonth}</td>
+                        <td class="stat-review">${stats.reviewSessions}/${daysInMonth}</td>
                         <td>
                             <div class="progress-container">
                                 <div class="progress-bar">
@@ -2359,17 +2786,13 @@
                 `;
             });
             
-            // إحصائيات إجمالية
             let totalAttendanceRate = 0;
             let totalSaveRate = 0;
             let totalReviewRate = 0;
             let overallRate = 0;
             
             if (appData.students.length > 0) {
-                // حساب متوسطات الفصل
                 const totalStudents = appData.students.length;
-                
-                // جمع النسب لكل طالب
                 let sumAttendanceRate = 0;
                 let sumSaveRate = 0;
                 let sumReviewRate = 0;
@@ -2377,9 +2800,9 @@
                 
                 appData.students.forEach(student => {
                     const stats = studentStats[student];
-                    const attendanceRate = (stats.attendanceScore / maxDays) * 100;
-                    const saveRate = (stats.saveSessions / maxDays) * 100;
-                    const reviewRate = (stats.reviewSessions / maxDays) * 100;
+                    const attendanceRate = (stats.attendanceScore / daysInMonth) * 100;
+                    const saveRate = (stats.saveSessions / daysInMonth) * 100;
+                    const reviewRate = (stats.reviewSessions / daysInMonth) * 100;
                     const totalRate = (attendanceRate * (1/3)) + (saveRate * (1/3)) + (reviewRate * (1/3));
                     
                     sumAttendanceRate += attendanceRate;
@@ -2388,7 +2811,6 @@
                     sumTotalRate += totalRate;
                 });
                 
-                // حساب المتوسطات
                 totalAttendanceRate = Math.round(sumAttendanceRate / totalStudents);
                 totalSaveRate = Math.round(sumSaveRate / totalStudents);
                 totalReviewRate = Math.round(sumReviewRate / totalStudents);
@@ -2417,35 +2839,19 @@
             container.innerHTML = html;
         }
 
-        // دالة مساعدة للحصول على اسم الأسبوع
-        function getWeekName(weekNumber) {
-            const weekNames = {
-                1: "الأسبوع الأول",
-                2: "الأسبوع الثاني", 
-                3: "الأسبوع الثالث",
-                4: "الأسبوع الرابع",
-                5: "الأسبوع الخامس"
-            };
-            return weekNames[weekNumber] || `الأسبوع ${weekNumber}`;
-        }
-
-        // دالة تبديل التبويبات
+        // تبديل التبويبات
         function switchHarvestTab(tabType) {
-            // إخفاء جميع المحتويات
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
             });
             
-            // إزالة النشط من جميع الأزرار
             document.querySelectorAll('.harvest-tab').forEach(tab => {
                 tab.classList.remove('active');
             });
             
-            // إظهار المحتوى المحدد
             document.getElementById(tabType + 'TabContent').classList.add('active');
             document.getElementById(tabType + 'Tab').classList.add('active');
             
-            // إذا كان التبويب الأسبوعي، نولد التقرير
             if (tabType === 'weekly') {
                 generateWeeklyReport();
             } else if (tabType === 'daily') {
@@ -2454,17 +2860,14 @@
         }
 
         // إضافة طالب إلى دور التسميع
-        function addToTarteeb(student, date, type) {
-            // التحقق إذا كان الطالب مضافاً بالفعل
-            if (!appData.tarteeb[date].order.includes(student)) {
-                // إضافة الطالب إلى قائمة الترتيب
-                appData.tarteeb[date].order.push(student);
+        function addToTarteeb(student, dateKey, type) {
+            if (!appData.tarteeb[dateKey].order.includes(student)) {
+                appData.tarteeb[dateKey].order.push(student);
                 
-                // تخزين نوع التسميع
-                if (!appData.tarteeb[date].studentStatus) {
-                    appData.tarteeb[date].studentStatus = {};
+                if (!appData.tarteeb[dateKey].studentStatus) {
+                    appData.tarteeb[dateKey].studentStatus = {};
                 }
-                appData.tarteeb[date].studentStatus[student] = type;
+                appData.tarteeb[dateKey].studentStatus[student] = type;
                 
                 saveData();
                 renderTarteebPage();
@@ -2472,26 +2875,22 @@
         }
 
         // تمييز الطالب كمكتمل التسميع
-        function markAsCompleted(student, date) {
-            const studentIndex = appData.tarteeb[date].order.indexOf(student);
+        function markAsCompleted(student, dateKey) {
+            const studentIndex = appData.tarteeb[dateKey].order.indexOf(student);
             if (studentIndex !== -1) {
-                // الحصول على نوع التسميع قبل النقل
-                const studentType = appData.tarteeb[date].studentStatus ? appData.tarteeb[date].studentStatus[student] : null;
+                const studentType = appData.tarteeb[dateKey].studentStatus ? appData.tarteeb[dateKey].studentStatus[student] : null;
                 
-                // نقل الطالب
-                appData.tarteeb[date].order.splice(studentIndex, 1);
-                appData.tarteeb[date].completed.push(student);
+                appData.tarteeb[dateKey].order.splice(studentIndex, 1);
+                appData.tarteeb[dateKey].completed.push(student);
                 
-                // الاحتفاظ بنوع التسميع في القائمة المكتملة
                 if (studentType) {
-                    if (!appData.tarteeb[date].completedStatus) {
-                        appData.tarteeb[date].completedStatus = {};
+                    if (!appData.tarteeb[dateKey].completedStatus) {
+                        appData.tarteeb[dateKey].completedStatus = {};
                     }
-                    appData.tarteeb[date].completedStatus[student] = studentType;
+                    appData.tarteeb[dateKey].completedStatus[student] = studentType;
                     
-                    // إزالة من القائمة الأصلية
-                    if (appData.tarteeb[date].studentStatus) {
-                        delete appData.tarteeb[date].studentStatus[student];
+                    if (appData.tarteeb[dateKey].studentStatus) {
+                        delete appData.tarteeb[dateKey].studentStatus[student];
                     }
                 }
                 
@@ -2501,13 +2900,12 @@
         }
 
         // إرجاع الطالب إلى الحاضرين (من دور التسميع)
-        function moveBackToPresent(student, date) {
-            const studentIndex = appData.tarteeb[date].order.indexOf(student);
+        function moveBackToPresent(student, dateKey) {
+            const studentIndex = appData.tarteeb[dateKey].order.indexOf(student);
             if (studentIndex !== -1) {
-                appData.tarteeb[date].order.splice(studentIndex, 1);
-                // إزالة حالة الطالب عند إرجاعه
-                if (appData.tarteeb[date].studentStatus && appData.tarteeb[date].studentStatus[student]) {
-                    delete appData.tarteeb[date].studentStatus[student];
+                appData.tarteeb[dateKey].order.splice(studentIndex, 1);
+                if (appData.tarteeb[dateKey].studentStatus && appData.tarteeb[dateKey].studentStatus[student]) {
+                    delete appData.tarteeb[dateKey].studentStatus[student];
                 }
                 saveData();
                 renderTarteebPage();
@@ -2518,22 +2916,18 @@
         function returnToOrder() {
             const studentIndex = appData.tarteeb[currentReturnDate].completed.indexOf(currentReturnStudent);
             if (studentIndex !== -1) {
-                // الحصول على نوع التسميع من القائمة المكتملة
                 const studentType = appData.tarteeb[currentReturnDate].completedStatus ? 
                                   appData.tarteeb[currentReturnDate].completedStatus[currentReturnStudent] : null;
                 
-                // نقل الطالب
                 appData.tarteeb[currentReturnDate].completed.splice(studentIndex, 1);
                 appData.tarteeb[currentReturnDate].order.push(currentReturnStudent);
                 
-                // استعادة نوع التسميع
                 if (studentType) {
                     if (!appData.tarteeb[currentReturnDate].studentStatus) {
                         appData.tarteeb[currentReturnDate].studentStatus = {};
                     }
                     appData.tarteeb[currentReturnDate].studentStatus[currentReturnStudent] = studentType;
                     
-                    // إزالة من القائمة المكتملة
                     if (appData.tarteeb[currentReturnDate].completedStatus) {
                         delete appData.tarteeb[currentReturnDate].completedStatus[currentReturnStudent];
                     }
@@ -2546,27 +2940,25 @@
         }
 
         // فتح نافذة الملاحظات
-        function openNotesModal(student, date) {
+        function openNotesModal(student, dateKey) {
             currentNoteStudent = student;
-            currentNoteDate = date;
+            currentNoteDate = dateKey;
             
-            const noteKey = `${date}-${student}`;
+            const noteKey = `${dateKey}-${student}`;
             const currentNote = appData.notes[noteKey] || '';
             
             notesTextarea.value = currentNote;
             
-            // تحديث عنوان النافذة
             notesModal.querySelector('.modal-title').textContent = `ملاحظات على تسميع: ${student}`;
             
-            // إظهار النافذة
             notesModal.classList.add('active');
             notesTextarea.focus();
         }
 
         // فتح نافذة تأكيد الإرجاع
-        function openConfirmReturnModal(student, date) {
+        function openConfirmReturnModal(student, dateKey) {
             currentReturnStudent = student;
-            currentReturnDate = date;
+            currentReturnDate = dateKey;
             
             studentNameInConfirm.textContent = student;
             
@@ -2574,27 +2966,24 @@
         }
 
         // فتح نافذة التفاصيل
-        function openDetailsModal(student, date) {
+        function openDetailsModal(student, dateKey) {
             currentDetailsStudent = student;
-            currentDetailsDate = date;
+            currentDetailsDate = dateKey;
             
-            const noteKey = `${date}-${student}`;
+            const noteKey = `${dateKey}-${student}`;
             const currentNote = appData.notes[noteKey] || '';
-            const currentType = appData.tarteeb[date].completedStatus ? 
-                               appData.tarteeb[date].completedStatus[student] : null;
+            const currentType = appData.tarteeb[dateKey].completedStatus ? 
+                               appData.tarteeb[dateKey].completedStatus[student] : null;
             
             detailsTextarea.value = currentNote;
             
-            // تحديد الزر المختار بناءً على نوع التسميع
             const radioButtons = detailsOptions.querySelectorAll('input[name="tarteebType"]');
             radioButtons.forEach(radio => {
                 radio.checked = (radio.value === currentType);
             });
             
-            // تحديث عنوان النافذة
             detailsModal.querySelector('.modal-title').textContent = `تفاصيل تسميع: ${student}`;
             
-            // إظهار النافذة
             detailsModal.classList.add('active');
             detailsTextarea.focus();
         }
@@ -2607,13 +2996,12 @@
             if (noteText) {
                 appData.notes[noteKey] = noteText;
             } else {
-                // إذا كانت الملاحظة فارغة، احذفها
                 delete appData.notes[noteKey];
             }
             
             saveData();
             closeNotesModal();
-            renderTarteebPage(); // لتحديث زر الملاحظات
+            renderTarteebPage();
         }
 
         // حفظ التفاصيل
@@ -2623,15 +3011,12 @@
             const selectedRadio = detailsOptions.querySelector('input[name="tarteebType"]:checked');
             const selectedType = selectedRadio ? selectedRadio.value : null;
             
-            // حفظ الملاحظات
             if (noteText) {
                 appData.notes[noteKey] = noteText;
             } else {
-                // إذا كانت الملاحظة فارغة، احذفها
                 delete appData.notes[noteKey];
             }
             
-            // حفظ نوع التسميع
             if (selectedType) {
                 if (!appData.tarteeb[currentDetailsDate].completedStatus) {
                     appData.tarteeb[currentDetailsDate].completedStatus = {};
@@ -2641,7 +3026,7 @@
             
             saveData();
             closeDetailsModal();
-            renderTarteebPage(); // لتحديث لون الطالب
+            renderTarteebPage();
         }
 
         // إغلاق نافذة الملاحظات
@@ -2670,19 +3055,19 @@
         // إعداد نوافذ المنبثقة
         function setupModals() {
             // نافذة الملاحظات
-            saveNotesBtn.addEventListener('click', saveNotes);
-            cancelNotesBtn.addEventListener('click', closeNotesModal);
-            closeNotesModalBtn.addEventListener('click', closeNotesModal);
+            document.getElementById('saveNotesBtn').addEventListener('click', saveNotes);
+            document.getElementById('cancelNotesBtn').addEventListener('click', closeNotesModal);
+            document.querySelector('#notesModal .close-modal').addEventListener('click', closeNotesModal);
             
             // نافذة تأكيد الإرجاع
-            confirmReturnBtn.addEventListener('click', returnToOrder);
-            cancelReturnBtn.addEventListener('click', closeConfirmReturnModal);
-            closeReturnModalBtn.addEventListener('click', closeConfirmReturnModal);
+            document.getElementById('confirmReturnBtn').addEventListener('click', returnToOrder);
+            document.getElementById('cancelReturnBtn').addEventListener('click', closeConfirmReturnModal);
+            document.querySelector('#confirmReturnModal .close-modal').addEventListener('click', closeConfirmReturnModal);
             
             // نافذة التفاصيل
-            saveDetailsBtn.addEventListener('click', saveDetails);
-            cancelDetailsBtn.addEventListener('click', closeDetailsModal);
-            closeDetailsModalBtn.addEventListener('click', closeDetailsModal);
+            document.getElementById('saveDetailsBtn').addEventListener('click', saveDetails);
+            document.getElementById('cancelDetailsBtn').addEventListener('click', closeDetailsModal);
+            document.querySelector('#detailsModal .close-modal').addEventListener('click', closeDetailsModal);
             
             // إغلاق النوافذ بالنقر خارجها
             notesModal.addEventListener('click', (e) => {
@@ -2720,620 +3105,127 @@
         }
 
         // ============================================
-        // دوال تصدير PDF
+        // إعداد معالجات أحداث التاريخ الهجري
         // ============================================
 
-        // دالة توليد PDF يومي
-        async function generateDailyPdf() {
-            const date = document.getElementById('harvestDate').value;
-            if (!date) {
-                alert('الرجاء اختيار تاريخ أولاً');
-                return;
-            }
-            
-            // تحديث بيانات التقرير
-            updatePdfHeader('يومي', date);
-            
-            // إنشاء محتوى التقرير اليومي
-            createDailyPdfContent(date);
-            
-            // توليد PDF
-            await exportToPdf('اليومي', date);
-        }
-
-        // دالة توليد PDF أسبوعي
-        async function generateWeeklyPdf() {
-            const monthInput = document.getElementById('harvestMonth').value;
-            const weekNumber = document.getElementById('weekNumber').value;
-            
-            if (!monthInput) {
-                alert('الرجاء اختيار شهر أولاً');
-                return;
-            }
-            
-            // تحديث بيانات التقرير
-            const [year, month] = monthInput.split('-');
-            const monthNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-                              "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
-            const reportDate = `شهر ${monthNames[parseInt(month)-1]} ${year} - الأسبوع ${weekNumber}`;
-            
-            updatePdfHeader('أسبوعي', reportDate);
-            
-            // إنشاء محتوى التقرير الأسبوعي
-            createWeeklyPdfContent(year, month, weekNumber);
-            
-            // توليد PDF
-            await exportToPdf('الأسبوعي', reportDate);
-        }
-
-        // دالة تحديث هيدر التقرير
-        function updatePdfHeader(type, date) {
-            document.getElementById('pdfHalqaName').textContent = appData.halqaName;
-            
-            let teacherName = appData.teacherName;
-            if (!teacherName.startsWith('أ/')) {
-                teacherName = 'أ/ ' + teacherName;
-            }
-            document.getElementById('pdfTeacherName').textContent = teacherName;
-            
-            document.getElementById('pdfReportDate').textContent = date;
-            
-            // تحديث العنوان الرئيسي
-            document.getElementById('pdfReportTitle').textContent = `تقرير الحصاد ${type}`;
-        }
-
-        // دالة إنشاء محتوى التقرير اليومي
-        function createDailyPdfContent(date) {
-            const pdfContent = document.getElementById('pdfContent');
-            pdfContent.innerHTML = '';
-            
-            // عنوان الجدول
-            const title = document.createElement('h3');
-            title.textContent = 'الحصاد اليومي';
-            title.style.textAlign = 'center';
-            title.style.color = '#A65E00';
-            title.style.marginBottom = '20px';
-            title.style.fontSize = '22px';
-            pdfContent.appendChild(title);
-            
-            // إنشاء الجدول
-            const table = document.createElement('table');
-            table.style.width = '100%';
-            table.style.borderCollapse = 'collapse';
-            table.style.margin = '20px 0';
-            table.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-            
-            // رأس الجدول
-            const thead = document.createElement('thead');
-            const headerRow = document.createElement('tr');
-            const headers = ['اسم الطالب', 'الحضور', 'الحفظ', 'المراجعة'];
-            
-            headers.forEach(headerText => {
-                const th = document.createElement('th');
-                th.textContent = headerText;
-                th.style.backgroundColor = '#A65E00';
-                th.style.color = 'white';
-                th.style.padding = '12px 8px';
-                th.style.textAlign = 'center';
-                th.style.border = '1px solid #8a4f00';
-                headerRow.appendChild(th);
+        function setupHijriDateListeners() {
+            // التاريخ الهجري في الصفحة الرئيسية
+            document.getElementById('hijriDateDisplay').addEventListener('click', () => {
+                const hijri = appData.hijriDate;
+                document.getElementById('hijriYear').value = hijri.year;
+                document.getElementById('hijriMonth').value = hijri.month;
+                document.getElementById('hijriDay').value = hijri.day;
+                document.getElementById('hijriDateInputContainer').classList.add('show');
             });
             
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
-            
-            // جسم الجدول
-            const tbody = document.createElement('tbody');
-            
-            // التحقق إذا كان هناك طلاب مسجلين
-            if (appData.students.length === 0) {
-                const emptyRow = document.createElement('tr');
-                const emptyCell = document.createElement('td');
-                emptyCell.colSpan = 4;
-                emptyCell.textContent = 'لا يوجد طلاب مسجلين';
-                emptyCell.style.textAlign = 'center';
-                emptyCell.style.padding = '30px';
-                emptyCell.style.color = '#777';
-                emptyRow.appendChild(emptyCell);
-                tbody.appendChild(emptyRow);
-            } else {
-                // إضافة صف لكل طالب
-                appData.students.forEach((student, index) => {
-                    const row = document.createElement('tr');
-                    row.style.backgroundColor = index % 2 === 0 ? '#fff' : '#f9f9f9';
-                    
-                    // 1. اسم الطالب
-                    const nameCell = document.createElement('td');
-                    nameCell.textContent = student;
-                    nameCell.style.padding = '10px 8px';
-                    nameCell.style.border = '1px solid #ddd';
-                    nameCell.style.textAlign = 'right';
-                    
-                    // 2. الحضور
-                    const attendanceCell = document.createElement('td');
-                    const attendance = appData.attendance[date]?.[student] || "غائب";
-                    attendanceCell.textContent = attendance;
-                    attendanceCell.style.padding = '10px 8px';
-                    attendanceCell.style.border = '1px solid #ddd';
-                    attendanceCell.style.textAlign = 'center';
-                    
-                    // تلوين خلية الحضور
-                    switch(attendance) {
-                        case "حاضر":
-                            attendanceCell.style.backgroundColor = '#E8F5E9';
-                            attendanceCell.style.color = '#2E7D32';
-                            attendanceCell.style.fontWeight = 'bold';
-                            break;
-                        case "مستأذن":
-                            attendanceCell.style.backgroundColor = '#FFF3E0';
-                            attendanceCell.style.color = '#EF6C00';
-                            attendanceCell.style.fontWeight = 'bold';
-                            break;
-                        case "غائب":
-                            attendanceCell.style.backgroundColor = '#FFEBEE';
-                            attendanceCell.style.color = '#C62828';
-                            attendanceCell.style.fontWeight = 'bold';
-                            break;
-                    }
-                    
-                    // 3. الحفظ
-                    const saveCell = document.createElement('td');
-                    // 4. المراجعة
-                    const reviewCell = document.createElement('td');
-                    
-                    // الحصول على حالة التسميع للطالب
-                    const tarteebStatus = appData.tarteeb[date]?.completedStatus?.[student];
-                    
-                    if (tarteebStatus) {
-                        switch(tarteebStatus) {
-                            case "حفظ":
-                                saveCell.textContent = 'أتم';
-                                saveCell.style.backgroundColor = '#E8D0B3';
-                                saveCell.style.color = '#333';
-                                saveCell.style.fontWeight = 'bold';
-                                reviewCell.textContent = 'لم يتم';
-                                reviewCell.style.color = '#C62828';
-                                break;
-                            case "مراجعة":
-                                saveCell.textContent = 'لم يتم';
-                                saveCell.style.color = '#C62828';
-                                reviewCell.textContent = 'أتم';
-                                reviewCell.style.backgroundColor = '#FFD8A6';
-                                reviewCell.style.color = '#333';
-                                reviewCell.style.fontWeight = 'bold';
-                                break;
-                            case "حفظ ومراجعة":
-                                saveCell.textContent = 'أتم';
-                                saveCell.style.backgroundColor = '#A65E00';
-                                saveCell.style.color = 'white';
-                                saveCell.style.fontWeight = 'bold';
-                                reviewCell.textContent = 'أتم';
-                                reviewCell.style.backgroundColor = '#A65E00';
-                                reviewCell.style.color = 'white';
-                                reviewCell.style.fontWeight = 'bold';
-                                break;
-                            default:
-                                saveCell.textContent = 'لم يتم';
-                                saveCell.style.color = '#C62828';
-                                reviewCell.textContent = 'لم يتم';
-                                reviewCell.style.color = '#C62828';
-                        }
-                    } else {
-                        saveCell.textContent = 'لم يتم';
-                        saveCell.style.color = '#C62828';
-                        reviewCell.textContent = 'لم يتم';
-                        reviewCell.style.color = '#C62828';
-                    }
-                    
-                    // تنسيق خلايا الحفظ والمراجعة
-                    [saveCell, reviewCell].forEach(cell => {
-                        cell.style.padding = '10px 8px';
-                        cell.style.border = '1px solid #ddd';
-                        cell.style.textAlign = 'center';
-                    });
-                    
-                    row.appendChild(nameCell);
-                    row.appendChild(attendanceCell);
-                    row.appendChild(saveCell);
-                    row.appendChild(reviewCell);
-                    tbody.appendChild(row);
-                });
-            }
-            
-            table.appendChild(tbody);
-            pdfContent.appendChild(table);
-            
-            // إضافة مساحة فارغة قبل الفوتر
-            const spacer = document.createElement('div');
-            spacer.style.height = '150px';
-            pdfContent.appendChild(spacer);
-        }
-
-        // دالة إنشاء محتوى التقرير الأسبوعي
-        function createWeeklyPdfContent(year, month, weekNumber) {
-            const pdfContent = document.getElementById('pdfContent');
-            pdfContent.innerHTML = '';
-            
-            // عنوان التقرير
-            const monthNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-                              "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
-            
-            const title = document.createElement('h3');
-            title.textContent = `الحصاد الأسبوعي ${getWeekName(weekNumber)} - شهر ${monthNames[parseInt(month)-1]} ${year}`;
-            title.style.textAlign = 'center';
-            title.style.color = '#A65E00';
-            title.style.marginBottom = '20px';
-            title.style.fontSize = '22px';
-            pdfContent.appendChild(title);
-            
-            // الحصول على تواريخ الأسبوع
-            const weekDates = getWeekDatesByMonth(parseInt(year), parseInt(month), parseInt(weekNumber));
-            
-            if (weekDates.length === 0) {
-                const message = document.createElement('p');
-                message.textContent = 'لا توجد بيانات لهذا الأسبوع';
-                message.style.textAlign = 'center';
-                message.style.padding = '30px';
-                message.style.color = '#777';
-                pdfContent.appendChild(message);
-                return;
-            }
-            
-            // جمع البيانات لكل طالب
-            const studentStats = {};
-            const maxDays = 5;
-            
-            // تهيئة الإحصائيات لكل طالب
-            appData.students.forEach(student => {
-                studentStats[student] = {
-                    name: student,
-                    attendanceScore: 0,
-                    presentCount: 0,
-                    excusedCount: 0,
-                    saveSessions: 0,
-                    reviewSessions: 0
-                };
+            document.getElementById('saveHijriBtn').addEventListener('click', saveHijriDate);
+            document.getElementById('cancelHijriBtn').addEventListener('click', () => {
+                document.getElementById('hijriDateInputContainer').classList.remove('show');
             });
             
-            // جمع البيانات لكل يوم في الأسبوع
-            weekDates.forEach(date => {
-                // بيانات الحضور
-                if (appData.attendance[date]) {
-                    Object.entries(appData.attendance[date]).forEach(([student, status]) => {
-                        if (studentStats[student]) {
-                            if (status === "حاضر") {
-                                studentStats[student].attendanceScore += 1;
-                                studentStats[student].presentCount += 1;
-                            } else if (status === "مستأذن") {
-                                studentStats[student].attendanceScore += 0.5;
-                                studentStats[student].excusedCount += 1;
-                            }
-                        }
-                    });
-                }
-                
-                // بيانات التسميع
-                if (appData.tarteeb[date] && appData.tarteeb[date].completedStatus) {
-                    Object.entries(appData.tarteeb[date].completedStatus).forEach(([student, type]) => {
-                        if (studentStats[student]) {
-                            if (type === "حفظ" || type === "حفظ ومراجعة") {
-                                studentStats[student].saveSessions++;
-                            }
-                            if (type === "مراجعة" || type === "حفظ ومراجعة") {
-                                studentStats[student].reviewSessions++;
-                            }
-                        }
-                    });
-                }
+            // التاريخ الهجري في صفحة ترتيب التسميع
+            document.getElementById('tarteebHijriDate').addEventListener('click', () => {
+                document.getElementById('tarteebHijriYear').value = currentTarteebDate.year;
+                document.getElementById('tarteebHijriMonth').value = currentTarteebDate.month;
+                document.getElementById('tarteebHijriDay').value = currentTarteebDate.day;
+                document.getElementById('tarteebHijriDateSelector').classList.add('show');
             });
             
-            // إنشاء الجدول الأسبوعي
-            const table = document.createElement('table');
-            table.style.width = '100%';
-            table.style.borderCollapse = 'collapse';
-            table.style.margin = '20px 0';
-            table.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
-            
-            // رأس الجدول
-            const thead = document.createElement('thead');
-            const headerRow = document.createElement('tr');
-            const headers = ['اسم الطالب', 'الحضور', 'الحفظ', 'المراجعة', 'الإجمالي'];
-            
-            headers.forEach(headerText => {
-                const th = document.createElement('th');
-                th.textContent = headerText;
-                th.style.backgroundColor = '#A65E00';
-                th.style.color = 'white';
-                th.style.padding = '12px 8px';
-                th.style.textAlign = 'center';
-                th.style.border = '1px solid #8a4f00';
-                headerRow.appendChild(th);
+            document.getElementById('tarteebSaveHijriBtn').addEventListener('click', saveTarteebHijriDate);
+            document.getElementById('tarteebCancelHijriBtn').addEventListener('click', () => {
+                document.getElementById('tarteebHijriDateSelector').classList.remove('show');
             });
             
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
-            
-            // جسم الجدول
-            const tbody = document.createElement('tbody');
-            
-            // حساب الإجماليات
-            let totalAttendanceSum = 0;
-            let totalSaveSum = 0;
-            let totalReviewSum = 0;
-            let totalOverallSum = 0;
-            
-            appData.students.forEach((student, index) => {
-                const stats = studentStats[student];
-                const row = document.createElement('tr');
-                row.style.backgroundColor = index % 2 === 0 ? '#fff' : '#f9f9f9';
-                
-                // 1. اسم الطالب
-                const nameCell = document.createElement('td');
-                nameCell.textContent = student;
-                nameCell.style.padding = '10px 8px';
-                nameCell.style.border = '1px solid #ddd';
-                nameCell.style.textAlign = 'right';
-                nameCell.style.fontWeight = 'bold';
-                
-                // 2. الحضور - بدون نسبة مئوية
-                const attendanceCell = document.createElement('td');
-                const attendanceScore = stats.attendanceScore;
-                attendanceCell.textContent = `${attendanceScore}/${maxDays}`;
-                attendanceCell.style.padding = '10px 8px';
-                attendanceCell.style.border = '1px solid #ddd';
-                attendanceCell.style.textAlign = 'center';
-                attendanceCell.style.fontWeight = 'bold';
-                attendanceCell.style.color = '#A65E00';
-                
-                // 3. الحفظ - بدون نسبة مئوية
-                const saveCell = document.createElement('td');
-                saveCell.textContent = `${stats.saveSessions}/${maxDays}`;
-                saveCell.style.padding = '10px 8px';
-                saveCell.style.border = '1px solid #ddd';
-                saveCell.style.textAlign = 'center';
-                saveCell.style.fontWeight = 'bold';
-                saveCell.style.color = '#A65E00';
-                
-                // 4. المراجعة - بدون نسبة مئوية
-                const reviewCell = document.createElement('td');
-                reviewCell.textContent = `${stats.reviewSessions}/${maxDays}`;
-                reviewCell.style.padding = '10px 8px';
-                reviewCell.style.border = '1px solid #ddd';
-                reviewCell.style.textAlign = 'center';
-                reviewCell.style.fontWeight = 'bold';
-                reviewCell.style.color = '#A65E00';
-                
-                // 5. الإجمالي
-                const totalCell = document.createElement('td');
-                const attendanceRate = (stats.attendanceScore / maxDays) * 100;
-                const saveRate = (stats.saveSessions / maxDays) * 100;
-                const reviewRate = (stats.reviewSessions / maxDays) * 100;
-                const totalRate = (attendanceRate * (1/3)) + (saveRate * (1/3)) + (reviewRate * (1/3));
-                const roundedTotal = Math.round(totalRate);
-                
-                totalCell.innerHTML = `
-                    <div style="text-align: center;">
-                        <div style="font-weight: bold; color: #A65E00; font-size: 18px;">${roundedTotal}%</div>
-                        <div class="progress-bar" style="height: 10px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 5px;">
-                            <div class="progress-fill" style="height: 100%; background-color: #A65E00; border-radius: 5px; width: ${roundedTotal}%"></div>
-                        </div>
-                    </div>
-                `;
-                totalCell.style.padding = '10px 8px';
-                totalCell.style.border = '1px solid #ddd';
-                totalCell.style.textAlign = 'center';
-                
-                // جمع الإجماليات
-                totalAttendanceSum += attendanceRate;
-                totalSaveSum += saveRate;
-                totalReviewSum += reviewRate;
-                totalOverallSum += totalRate;
-                
-                row.appendChild(nameCell);
-                row.appendChild(attendanceCell);
-                row.appendChild(saveCell);
-                row.appendChild(reviewCell);
-                row.appendChild(totalCell);
-                tbody.appendChild(row);
+            // التاريخ الهجري في صفحة الحضور
+            document.getElementById('attendanceHijriDate').addEventListener('click', () => {
+                document.getElementById('attendanceHijriYear').value = currentAttendanceDate.year;
+                document.getElementById('attendanceHijriMonth').value = currentAttendanceDate.month;
+                document.getElementById('attendanceHijriDay').value = currentAttendanceDate.day;
+                document.getElementById('attendanceHijriDateSelector').classList.add('show');
             });
             
-            table.appendChild(tbody);
+            document.getElementById('attendanceSaveHijriBtn').addEventListener('click', saveAttendanceHijriDate);
+            document.getElementById('attendanceCancelHijriBtn').addEventListener('click', () => {
+                document.getElementById('attendanceHijriDateSelector').classList.remove('show');
+            });
             
-            // إضافة الإحصائيات الإجمالية
-            if (appData.students.length > 0) {
-                const totalStudents = appData.students.length;
-                const footerRow = document.createElement('tr');
-                footerRow.style.backgroundColor = 'rgba(166, 94, 0, 0.1)';
-                footerRow.style.fontWeight = 'bold';
-                
-                const footerTitle = document.createElement('td');
-                footerTitle.textContent = 'متوسط الفصل';
-                footerTitle.style.padding = '12px 8px';
-                footerTitle.style.border = '2px solid #A65E00';
-                footerTitle.style.textAlign = 'right';
-                footerTitle.style.color = '#A65E00';
-                
-                const footerAttendance = document.createElement('td');
-                footerAttendance.textContent = Math.round(totalAttendanceSum / totalStudents) + '%';
-                footerAttendance.style.padding = '12px 8px';
-                footerAttendance.style.border = '2px solid #A65E00';
-                footerAttendance.style.textAlign = 'center';
-                footerAttendance.style.color = '#A65E00';
-                
-                const footerSave = document.createElement('td');
-                footerSave.textContent = Math.round(totalSaveSum / totalStudents) + '%';
-                footerSave.style.padding = '12px 8px';
-                footerSave.style.border = '2px solid #A65E00';
-                footerSave.style.textAlign = 'center';
-                footerSave.style.color = '#A65E00';
-                
-                const footerReview = document.createElement('td');
-                footerReview.textContent = Math.round(totalReviewSum / totalStudents) + '%';
-                footerReview.style.padding = '12px 8px';
-                footerReview.style.border = '2px solid #A65E00';
-                footerReview.style.textAlign = 'center';
-                footerReview.style.color = '#A65E00';
-                
-                const footerTotal = document.createElement('td');
-                footerTotal.textContent = Math.round(totalOverallSum / totalStudents) + '%';
-                footerTotal.style.padding = '12px 8px';
-                footerTotal.style.border = '2px solid #A65E00';
-                footerTotal.style.textAlign = 'center';
-                footerTotal.style.color = '#A65E00';
-                footerTotal.style.fontSize = '18px';
-                
-                footerRow.appendChild(footerTitle);
-                footerRow.appendChild(footerAttendance);
-                footerRow.appendChild(footerSave);
-                footerRow.appendChild(footerReview);
-                footerRow.appendChild(footerTotal);
-                tbody.appendChild(footerRow);
-            }
+            // التاريخ الهجري في صفحة الحصاد
+            document.getElementById('harvestHijriDate').addEventListener('click', () => {
+                document.getElementById('harvestHijriYear').value = currentHarvestDate.year;
+                document.getElementById('harvestHijriMonth').value = currentHarvestDate.month;
+                document.getElementById('harvestHijriDay').value = currentHarvestDate.day;
+                document.getElementById('harvestHijriDateSelector').classList.add('show');
+            });
             
-            pdfContent.appendChild(table);
+            document.getElementById('harvestSaveHijriBtn').addEventListener('click', saveHarvestHijriDate);
+            document.getElementById('harvestCancelHijriBtn').addEventListener('click', () => {
+                document.getElementById('harvestHijriDateSelector').classList.remove('show');
+            });
             
-            // إضافة المعادلة المئوية
-            const equationDiv = document.createElement('div');
-            equationDiv.style.textAlign = 'center';
-            equationDiv.style.marginTop = '30px';
-            equationDiv.style.padding = '15px';
-            equationDiv.style.backgroundColor = '#f8f8f8';
-            equationDiv.style.borderRadius = '8px';
-            equationDiv.style.border = '1px solid #e0e0e0';
+            // التنقل بين الأيام
+            document.getElementById('prevDayBtn').addEventListener('click', () => {
+                currentTarteebDate = subtractHijriDay(currentTarteebDate);
+                updateCurrentDatesDisplay();
+                renderTarteebPage();
+            });
             
-            const equationText = document.createElement('p');
-            equationText.innerHTML = '<strong style="color: #666666;">طريقة حساب النسبة:</strong> (الحضور × ⅓) + (الحفظ × ⅓) + (المراجعة × ⅓) = الإجمالي';
-            equationText.style.color = '#666666';
-            equationText.style.margin = '0';
-            equationText.style.fontSize = '14px';
+            document.getElementById('nextDayBtn').addEventListener('click', () => {
+                currentTarteebDate = addHijriDay(currentTarteebDate);
+                updateCurrentDatesDisplay();
+                renderTarteebPage();
+            });
             
-            equationDiv.appendChild(equationText);
-            pdfContent.appendChild(equationDiv);
-            
-            // إضافة مساحة فارغة قبل الفوتر
-            const spacer = document.createElement('div');
-            spacer.style.height = '150px';
-            pdfContent.appendChild(spacer);
-        }
-
-        // دالة تصدير إلى PDF
-        async function exportToPdf(type, date) {
-            const element = document.getElementById('pdfReport');
-            
-            // حفظ النمط الأصلي
-            const originalDisplay = element.style.display;
-            const originalPosition = element.style.position;
-            const originalTop = element.style.top;
-            const originalLeft = element.style.left;
-            const originalWidth = element.style.width;
-            const originalHeight = element.style.height;
-            const originalZIndex = element.style.zIndex;
-            const originalOpacity = element.style.opacity;
-            const originalPointerEvents = element.style.pointerEvents;
-            
-            // إعداد التقرير للتصدير
-            element.style.display = 'block';
-            element.style.position = 'absolute';
-            element.style.top = '0';
-            element.style.left = '0';
-            element.style.width = '800px';
-            element.style.height = 'auto';
-            element.style.zIndex = '9999';
-            element.style.opacity = '1';
-            element.style.pointerEvents = 'none';
-            
-            try {
-                // استخدام html2canvas لالتقاط صورة للعنصر بجودة عالية
-                const canvas = await html2canvas(element, {
-                    scale: 3, // زيادة الجودة إلى 3x
-                    useCORS: true,
-                    backgroundColor: '#ffffff',
-                    logging: false,
-                    allowTaint: true,
-                    removeContainer: true
-                });
-                
-                // إعادة العنصر إلى حالته الأصلية
-                element.style.display = originalDisplay;
-                element.style.position = originalPosition;
-                element.style.top = originalTop;
-                element.style.left = originalLeft;
-                element.style.width = originalWidth;
-                element.style.height = originalHeight;
-                element.style.zIndex = originalZIndex;
-                element.style.opacity = originalOpacity;
-                element.style.pointerEvents = originalPointerEvents;
-                
-                // إنشاء PDF
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const imgWidth = 190; // عرض الصفحة مع هوامش
-                const pageHeight = 280; // ارتفاع الصفحة مع هوامش
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-                
-                // حساب الموضع لتوسيط الصورة
-                const positionX = (210 - imgWidth) / 2; // توسيط أفقي
-                const positionY = 10; // بداية من أعلى الصفحة
-                
-                // إضافة الصورة الأولى
-                pdf.addImage(canvas.toDataURL('image/jpeg', 1.0), 'JPEG', positionX, positionY, imgWidth, imgHeight);
-                
-                // حفظ الملف
-                const today = new Date().toISOString().slice(0, 10);
-                const fileName = `تقرير_الحصاد_${type}_${date.replace(/[/\\?%*:|"<>]/g, '-')}_${today}.pdf`;
-                pdf.save(fileName);
-                
-            } catch (error) {
-                console.error('خطأ في إنشاء PDF:', error);
-                alert('حدث خطأ أثناء إنشاء ملف PDF. الرجاء المحاولة مرة أخرى.');
-                // إعادة العنصر إلى حالته الأصلية في حالة الخطأ
-                element.style.display = originalDisplay;
-                element.style.position = originalPosition;
-                element.style.top = originalTop;
-                element.style.left = originalLeft;
-                element.style.width = originalWidth;
-                element.style.height = originalHeight;
-                element.style.zIndex = originalZIndex;
-                element.style.opacity = originalOpacity;
-                element.style.pointerEvents = originalPointerEvents;
-            }
-        }
-
-        // إعداد معالجي الأحداث
-        function setupEventListeners() {
-            // التنقل بين الصفحات
-            settingsBtn.addEventListener('click', () => showPage('settings'));
-            backBtn.addEventListener('click', () => showPage('home'));
-            tarteebBtn.addEventListener('click', () => showPage('tarteeb'));
-            attendanceBtn.addEventListener('click', () => showPage('attendance'));
-            studentsBtn.addEventListener('click', () => showPage('students'));
-            harvestBtn.addEventListener('click', () => showPage('harvest'));
-            
-            // إعدادات
-            saveSettingsBtn.addEventListener('click', saveSettings);
-            
-            // إدارة الطلاب
-            addStudentBtn.addEventListener('click', addStudent);
-            
-            // تغيير التاريخ
-            document.getElementById('attendanceDate').addEventListener('change', () => {
+            document.getElementById('prevAttendanceDayBtn').addEventListener('click', () => {
+                currentAttendanceDate = subtractHijriDay(currentAttendanceDate);
+                updateCurrentDatesDisplay();
                 renderAttendancePage();
             });
-            document.getElementById('tarteebDate').addEventListener('change', renderTarteebPage);
-            document.getElementById('harvestDate').addEventListener('change', generateHarvestReport);
+            
+            document.getElementById('nextAttendanceDayBtn').addEventListener('click', () => {
+                currentAttendanceDate = addHijriDay(currentAttendanceDate);
+                updateCurrentDatesDisplay();
+                renderAttendancePage();
+            });
+            
+            document.getElementById('prevHarvestDayBtn').addEventListener('click', () => {
+                currentHarvestDate = subtractHijriDay(currentHarvestDate);
+                updateCurrentDatesDisplay();
+                generateHarvestReport();
+            });
+            
+            document.getElementById('nextHarvestDayBtn').addEventListener('click', () => {
+                currentHarvestDate = addHijriDay(currentHarvestDate);
+                updateCurrentDatesDisplay();
+                generateHarvestReport();
+            });
+            
+            // تحديث التقرير الأسبوعي
+            document.getElementById('hijriMonthSelect').addEventListener('change', generateWeeklyReport);
+            document.getElementById('hijriYearSelect').addEventListener('change', generateWeeklyReport);
+        }
+
+        // ============================================
+        // إعداد معالجي الأحداث الرئيسية
+        // ============================================
+
+        function setupEventListeners() {
+            // التنقل بين الصفحات
+            document.getElementById('settingsBtn').addEventListener('click', () => showPage('settings'));
+            document.getElementById('backBtn').addEventListener('click', () => showPage('home'));
+            document.getElementById('tarteebBtn').addEventListener('click', () => showPage('tarteeb'));
+            document.getElementById('attendanceBtn').addEventListener('click', () => showPage('attendance'));
+            document.getElementById('studentsBtn').addEventListener('click', () => showPage('students'));
+            document.getElementById('harvestBtn').addEventListener('click', () => showPage('harvest'));
+            
+            // إعدادات
+            document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
+            
+            // إدارة الطلاب
+            document.getElementById('addStudentBtn').addEventListener('click', addStudent);
             
             // أحداث التبويبات
             document.getElementById('dailyTab').addEventListener('click', () => switchHarvestTab('daily'));
             document.getElementById('weeklyTab').addEventListener('click', () => switchHarvestTab('weekly'));
-            
-            // أحداث الحصاد الأسبوعي
-            document.getElementById('harvestMonth').addEventListener('change', () => {
-                updateWeekOptions();
-                if (document.getElementById('weeklyTab').classList.contains('active')) {
-                    generateWeeklyReport();
-                }
-            });
-            document.getElementById('weekNumber').addEventListener('change', generateWeeklyReport);
             
             // إضافة الطالب بالضغط على Enter
             document.getElementById('newStudent').addEventListener('keypress', (e) => {
@@ -3342,9 +3234,685 @@
                 }
             });
             
-            // أحداث تصدير PDF
+            // دوال تصدير PDF (من الملف الأصلي)
             document.getElementById('exportDailyPdfBtn').addEventListener('click', generateDailyPdf);
             document.getElementById('exportWeeklyPdfBtn').addEventListener('click', generateWeeklyPdf);
+        }
+
+        // ============================================
+        // دوال تصدير PDF المعدلة
+        // ============================================
+
+        // دالة تحميل المكتبات ديناميكياً
+        function loadPdfLibraries() {
+            return new Promise((resolve) => {
+                if (window.jspdf && window.html2canvas) {
+                    resolve(true);
+                    return;
+                }
+                
+                const jspdfScript = document.createElement('script');
+                jspdfScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+                jspdfScript.onload = () => {
+                    const html2canvasScript = document.createElement('script');
+                    html2canvasScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                    html2canvasScript.onload = () => resolve(true);
+                    html2canvasScript.onerror = () => resolve(false);
+                    document.head.appendChild(html2canvasScript);
+                };
+                jspdfScript.onerror = () => resolve(false);
+                document.head.appendChild(jspdfScript);
+            });
+        }
+
+        // ============================================
+        // دوال مساعدة لتصدير PDF متعدد الصفحات
+        // ============================================
+
+        // دالة إنشاء صفحة غلاف للتقرير
+        function createCoverPage(title, date, halqaName, teacherName, hijriDate) {
+            const cover = document.createElement('div');
+            cover.style.cssText = `
+                width: 800px;
+                height: 1120px;
+                direction: rtl;
+                font-family: 'Amiri';
+                padding: 40px;
+                background: #ffffff;
+                box-sizing: border-box;
+            `;
+            
+            cover.innerHTML = `
+                <div style="text-align: center; margin-top: 100px; padding-bottom: 20px;">
+                    <div style="background-color: #A65E00; color: white; padding: 30px; border-radius: 15px; margin-bottom: 40px;">
+                        <h1 style="margin: 0; font-size: 36px; color: white;">الحلقة القرآنية</h1>
+                        <h2 style="margin: 15px 0 0 0; font-size: 28px; color: #FFD8A6;">${title}</h2>
+                    </div>
+                    
+                    <div style="margin: 60px 0;">
+                        <div style="margin: 30px 0;">
+                            <h3 style="color: #A65E00; margin-bottom: 10px; font-size: 24px;">اسم الحلقة</h3>
+                            <p style="background: #ffffff; border: 3px solid #F0C090; padding: 15px; border-radius: 10px; font-size: 22px; margin: 0 auto; max-width: 400px;">${halqaName}</p>
+                        </div>
+                        
+                        <div style="margin: 30px 0;">
+                            <h3 style="color: #A65E00; margin-bottom: 10px; font-size: 24px;">اسم المعلم</h3>
+                            <p style="background: #ffffff; border: 3px solid #F0C090; padding: 15px; border-radius: 10px; font-size: 22px; margin: 0 auto; max-width: 400px;">${teacherName}</p>
+                        </div>
+                        
+                        <div style="margin: 30px 0;">
+                            <h3 style="color: #A65E00; margin-bottom: 10px; font-size: 24px;">التاريخ الهجري</h3>
+                            <p style="background: #ffffff; border: 3px solid #F0C090; padding: 15px; border-radius: 10px; font-size: 22px; margin: 0 auto; max-width: 400px;">${hijriDate}</p>
+                        </div>
+                    </div>
+                    
+                </div>
+            `;
+            
+            return cover;
+        }
+
+        // دالة إنشاء صفحة للطلاب (اليومي)
+        function createDailyStudentPage(students, startNum, endNum, dateKey, formattedDate) {
+            const page = document.createElement('div');
+            page.style.cssText = `
+                width: 800px;
+                height: 1120px;
+                direction: rtl;
+                font-family: 'Amiri';
+                padding: 40px;
+                background: #ffffff;
+                box-sizing: border-box;
+            `;
+            
+            let tableRows = '';
+            
+            students.forEach((student, index) => {
+                const globalIndex = startNum + index - 1;
+                const attendance = appData.attendance[dateKey]?.[student] || "غائب";
+                const tarteebStatus = appData.tarteeb[dateKey]?.completedStatus?.[student];
+                
+                let attendanceColor = '#C62828';
+                if (attendance === "حاضر") attendanceColor = '#2E7D32';
+                if (attendance === "مستأذن") attendanceColor = '#EF6C00';
+                
+                let saveStatus = 'لم يتم';
+                let saveColor = '#C62828';
+                let reviewStatus = 'لم يتم';
+                let reviewColor = '#C62828';
+                
+                if (tarteebStatus === "حفظ" || tarteebStatus === "حفظ ومراجعة") {
+                    saveStatus = 'أتم';
+                    saveColor = '#A65E00';
+                }
+                if (tarteebStatus === "مراجعة" || tarteebStatus === "حفظ ومراجعة") {
+                    reviewStatus = 'أتم';
+                    reviewColor = '#A65E00';
+                }
+                
+                tableRows += `
+                    <tr style="background-color: ${globalIndex % 2 === 0 ? '#fff' : '#f9f9f9'}">
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: right; font-size: 18px;">${student}</td>
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: ${attendanceColor}; font-size: 18px;">${attendance}</td>
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: ${saveColor}; font-size: 18px;">${saveStatus}</td>
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: ${reviewColor}; font-size: 18px;">${reviewStatus}</td>
+                    </tr>
+                `;
+            });
+            
+            const currentPage = Math.ceil(startNum / 10) + 1; // +1 للغلاف
+            const totalPages = Math.ceil(appData.students.length / 10) + 2; // +2 للغلاف والإحصائيات
+            
+            page.innerHTML = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h1 style="color: #A65E00; margin: 0 0 10px 0; font-size: 28px;">الحصاد اليومي</h1>
+                    <h2 style="color: #8a4f00; margin: 0; font-size: 24px;">${formattedDate}</h2>
+                    <p style="color: #666; margin-top: 10px; font-size: 18px;">الطلاب ${startNum} إلى ${endNum} من ${appData.students.length}</p>
+                </div>
+                
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 2px solid #A65E00;">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">اسم الطالب</th>
+                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">الحضور</th>
+                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">الحفظ</th>
+                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">المراجعة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+                
+            `;
+            
+            return page;
+        }
+
+        // دالة إنشاء صفحة الإحصائيات اليومية
+        function createDailyStatsPage(students, dateKey, formattedDate) {
+            const page = document.createElement('div');
+            page.style.cssText = `
+                width: 800px;
+                height: 1120px;
+                direction: rtl;
+                font-family: 'Amiri';
+                padding: 40px;
+                background: #ffffff;
+                box-sizing: border-box;
+            `;
+            
+            let presentCount = 0;
+            let excusedCount = 0;
+            let absentCount = 0;
+            let saveDoneCount = 0;
+            let reviewDoneCount = 0;
+            let bothDoneCount = 0;
+            
+            students.forEach(student => {
+                const attendance = appData.attendance[dateKey]?.[student] || "غائب";
+                const tarteebStatus = appData.tarteeb[dateKey]?.completedStatus?.[student];
+                
+                if (attendance === "حاضر") presentCount++;
+                else if (attendance === "مستأذن") excusedCount++;
+                else absentCount++;
+                
+                if (tarteebStatus === "حفظ") saveDoneCount++;
+                else if (tarteebStatus === "مراجعة") reviewDoneCount++;
+                else if (tarteebStatus === "حفظ ومراجعة") bothDoneCount++;
+            });
+            
+            const totalStudents = students.length;
+            const presentPercent = totalStudents > 0 ? Math.round((presentCount / totalStudents) * 100) : 0;
+            const excusedPercent = totalStudents > 0 ? Math.round((excusedCount / totalStudents) * 100) : 0;
+            const absentPercent = totalStudents > 0 ? Math.round((absentCount / totalStudents) * 100) : 0;
+            
+            const savePercent = totalStudents > 0 ? Math.round(((saveDoneCount + bothDoneCount) / totalStudents) * 100) : 0;
+            const reviewPercent = totalStudents > 0 ? Math.round(((reviewDoneCount + bothDoneCount) / totalStudents) * 100) : 0;
+            
+            const totalPages = Math.ceil(appData.students.length / 10) + 2;
+            
+            page.innerHTML = `
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h1 style="color: #A65E00; margin: 0 0 10px 0; font-size: 28px;">الإحصائيات الإجمالية</h1>
+                    <h2 style="color: #8a4f00; margin: 0; font-size: 24px;">${formattedDate}</h2>
+                </div>
+                
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin: 40px 0;">
+                    <div style="flex: 1; min-width: 300px; background-color: rgba(166, 94, 0, 0.1); padding: 20px; border-radius: 15px; border: 2px solid #A65E00;">
+                        <h3 style="color: #A65E00; text-align: center; margin: 0 0 20px 0; font-size: 22px;">إحصائيات الحضور</h3>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="font-weight: bold; font-size: 18px;">الحاضرون:</span>
+                                <span style="font-weight: bold; color: #2E7D32; font-size: 18px;">${presentCount} طالب (${presentPercent}%)</span>
+                            </div>
+                            <div style="height: 20px; background-color: #e0e0e0; border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; background-color: #2E7D32; border-radius: 10px; width: ${presentPercent}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="font-weight: bold; font-size: 18px;">المستأذنون:</span>
+                                <span style="font-weight: bold; color: #EF6C00; font-size: 18px;">${excusedCount} طالب (${excusedPercent}%)</span>
+                            </div>
+                            <div style="height: 20px; background-color: #e0e0e0; border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; background-color: #EF6C00; border-radius: 10px; width: ${excusedPercent}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="font-weight: bold; font-size: 18px;">الغائبون:</span>
+                                <span style="font-weight: bold; color: #C62828; font-size: 18px;">${absentCount} طالب (${absentPercent}%)</span>
+                            </div>
+                            <div style="height: 20px; background-color: #e0e0e0; border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; background-color: #C62828; border-radius: 10px; width: ${absentPercent}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="flex: 1; min-width: 300px; background-color: rgba(166, 94, 0, 0.1); padding: 20px; border-radius: 15px; border: 2px solid #A65E00;">
+                        <h3 style="color: #A65E00; text-align: center; margin: 0 0 20px 0; font-size: 22px;">إحصائيات التسميع</h3>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="font-weight: bold; font-size: 18px;">الحفظ:</span>
+                                <span style="font-weight: bold; color: #A65E00; font-size: 18px;">${saveDoneCount + bothDoneCount} طالب (${savePercent}%)</span>
+                            </div>
+                            <div style="height: 20px; background-color: #e0e0e0; border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; background-color: #A65E00; border-radius: 10px; width: ${savePercent}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="font-weight: bold; font-size: 18px;">المراجعة:</span>
+                                <span style="font-weight: bold; color: #A65E00; font-size: 18px;">${reviewDoneCount + bothDoneCount} طالب (${reviewPercent}%)</span>
+                            </div>
+                            <div style="height: 20px; background-color: #e0e0e0; border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; background-color: #A65E00; border-radius: 10px; width: ${reviewPercent}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 15px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="font-weight: bold; font-size: 18px;">الحفظ والمراجعة:</span>
+                                <span style="font-weight: bold; color: #A65E00; font-size: 18px;">${bothDoneCount} طالب</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 40px; text-align: center;">
+                    <div style="background-color: rgba(166, 94, 0, 0.1); padding: 20px; border-radius: 15px; border: 2px solid #A65E00;">
+                        <h3 style="color: #A65E00; margin: 0 0 15px 0; font-size: 22px;">ملخص الحصاد اليومي</h3>
+                        <p style="font-size: 18px; margin: 10px 0;"><strong>إجمالي عدد الطلاب:</strong> <span style="color: #A65E00; font-weight: bold;">${totalStudents} طالب</span></p>
+                        <p style="font-size: 18px; margin: 10px 0;"><strong>نسبة الحضور:</strong> <span style="color: #A65E00; font-weight: bold;">${presentPercent}%</span></p>
+                        <p style="font-size: 18px; margin: 10px 0;"><strong>نسبة إتمام الحفظ:</strong> <span style="color: #A65E00; font-weight: bold;">${savePercent}%</span></p>
+                        <p style="font-size: 18px; margin: 10px 0;"><strong>نسبة إتمام المراجعة:</strong> <span style="color: #A65E00; font-weight: bold;">${reviewPercent}%</span></p>
+                    </div>
+                </div>
+                
+            `;
+            
+            return page;
+        }
+
+        // دالة إنشاء صفحة للطلاب (الأسبوعي/الشهري)
+        function createWeeklyStudentPage(students, startNum, endNum, studentStats, daysInMonth, monthName, year) {
+            const page = document.createElement('div');
+            page.style.cssText = `
+                width: 800px;
+                height: 1120px;
+                direction: rtl;
+                font-family: 'Amiri';
+                padding: 40px;
+                background: #ffffff;
+                box-sizing: border-box;
+            `;
+            
+            let tableRows = '';
+            
+            students.forEach((student, index) => {
+                const globalIndex = startNum + index - 1;
+                const stats = studentStats[student];
+                const attendanceRate = (stats.attendanceScore / daysInMonth) * 100;
+                const saveRate = (stats.saveSessions / daysInMonth) * 100;
+                const reviewRate = (stats.reviewSessions / daysInMonth) * 100;
+                const totalRate = (attendanceRate * (1/3)) + (saveRate * (1/3)) + (reviewRate * (1/3));
+                const roundedTotal = Math.round(totalRate);
+                
+                tableRows += `
+                    <tr style="background-color: ${globalIndex % 2 === 0 ? '#fff' : '#f9f9f9'}">
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: right; font-size: 18px; font-weight: bold;">${student}</td>
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #A65E00; font-size: 18px;">${stats.attendanceScore}/${daysInMonth}</td>
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #A65E00; font-size: 18px;">${stats.saveSessions}/${daysInMonth}</td>
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #A65E00; font-size: 18px;">${stats.reviewSessions}/${daysInMonth}</td>
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center;">
+                            <div style="text-align: center;">
+                                <div style="font-weight: bold; color: #A65E00; font-size: 18px;">${roundedTotal}%</div>
+                                <div style="height: 10px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 5px;">
+                                    <div style="height: 100%; background-color: #A65E00; border-radius: 5px; width: ${roundedTotal}%"></div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            const currentPage = Math.ceil(startNum / 10) + 1; // +1 للغلاف
+            const totalPages = Math.ceil(appData.students.length / 10) + 2; // +2 للغلاف والإحصائيات
+            
+            page.innerHTML = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h1 style="color: #A65E00; margin: 0 0 10px 0; font-size: 28px;">الحصاد الشهري</h1>
+                    <h2 style="color: #8a4f00; margin: 0; font-size: 24px;">${monthName} ${year} هـ</h2>
+                    <p style="color: #666; margin-top: 10px; font-size: 18px;">الطلاب ${startNum} إلى ${endNum} من ${appData.students.length}</p>
+                </div>
+                
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 2px solid #A65E00;">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">اسم الطالب</th>
+                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">الحضور</th>
+                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">الحفظ</th>
+                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">المراجعة</th>
+                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">الإجمالي</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tableRows}
+                    </tbody>
+                </table>
+                
+            `;
+            
+            return page;
+        }
+
+        // دالة إنشاء صفحة الإحصائيات الشهرية
+        function createWeeklyStatsPage(students, studentStats, daysInMonth, monthName, year) {
+            const page = document.createElement('div');
+            page.style.cssText = `
+                width: 800px;
+                height: 1120px;
+                direction: rtl;
+                font-family: 'Amiri';
+                padding: 40px;
+                background: #ffffff;
+                box-sizing: border-box;
+            `;
+            
+            let totalAttendanceSum = 0;
+            let totalSaveSum = 0;
+            let totalReviewSum = 0;
+            let totalOverallSum = 0;
+            
+            students.forEach(student => {
+                const stats = studentStats[student];
+                const attendanceRate = (stats.attendanceScore / daysInMonth) * 100;
+                const saveRate = (stats.saveSessions / daysInMonth) * 100;
+                const reviewRate = (stats.reviewSessions / daysInMonth) * 100;
+                const totalRate = (attendanceRate * (1/3)) + (saveRate * (1/3)) + (reviewRate * (1/3));
+                
+                totalAttendanceSum += attendanceRate;
+                totalSaveSum += saveRate;
+                totalReviewSum += reviewRate;
+                totalOverallSum += totalRate;
+            });
+            
+            const totalStudents = students.length;
+            const totalAttendanceRate = Math.round(totalAttendanceSum / totalStudents);
+            const totalSaveRate = Math.round(totalSaveSum / totalStudents);
+            const totalReviewRate = Math.round(totalReviewSum / totalStudents);
+            const overallRate = Math.round(totalOverallSum / totalStudents);
+            
+            const totalPages = Math.ceil(appData.students.length / 10) + 2;
+            
+            page.innerHTML = `
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h1 style="color: #A65E00; margin: 0 0 10px 0; font-size: 28px;">الإحصائيات الإجمالية الشهرية</h1>
+                    <h2 style="color: #8a4f00; margin: 0; font-size: 24px;">${monthName} ${year} هـ</h2>
+                </div>
+                
+                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin: 40px 0;">
+                    <div style="flex: 1; min-width: 300px; background-color: rgba(166, 94, 0, 0.1); padding: 20px; border-radius: 15px; border: 2px solid #A65E00;">
+                        <h3 style="color: #A65E00; text-align: center; margin: 0 0 20px 0; font-size: 22px;">متوسطات الفصل</h3>
+                        
+                        <div style="margin: 20px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="font-weight: bold; font-size: 18px;">متوسط الحضور:</span>
+                                <span style="font-weight: bold; color: #A65E00; font-size: 18px;">${totalAttendanceRate}%</span>
+                            </div>
+                            <div style="height: 20px; background-color: #e0e0e0; border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; background-color: #A65E00; border-radius: 10px; width: ${totalAttendanceRate}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="font-weight: bold; font-size: 18px;">متوسط الحفظ:</span>
+                                <span style="font-weight: bold; color: #A65E00; font-size: 18px;">${totalSaveRate}%</span>
+                            </div>
+                            <div style="height: 20px; background-color: #e0e0e0; border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; background-color: #A65E00; border-radius: 10px; width: ${totalSaveRate}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin: 20px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span style="font-weight: bold; font-size: 18px;">متوسط المراجعة:</span>
+                                <span style="font-weight: bold; color: #A65E00; font-size: 18px;">${totalReviewRate}%</span>
+                            </div>
+                            <div style="height: 20px; background-color: #e0e0e0; border-radius: 10px; overflow: hidden;">
+                                <div style="height: 100%; background-color: #A65E00; border-radius: 10px; width: ${totalReviewRate}%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="flex: 1; min-width: 300px; background-color: rgba(166, 94, 0, 0.1); padding: 20px; border-radius: 15px; border: 2px solid #A65E00;">
+                        <h3 style="color: #A65E00; text-align: center; margin: 0 0 20px 0; font-size: 22px;">النسبة الإجمالية</h3>
+                        
+                        <div style="text-align: center; margin: 40px 0;">
+                            <div style="font-size: 48px; font-weight: bold; color: #A65E00; margin-bottom: 10px;">${overallRate}%</div>
+                            <div style="height: 30px; background-color: #e0e0e0; border-radius: 15px; overflow: hidden; margin: 0 auto; max-width: 400px;">
+                                <div style="height: 100%; background-color: #A65E00; border-radius: 15px; width: ${overallRate}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-top: 30px;">
+                            <p style="font-size: 16px; color: #666; text-align: center;">
+                                <strong>طريقة الحساب:</strong><br>
+                                (الحضور × ⅓) + (الحفظ × ⅓) + (المراجعة × ⅓) = الإجمالي
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 40px; text-align: center;">
+                    <div style="background-color: rgba(166, 94, 0, 0.1); padding: 20px; border-radius: 15px; border: 2px solid #A65E00;">
+                        <h3 style="color: #A65E00; margin: 0 0 15px 0; font-size: 22px;">ملخص الحصاد الشهري</h3>
+                        <p style="font-size: 18px; margin: 10px 0;"><strong>إجمالي عدد الطلاب:</strong> <span style="color: #A65E00; font-weight: bold;">${totalStudents} طالب</span></p>
+                        <p style="font-size: 18px; margin: 10px 0;"><strong>عدد أيام الشهر:</strong> <span style="color: #A65E00; font-weight: bold;">${daysInMonth} يوم</span></p>
+                        <p style="font-size: 18px; margin: 10px 0;"><strong>متوسط نسبة الحضور:</strong> <span style="color: #A65E00; font-weight: bold;">${totalAttendanceRate}%</span></p>
+                        <p style="font-size: 18px; margin: 10px 0;"><strong>متوسط نسبة الحفظ:</strong> <span style="color: #A65E00; font-weight: bold;">${totalSaveRate}%</span></p>
+                        <p style="font-size: 18px; margin: 10px 0;"><strong>متوسط نسبة المراجعة:</strong> <span style="color: #A65E00; font-weight: bold;">${totalReviewRate}%</span></p>
+                        <p style="font-size: 18px; margin: 10px 0;"><strong>النسبة الإجمالية للفصل:</strong> <span style="color: #A65E00; font-weight: bold;">${overallRate}%</span></p>
+                    </div>
+                </div>
+                
+            `;
+            
+            return page;
+        }
+
+        // دالة لتصدير صفحات متعددة إلى PDF
+        async function exportMultiplePagesToPdf(pageElements, filename) {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            
+            for (let i = 0; i < pageElements.length; i++) {
+                const pageElement = pageElements[i];
+                
+                // إضافة الصفحة إلى body مؤقتاً
+                document.body.appendChild(pageElement);
+                
+                const canvas = await html2canvas(pageElement, {
+                    scale: 3,
+                    useCORS: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    allowTaint: true,
+                    removeContainer: true
+                });
+                
+                // إزالة العنصر من body
+                document.body.removeChild(pageElement);
+                
+                const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                const imgWidth = 190;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                
+                // إذا كانت هذه ليست الصفحة الأولى، أضف صفحة جديدة
+                if (i > 0) {
+                    pdf.addPage();
+                }
+                
+                // حساب الموضع ليكون في مركز الصفحة
+                const positionX = (210 - imgWidth) / 2;
+                const positionY = (297 - imgHeight) / 2;
+                
+                // إذا كانت الصورة أطول من الصفحة، نبدأ من الأعلى
+                const finalPositionY = imgHeight > 280 ? 10 : positionY;
+                
+                pdf.addImage(imgData, 'JPEG', positionX, finalPositionY, imgWidth, imgHeight);
+            }
+            
+            pdf.save(filename);
+        }
+
+        // ============================================
+        // دوال تصدير PDF المعدلة
+        // ============================================
+
+        // دالة توليد PDF يومي معدلة
+        async function generateDailyPdf() {
+            try {
+                const librariesLoaded = await loadPdfLibraries();
+                if (!librariesLoaded) {
+                    alert('لم يتم تحميل مكتبات PDF. الرجاء تحديث الصفحة والمحاولة مرة أخرى.');
+                    return;
+                }
+                
+                const formattedDate = formatHijriDate(currentHarvestDate.year, currentHarvestDate.month, currentHarvestDate.day);
+                let teacherName = appData.teacherName;
+                if (!teacherName.startsWith('أ/')) {
+                    teacherName = 'أ/ ' + teacherName;
+                }
+                
+                const dateKey = createHijriDateKey(currentHarvestDate.year, currentHarvestDate.month, currentHarvestDate.day);
+                
+                // حساب عدد الصفحات للطلاب
+                const studentsPerPage = 10;
+                const totalStudents = appData.students.length;
+                const studentPages = Math.ceil(totalStudents / studentsPerPage);
+                
+                // إنشاء مصفوفة للعناصر (الصفحات)
+                const pageElements = [];
+                
+                // 1. إنشاء صفحة الغلاف
+                const coverPage = createCoverPage('تقرير الحصاد اليومي', formattedDate, appData.halqaName, teacherName, formattedDate);
+                pageElements.push(coverPage);
+                
+                // 2. إنشاء صفحات الطلاب
+                for (let pageIndex = 0; pageIndex < studentPages; pageIndex++) {
+                    const start = pageIndex * studentsPerPage + 1;
+                    const end = Math.min(start + studentsPerPage - 1, totalStudents);
+                    const pageStudents = appData.students.slice(start - 1, end);
+                    
+                    const studentPage = createDailyStudentPage(pageStudents, start, end, dateKey, formattedDate);
+                    pageElements.push(studentPage);
+                }
+                
+                // 3. إنشاء صفحة الإحصائيات
+                const statsPage = createDailyStatsPage(appData.students, dateKey, formattedDate);
+                pageElements.push(statsPage);
+                
+                // تصدير جميع الصفحات
+                await exportMultiplePagesToPdf(pageElements, `تقرير_الحصاد_اليومي_${formattedDate.replace(/\//g, '-')}.pdf`);
+                
+            } catch (error) {
+                console.error('خطأ في إنشاء PDF يومي:', error);
+                alert('حدث خطأ أثناء إنشاء ملف PDF. الرجاء المحاولة مرة أخرى.');
+            }
+        }
+
+        // دالة توليد PDF أسبوعي معدلة
+        async function generateWeeklyPdf() {
+            try {
+                const month = parseInt(document.getElementById('hijriMonthSelect').value);
+                const year = parseInt(document.getElementById('hijriYearSelect').value);
+                
+                if (!month || !year) {
+                    alert('الرجاء اختيار الشهر والسنة الهجرية أولاً');
+                    return;
+                }
+                
+                const librariesLoaded = await loadPdfLibraries();
+                if (!librariesLoaded) {
+                    alert('لم يتم تحميل مكتبات PDF. الرجاء تحديث الصفحة والمحاولة مرة أخرى.');
+                    return;
+                }
+                
+                // معلومات التقرير
+                const hijriMonthNames = [
+                    "محرم", "صفر", "ربيع الأول", "ربيع الثاني", 
+                    "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", 
+                    "رمضان", "شوال", "ذو القعدة", "ذو الحجة"
+                ];
+                
+                const reportDate = `شهر ${hijriMonthNames[month-1]} ${year} هـ`;
+                let teacherName = appData.teacherName;
+                if (!teacherName.startsWith('أ/')) {
+                    teacherName = 'أ/ ' + teacherName;
+                }
+                
+                // حساب الإحصائيات الشهرية
+                const daysInMonth = (month % 2 === 1 || month === 12) ? 30 : 29;
+                const studentStats = {};
+                
+                appData.students.forEach(student => {
+                    studentStats[student] = {
+                        attendanceScore: 0,
+                        saveSessions: 0,
+                        reviewSessions: 0
+                    };
+                });
+                
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dateKey = createHijriDateKey(year, month, day);
+                    
+                    if (appData.attendance[dateKey]) {
+                        Object.entries(appData.attendance[dateKey]).forEach(([student, status]) => {
+                            if (studentStats[student]) {
+                                if (status === "حاضر") {
+                                    studentStats[student].attendanceScore += 1;
+                                } else if (status === "مستأذن") {
+                                    studentStats[student].attendanceScore += 0.5;
+                                }
+                            }
+                        });
+                    }
+                    
+                    if (appData.tarteeb[dateKey] && appData.tarteeb[dateKey].completedStatus) {
+                        Object.entries(appData.tarteeb[dateKey].completedStatus).forEach(([student, type]) => {
+                            if (studentStats[student]) {
+                                if (type === "حفظ" || type === "حفظ ومراجعة") {
+                                    studentStats[student].saveSessions++;
+                                }
+                                if (type === "مراجعة" || type === "حفظ ومراجعة") {
+                                    studentStats[student].reviewSessions++;
+                                }
+                            }
+                        });
+                    }
+                }
+                
+                // حساب عدد الصفحات للطلاب
+                const studentsPerPage = 10;
+                const totalStudents = appData.students.length;
+                const studentPages = Math.ceil(totalStudents / studentsPerPage);
+                
+                // إنشاء مصفوفة للعناصر (الصفحات)
+                const pageElements = [];
+                
+                // 1. إنشاء صفحة الغلاف
+                const coverPage = createCoverPage('تقرير الحصاد الشهري', reportDate, appData.halqaName, teacherName, reportDate);
+                pageElements.push(coverPage);
+                
+                // 2. إنشاء صفحات الطلاب
+                for (let pageIndex = 0; pageIndex < studentPages; pageIndex++) {
+                    const start = pageIndex * studentsPerPage + 1;
+                    const end = Math.min(start + studentsPerPage - 1, totalStudents);
+                    const pageStudents = appData.students.slice(start - 1, end);
+                    
+                    const studentPage = createWeeklyStudentPage(pageStudents, start, end, studentStats, daysInMonth, hijriMonthNames[month-1], year);
+                    pageElements.push(studentPage);
+                }
+                
+                // 3. إنشاء صفحة الإحصائيات
+                const statsPage = createWeeklyStatsPage(appData.students, studentStats, daysInMonth, hijriMonthNames[month-1], year);
+                pageElements.push(statsPage);
+                
+                // تصدير جميع الصفحات
+                await exportMultiplePagesToPdf(pageElements, `تقرير_الحصاد_الشهري_${year}_${month}.pdf`);
+                
+            } catch (error) {
+                console.error('خطأ في إنشاء PDF أسبوعي:', error);
+                alert('حدث خطأ أثناء إنشاء ملف PDF. الرجاء المحاولة مرة أخرى.');
+            }
         }
     </script>
 </body>
