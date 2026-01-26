@@ -3520,7 +3520,7 @@
             return page;
         }
 
-        // دالة إنشاء صفحة للطلاب (الأسبوعي/الشهري)
+        // دالة إنشاء صفحة للطلاب (الأسبوعي/اﻷسبوعي)
         function createWeeklyStudentPage(students, startNum, endNum, studentStats, daysInMonth, monthName, year) {
             const page = document.createElement('div');
             page.style.cssText = `
@@ -3567,7 +3567,7 @@
             
             page.innerHTML = `
                 <div style="text-align: center; margin-bottom: 30px;">
-                    <h1 style="color: #A65E00; margin: 0 0 10px 0; font-size: 28px;">الحصاد الشهري</h1>
+                    <h1 style="color: #A65E00; margin: 0 0 10px 0; font-size: 28px;">الحصاد اﻷسبوعي</h1>
                     <h2 style="color: #8a4f00; margin: 0; font-size: 24px;">${monthName} ${year} هـ</h2>
                     <p style="color: #666; margin-top: 10px; font-size: 18px;">الطلاب ${startNum} إلى ${endNum} من ${appData.students.length}</p>
                 </div>
@@ -3592,7 +3592,7 @@
             return page;
         }
 
-        // دالة إنشاء صفحة الإحصائيات الشهرية
+        // دالة إنشاء صفحة الإحصائيات اﻷسبوعية
         function createWeeklyStatsPage(students, studentStats, daysInMonth, monthName, year) {
             const page = document.createElement('div');
             page.style.cssText = `
@@ -3633,7 +3633,7 @@
             
             page.innerHTML = `
                 <div style="text-align: center; margin-bottom: 40px;">
-                    <h1 style="color: #A65E00; margin: 0 0 10px 0; font-size: 28px;">الإحصائيات الإجمالية الشهرية</h1>
+                    <h1 style="color: #A65E00; margin: 0 0 10px 0; font-size: 28px;">الإحصائيات الإجمالية اﻷسبوعية</h1>
                     <h2 style="color: #8a4f00; margin: 0; font-size: 24px;">${monthName} ${year} هـ</h2>
                 </div>
                 
@@ -3693,7 +3693,7 @@
                 
                 <div style="margin-top: 40px; text-align: center;">
                     <div style="background-color: rgba(166, 94, 0, 0.1); padding: 20px; border-radius: 15px; border: 2px solid #A65E00;">
-                        <h3 style="color: #A65E00; margin: 0 0 15px 0; font-size: 22px;">ملخص الحصاد الشهري</h3>
+                        <h3 style="color: #A65E00; margin: 0 0 15px 0; font-size: 22px;">ملخص الحصاد اﻷسبوعي</h3>
                         <p style="font-size: 18px; margin: 10px 0;"><strong>إجمالي عدد الطلاب:</strong> <span style="color: #A65E00; font-weight: bold;">${totalStudents} طالب</span></p>
                         <p style="font-size: 18px; margin: 10px 0;"><strong>عدد أيام الشهر:</strong> <span style="color: #A65E00; font-weight: bold;">${daysInMonth} يوم</span></p>
                         <p style="font-size: 18px; margin: 10px 0;"><strong>متوسط نسبة الحضور:</strong> <span style="color: #A65E00; font-weight: bold;">${totalAttendanceRate}%</span></p>
@@ -3839,7 +3839,7 @@
                     teacherName = 'أ/ ' + teacherName;
                 }
                 
-                // حساب الإحصائيات الشهرية
+                // حساب الإحصائيات اﻷسبوعية
                 const daysInMonth = (month % 2 === 1 || month === 12) ? 30 : 29;
                 const studentStats = {};
                 
@@ -3889,7 +3889,7 @@
                 const pageElements = [];
                 
                 // 1. إنشاء صفحة الغلاف
-                const coverPage = createCoverPage('تقرير الحصاد الشهري', reportDate, appData.halqaName, teacherName, reportDate);
+                const coverPage = createCoverPage('تقرير الحصاد اﻷسبوعي', reportDate, appData.halqaName, teacherName, reportDate);
                 pageElements.push(coverPage);
                 
                 // 2. إنشاء صفحات الطلاب
@@ -3907,7 +3907,7 @@
                 pageElements.push(statsPage);
                 
                 // تصدير جميع الصفحات
-                await exportMultiplePagesToPdf(pageElements, `تقرير_الحصاد_الشهري_${year}_${month}.pdf`);
+                await exportMultiplePagesToPdf(pageElements, `تقرير_الحصاد_اﻷسبوعي_${year}_${month}.pdf`);
                 
             } catch (error) {
                 console.error('خطأ في إنشاء PDF أسبوعي:', error);
