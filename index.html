@@ -175,7 +175,6 @@
 
         .hijri-date-display:hover {
             background-color: rgba(166, 94, 0, 0.1);
-            transform: translateY(-2px);
         }
 
         .hijri-date-display:active {
@@ -489,23 +488,24 @@
             margin-top: 15px;
         }
 
+        /* تعديل أزرار الأسهم - الجديدة */
         .date-nav-btn {
-            background-color: var(--primary-color);
-            color: white;
+            background: none;
             border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.5rem;
+            font-size: 2.5rem;
             cursor: pointer;
+            color: var(--primary-color);
+            width: auto;
+            height: auto;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            padding: 5px;
         }
 
         .date-nav-btn:hover {
-            background-color: #8a4f00;
+            color: #8a4f00;
             transform: scale(1.1);
         }
 
@@ -688,6 +688,13 @@
 
         body.dark-mode .students-table th {
             background-color: rgba(237, 209, 175, 0.1);
+        }
+
+        /* تنسيق عمود الترقيم */
+        .students-table th:first-child,
+        .students-table td:first-child {
+            width: 60px;
+            text-align: center;
         }
 
         /* أزرار الحضور الجديدة */
@@ -1055,7 +1062,8 @@
         }
 
         #harvest .students-table td:first-child {
-            text-align: right;
+            text-align: center;
+            width: 60px;
         }
 
         #harvest .students-table th {
@@ -1063,7 +1071,8 @@
         }
 
         #harvest .students-table th:first-child {
-            text-align: right;
+            text-align: center;
+            width: 60px;
         }
 
         /* علامات تبويب الحصاد */
@@ -1474,7 +1483,6 @@
             <div class="hijri-date-container">
                 <div class="hijri-date-display" id="hijriDateDisplay">
                     <div class="hijri-date-text" id="displayHijriDate">١٤٤٧/٠٦/١٥</div>
-                    <div class="hijri-date-label">انقر لتعديل التاريخ الهجري</div>
                 </div>
                 
                 <div class="hijri-date-input-container" id="hijriDateInputContainer">
@@ -1660,6 +1668,7 @@
             <table class="students-table">
                 <thead>
                     <tr>
+                        <th>م</th>
                         <th>اسم الطالب</th>
                         <th>الحضور</th>
                     </tr>
@@ -1684,6 +1693,7 @@
         <table class="students-table">
             <thead>
                 <tr>
+                    <th>م</th>
                     <th>اسم الطالب</th>
                     <th>الإجراء</th>
                 </tr>
@@ -1747,6 +1757,7 @@
                 <table class="students-table">
                     <thead>
                         <tr>
+                            <th>م</th>
                             <th>اسم الطالب</th>
                             <th>الحضور</th>
                             <th>الحفظ</th>
@@ -2321,6 +2332,10 @@
             appData.students.forEach((student, index) => {
                 const row = document.createElement('tr');
                 
+                const numberCell = document.createElement('td');
+                numberCell.textContent = index + 1;
+                numberCell.style.textAlign = 'center';
+                
                 const nameCell = document.createElement('td');
                 nameCell.textContent = student;
                 
@@ -2332,6 +2347,7 @@
                 
                 actionCell.appendChild(deleteBtn);
                 
+                row.appendChild(numberCell);
                 row.appendChild(nameCell);
                 row.appendChild(actionCell);
                 studentsList.appendChild(row);
@@ -2353,8 +2369,12 @@
             }
             
             // عرض قائمة الطلاب
-            appData.students.forEach((student) => {
+            appData.students.forEach((student, index) => {
                 const row = document.createElement('tr');
+                
+                const numberCell = document.createElement('td');
+                numberCell.textContent = index + 1;
+                numberCell.style.textAlign = 'center';
                 
                 const nameCell = document.createElement('td');
                 nameCell.textContent = student;
@@ -2414,6 +2434,7 @@
                 });
                 
                 attendanceCell.appendChild(optionsContainer);
+                row.appendChild(numberCell);
                 row.appendChild(nameCell);
                 row.appendChild(attendanceCell);
                 attendanceList.appendChild(row);
@@ -2605,12 +2626,16 @@
             const dateKey = createHijriDateKey(currentHarvestDate.year, currentHarvestDate.month, currentHarvestDate.day);
             
             if (appData.students.length === 0) {
-                harvestList.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 30px; color: #777;">لا يوجد طلاب مسجلين<br>الرجاء إضافة طلاب من صفحة إدارة الطلاب</td></tr>';
+                harvestList.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 30px; color: #777;">لا يوجد طلاب مسجلين<br>الرجاء إضافة طلاب من صفحة إدارة الطلاب</td></tr>';
                 return;
             }
             
-            appData.students.forEach(student => {
+            appData.students.forEach((student, index) => {
                 const row = document.createElement('tr');
+                
+                const numberCell = document.createElement('td');
+                numberCell.textContent = index + 1;
+                numberCell.style.textAlign = 'center';
                 
                 const nameCell = document.createElement('td');
                 nameCell.textContent = student;
@@ -2665,6 +2690,7 @@
                     reviewCell.innerHTML = '<span class="harvest-text text-not-done">لم يتم</span>';
                 }
                 
+                row.appendChild(numberCell);
                 row.appendChild(nameCell);
                 row.appendChild(attendanceCell);
                 row.appendChild(saveCell);
@@ -2673,20 +2699,49 @@
             });
         }
 
-        // توليد التقرير الأسبوعي
+        // توليد التقرير الأسبوعي المعدل (يعتمد على 5 أيام فقط)
         function generateWeeklyReport() {
+            const weekNumber = parseInt(document.getElementById('hijriWeekSelect').value);
             const month = parseInt(document.getElementById('hijriMonthSelect').value);
             const year = parseInt(document.getElementById('hijriYearSelect').value);
             const container = document.getElementById('weeklySummary');
             
-            if (!month || !year) {
-                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #777;">الرجاء اختيار الشهر والسنة الهجرية أولاً</p>';
+            if (!weekNumber || !month || !year) {
+                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #777;">الرجاء اختيار الأسبوع والشهر والسنة الهجرية أولاً</p>';
                 return;
             }
             
+            // تحديد عدد أيام الشهر الهجري
             const daysInMonth = (month % 2 === 1 || month === 12) ? 30 : 29;
+            
+            // تحديد أيام الأسبوع (5 أيام فقط)
+            const weekStartDay = ((weekNumber - 1) * 5) + 1;
+            let weekEndDay = weekStartDay + 4;
+            
+            // التأكد من عدم تجاوز عدد أيام الشهر
+            if (weekEndDay > daysInMonth) {
+                weekEndDay = daysInMonth;
+            }
+            
+            // التأكد من أن بداية الأسبوع ضمن نطاق الشهر
+            if (weekStartDay > daysInMonth) {
+                container.innerHTML = '<p style="text-align: center; padding: 30px; color: #777;">الأسبوع المحدد خارج نطاق أيام الشهر</p>';
+                return;
+            }
+            
+            // عدد أيام الأسبوع الحقيقي (قد يكون أقل من 5 للأسبوع الأخير)
+            const daysInWeek = Math.min(5, daysInMonth - weekStartDay + 1);
+            
+            const weekNames = ["الأول", "الثاني", "الثالث", "الرابع", "الخامس"];
+            const hijriMonthNames = [
+                "محرم", "صفر", "ربيع الأول", "ربيع الثاني", 
+                "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", 
+                "رمضان", "شوال", "ذو القعدة", "ذو الحجة"
+            ];
+            
             const studentStats = {};
             
+            // تهيئة إحصائيات الطلاب
             appData.students.forEach(student => {
                 studentStats[student] = {
                     name: student,
@@ -2698,9 +2753,11 @@
                 };
             });
             
-            for (let day = 1; day <= daysInMonth; day++) {
+            // حساب الإحصائيات لأيام الأسبوع فقط (5 أيام)
+            for (let day = weekStartDay; day <= weekEndDay; day++) {
                 const dateKey = createHijriDateKey(year, month, day);
                 
+                // إحصائيات الحضور
                 if (appData.attendance[dateKey]) {
                     Object.entries(appData.attendance[dateKey]).forEach(([student, status]) => {
                         if (studentStats[student]) {
@@ -2715,6 +2772,7 @@
                     });
                 }
                 
+                // إحصائيات التسميع
                 if (appData.tarteeb[dateKey] && appData.tarteeb[dateKey].completedStatus) {
                     Object.entries(appData.tarteeb[dateKey].completedStatus).forEach(([student, type]) => {
                         if (studentStats[student]) {
@@ -2729,18 +2787,14 @@
                 }
             }
             
-            const hijriMonthNames = [
-                "محرم", "صفر", "ربيع الأول", "ربيع الثاني", 
-                "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", 
-                "رمضان", "شوال", "ذو القعدة", "ذو الحجة"
-            ];
-            
+            // توليد HTML للتقرير الأسبوعي
             let html = `
-                <h3 class="week-title">تقرير شهر ${hijriMonthNames[month-1]} ${year} هـ</h3>
+                <h3 class="week-title">تقرير الأسبوع ${weekNames[weekNumber-1]} لشهر ${hijriMonthNames[month-1]} لعام ${year} هـ</h3>
                 
                 <table class="weekly-table">
                     <thead>
                         <tr>
+                            <th>م</th>
                             <th>اسم الطالب</th>
                             <th>الحضور</th>
                             <th>الحفظ</th>
@@ -2751,12 +2805,13 @@
                     <tbody>
             `;
             
-            appData.students.forEach(student => {
+            appData.students.forEach((student, index) => {
                 const stats = studentStats[student];
                 
-                let attendanceRate = (stats.attendanceScore / daysInMonth) * 100;
-                let saveRate = (stats.saveSessions / daysInMonth) * 100;
-                let reviewRate = (stats.reviewSessions / daysInMonth) * 100;
+                // حساب النسب بناءً على 5 أيام فقط
+                let attendanceRate = (stats.attendanceScore / daysInWeek) * 100;
+                let saveRate = (stats.saveSessions / daysInWeek) * 100;
+                let reviewRate = (stats.reviewSessions / daysInWeek) * 100;
                 let totalRate = (attendanceRate * (1/3)) + (saveRate * (1/3)) + (reviewRate * (1/3));
                 
                 attendanceRate = Math.round(attendanceRate);
@@ -2764,16 +2819,17 @@
                 reviewRate = Math.round(reviewRate);
                 totalRate = Math.round(totalRate);
                 
-                let attendanceDisplay = `${stats.attendanceScore}/${daysInMonth}`;
+                let attendanceDisplay = `${stats.attendanceScore}/${daysInWeek}`;
                 
                 html += `
                     <tr>
+                        <td style="text-align: center; font-weight: bold;">${index + 1}</td>
                         <td class="student-name">${student}</td>
                         <td class="stat-present">
                             ${attendanceDisplay}
                         </td>
-                        <td class="stat-save">${stats.saveSessions}/${daysInMonth}</td>
-                        <td class="stat-review">${stats.reviewSessions}/${daysInMonth}</td>
+                        <td class="stat-save">${stats.saveSessions}/${daysInWeek}</td>
+                        <td class="stat-review">${stats.reviewSessions}/${daysInWeek}</td>
                         <td>
                             <div class="progress-container">
                                 <div class="progress-bar">
@@ -2786,6 +2842,7 @@
                 `;
             });
             
+            // حساب إحصائيات الفصل
             let totalAttendanceRate = 0;
             let totalSaveRate = 0;
             let totalReviewRate = 0;
@@ -2800,9 +2857,9 @@
                 
                 appData.students.forEach(student => {
                     const stats = studentStats[student];
-                    const attendanceRate = (stats.attendanceScore / daysInMonth) * 100;
-                    const saveRate = (stats.saveSessions / daysInMonth) * 100;
-                    const reviewRate = (stats.reviewSessions / daysInMonth) * 100;
+                    const attendanceRate = (stats.attendanceScore / daysInWeek) * 100;
+                    const saveRate = (stats.saveSessions / daysInWeek) * 100;
+                    const reviewRate = (stats.reviewSessions / daysInWeek) * 100;
                     const totalRate = (attendanceRate * (1/3)) + (saveRate * (1/3)) + (reviewRate * (1/3));
                     
                     sumAttendanceRate += attendanceRate;
@@ -2821,7 +2878,7 @@
                     </tbody>
                     <tfoot class="table-footer">
                         <tr>
-                            <td>متوسط الفصل</td>
+                            <td colspan="2">متوسط الفصل</td>
                             <td class="stat-present">${totalAttendanceRate}%</td>
                             <td class="stat-save">${totalSaveRate}%</td>
                             <td class="stat-review">${totalReviewRate}%</td>
@@ -2832,6 +2889,8 @@
                 <div class="summary-period">
                     <p style="color: #666666; font-size: 0.95rem; margin-top: 10px;">
                         <strong>طريقة حساب النسبة:</strong> (الحضور × ⅓) + (الحفظ × ⅓) + (المراجعة × ⅓) = الإجمالي
+                    </p>
+                    <p style="color: #666666; font-size: 0.95rem; margin-top: 5px;">
                     </p>
                 </div>
             `;
@@ -3200,6 +3259,7 @@
             });
             
             // تحديث التقرير الأسبوعي
+            document.getElementById('hijriWeekSelect').addEventListener('change', generateWeeklyReport);
             document.getElementById('hijriMonthSelect').addEventListener('change', generateWeeklyReport);
             document.getElementById('hijriYearSelect').addEventListener('change', generateWeeklyReport);
         }
@@ -3352,10 +3412,11 @@
                 
                 tableRows += `
                     <tr style="background-color: ${globalIndex % 2 === 0 ? '#fff' : '#f9f9f9'}">
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; font-size: 18px; border-radius: 0 5px 5px 0;">${startNum + index}</td>
                         <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: right; font-size: 18px;">${student}</td>
                         <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: ${attendanceColor}; font-size: 18px;">${attendance}</td>
                         <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: ${saveColor}; font-size: 18px;">${saveStatus}</td>
-                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: ${reviewColor}; font-size: 18px;">${reviewStatus}</td>
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: ${reviewColor}; font-size: 18px; border-radius: 5px 0 0 5px;">${reviewStatus}</td>
                     </tr>
                 `;
             });
@@ -3370,13 +3431,14 @@
                     <p style="color: #666; margin-top: 10px; font-size: 18px;">الطلاب ${startNum} إلى ${endNum} من ${appData.students.length}</p>
                 </div>
                 
-                <table style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 2px solid #A65E00;">
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 2px solid #A65E00; border-radius: 10px; overflow: hidden;">
                     <thead>
                         <tr>
+                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px; border-radius: 0 8px 0 0;">م</th>
                             <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">اسم الطالب</th>
                             <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">الحضور</th>
                             <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">الحفظ</th>
-                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">المراجعة</th>
+                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px; border-radius: 8px 0 0 0;">المراجعة</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -3520,8 +3582,8 @@
             return page;
         }
 
-        // دالة إنشاء صفحة للطلاب (الأسبوعي/اﻷسبوعي)
-        function createWeeklyStudentPage(students, startNum, endNum, studentStats, daysInMonth, monthName, year) {
+        // دالة إنشاء صفحة للطلاب (الأسبوعي)
+        function createWeeklyStudentPage(students, startNum, endNum, studentStats, weekNumber, weekName, monthName, year, daysInWeek) {
             const page = document.createElement('div');
             page.style.cssText = `
                 width: 800px;
@@ -3538,19 +3600,22 @@
             students.forEach((student, index) => {
                 const globalIndex = startNum + index - 1;
                 const stats = studentStats[student];
-                const attendanceRate = (stats.attendanceScore / daysInMonth) * 100;
-                const saveRate = (stats.saveSessions / daysInMonth) * 100;
-                const reviewRate = (stats.reviewSessions / daysInMonth) * 100;
-                const totalRate = (attendanceRate * (1/3)) + (saveRate * (1/3)) + (reviewRate * (1/3));
+                
+                // حساب النسب بناءً على 5 أيام فقط
+                let attendanceRate = (stats.attendanceScore / daysInWeek) * 100;
+                let saveRate = (stats.saveSessions / daysInWeek) * 100;
+                let reviewRate = (stats.reviewSessions / daysInWeek) * 100;
+                let totalRate = (attendanceRate * (1/3)) + (saveRate * (1/3)) + (reviewRate * (1/3));
                 const roundedTotal = Math.round(totalRate);
                 
                 tableRows += `
                     <tr style="background-color: ${globalIndex % 2 === 0 ? '#fff' : '#f9f9f9'}">
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; font-size: 18px; border-radius: 0 5px 5px 0;">${startNum + index}</td>
                         <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: right; font-size: 18px; font-weight: bold;">${student}</td>
-                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #A65E00; font-size: 18px;">${stats.attendanceScore}/${daysInMonth}</td>
-                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #A65E00; font-size: 18px;">${stats.saveSessions}/${daysInMonth}</td>
-                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #A65E00; font-size: 18px;">${stats.reviewSessions}/${daysInMonth}</td>
-                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center;">
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #A65E00; font-size: 18px;">${stats.attendanceScore}/${daysInWeek}</td>
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #A65E00; font-size: 18px;">${stats.saveSessions}/${daysInWeek}</td>
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; font-weight: bold; color: #A65E00; font-size: 18px;">${stats.reviewSessions}/${daysInWeek}</td>
+                        <td style="padding: 12px 10px; border: 1px solid #ddd; text-align: center; border-radius: 5px 0 0 5px;">
                             <div style="text-align: center;">
                                 <div style="font-weight: bold; color: #A65E00; font-size: 18px;">${roundedTotal}%</div>
                                 <div style="height: 10px; background-color: #e0e0e0; border-radius: 5px; overflow: hidden; margin-top: 5px;">
@@ -3562,24 +3627,21 @@
                 `;
             });
             
-            const currentPage = Math.ceil(startNum / 10) + 1; // +1 للغلاف
-            const totalPages = Math.ceil(appData.students.length / 10) + 2; // +2 للغلاف والإحصائيات
-            
             page.innerHTML = `
                 <div style="text-align: center; margin-bottom: 30px;">
-                    <h1 style="color: #A65E00; margin: 0 0 10px 0; font-size: 28px;">الحصاد اﻷسبوعي</h1>
-                    <h2 style="color: #8a4f00; margin: 0; font-size: 24px;">${monthName} ${year} هـ</h2>
-                    <p style="color: #666; margin-top: 10px; font-size: 18px;">الطلاب ${startNum} إلى ${endNum} من ${appData.students.length}</p>
+                    <h1 style="color: #A65E00; margin: 0 0 10px 0; font-size: 28px;">الحصاد الأسبوعي</h1>
+                    <h2 style="color: #8a4f00; margin: 0; font-size: 24px;">تقرير الأسبوع ${weekName} لشهر ${monthName} لعام ${year} هـ</h2>
                 </div>
                 
-                <table style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 2px solid #A65E00;">
+                <table style="width: 100%; border-collapse: collapse; margin: 20px 0; border: 2px solid #A65E00; border-radius: 10px; overflow: hidden;">
                     <thead>
                         <tr>
+                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px; border-radius: 0 8px 0 0;">م</th>
                             <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">اسم الطالب</th>
                             <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">الحضور</th>
                             <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">الحفظ</th>
                             <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">المراجعة</th>
-                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px;">الإجمالي</th>
+                            <th style="background-color: #A65E00; color: white; padding: 15px 10px; text-align: center; border: 1px solid #8a4f00; font-size: 20px; border-radius: 8px 0 0 0;">الإجمالي</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -3592,8 +3654,8 @@
             return page;
         }
 
-        // دالة إنشاء صفحة الإحصائيات اﻷسبوعية
-        function createWeeklyStatsPage(students, studentStats, daysInMonth, monthName, year) {
+        // دالة إنشاء صفحة الإحصائيات الأسبوعية
+        function createWeeklyStatsPage(students, studentStats, weekNumber, weekName, monthName, year, daysInWeek) {
             const page = document.createElement('div');
             page.style.cssText = `
                 width: 800px;
@@ -3612,9 +3674,9 @@
             
             students.forEach(student => {
                 const stats = studentStats[student];
-                const attendanceRate = (stats.attendanceScore / daysInMonth) * 100;
-                const saveRate = (stats.saveSessions / daysInMonth) * 100;
-                const reviewRate = (stats.reviewSessions / daysInMonth) * 100;
+                const attendanceRate = (stats.attendanceScore / daysInWeek) * 100;
+                const saveRate = (stats.saveSessions / daysInWeek) * 100;
+                const reviewRate = (stats.reviewSessions / daysInWeek) * 100;
                 const totalRate = (attendanceRate * (1/3)) + (saveRate * (1/3)) + (reviewRate * (1/3));
                 
                 totalAttendanceSum += attendanceRate;
@@ -3629,12 +3691,10 @@
             const totalReviewRate = Math.round(totalReviewSum / totalStudents);
             const overallRate = Math.round(totalOverallSum / totalStudents);
             
-            const totalPages = Math.ceil(appData.students.length / 10) + 2;
-            
             page.innerHTML = `
                 <div style="text-align: center; margin-bottom: 40px;">
-                    <h1 style="color: #A65E00; margin: 0 0 10px 0; font-size: 28px;">الإحصائيات الإجمالية اﻷسبوعية</h1>
-                    <h2 style="color: #8a4f00; margin: 0; font-size: 24px;">${monthName} ${year} هـ</h2>
+                    <h1 style="color: #A65E00; margin: 0 0 10px 0; font-size: 28px;">الإحصائيات الإجمالية الأسبوعية</h1>
+                    <h2 style="color: #8a4f00; margin: 0; font-size: 24px;">تقرير الأسبوع ${weekName} لشهر ${monthName} لعام ${year} هـ</h2>
                 </div>
                 
                 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin: 40px 0;">
@@ -3693,9 +3753,8 @@
                 
                 <div style="margin-top: 40px; text-align: center;">
                     <div style="background-color: rgba(166, 94, 0, 0.1); padding: 20px; border-radius: 15px; border: 2px solid #A65E00;">
-                        <h3 style="color: #A65E00; margin: 0 0 15px 0; font-size: 22px;">ملخص الحصاد اﻷسبوعي</h3>
+                        <h3 style="color: #A65E00; margin: 0 0 15px 0; font-size: 22px;">ملخص الحصاد الأسبوعي</h3>
                         <p style="font-size: 18px; margin: 10px 0;"><strong>إجمالي عدد الطلاب:</strong> <span style="color: #A65E00; font-weight: bold;">${totalStudents} طالب</span></p>
-                        <p style="font-size: 18px; margin: 10px 0;"><strong>عدد أيام الشهر:</strong> <span style="color: #A65E00; font-weight: bold;">${daysInMonth} يوم</span></p>
                         <p style="font-size: 18px; margin: 10px 0;"><strong>متوسط نسبة الحضور:</strong> <span style="color: #A65E00; font-weight: bold;">${totalAttendanceRate}%</span></p>
                         <p style="font-size: 18px; margin: 10px 0;"><strong>متوسط نسبة الحفظ:</strong> <span style="color: #A65E00; font-weight: bold;">${totalSaveRate}%</span></p>
                         <p style="font-size: 18px; margin: 10px 0;"><strong>متوسط نسبة المراجعة:</strong> <span style="color: #A65E00; font-weight: bold;">${totalReviewRate}%</span></p>
@@ -3812,11 +3871,12 @@
         // دالة توليد PDF أسبوعي معدلة
         async function generateWeeklyPdf() {
             try {
+                const weekNumber = parseInt(document.getElementById('hijriWeekSelect').value);
                 const month = parseInt(document.getElementById('hijriMonthSelect').value);
                 const year = parseInt(document.getElementById('hijriYearSelect').value);
                 
-                if (!month || !year) {
-                    alert('الرجاء اختيار الشهر والسنة الهجرية أولاً');
+                if (!weekNumber || !month || !year) {
+                    alert('الرجاء اختيار الأسبوع والشهر والسنة الهجرية أولاً');
                     return;
                 }
                 
@@ -3827,20 +3887,36 @@
                 }
                 
                 // معلومات التقرير
+                const weekNames = ["الأول", "الثاني", "الثالث", "الرابع", "الخامس"];
                 const hijriMonthNames = [
                     "محرم", "صفر", "ربيع الأول", "ربيع الثاني", 
                     "جمادى الأولى", "جمادى الآخرة", "رجب", "شعبان", 
                     "رمضان", "شوال", "ذو القعدة", "ذو الحجة"
                 ];
                 
-                const reportDate = `شهر ${hijriMonthNames[month-1]} ${year} هـ`;
+                const reportTitle = `تقرير الأسبوع ${weekNames[weekNumber-1]} لشهر ${hijriMonthNames[month-1]} لعام ${year} هـ`;
                 let teacherName = appData.teacherName;
                 if (!teacherName.startsWith('أ/')) {
                     teacherName = 'أ/ ' + teacherName;
                 }
                 
-                // حساب الإحصائيات اﻷسبوعية
+                // حساب عدد أيام الشهر وتحديد نطاق الأسبوع
                 const daysInMonth = (month % 2 === 1 || month === 12) ? 30 : 29;
+                const weekStartDay = ((weekNumber - 1) * 5) + 1;
+                let weekEndDay = weekStartDay + 4;
+                
+                if (weekEndDay > daysInMonth) {
+                    weekEndDay = daysInMonth;
+                }
+                
+                if (weekStartDay > daysInMonth) {
+                    alert('الأسبوع المحدد خارج نطاق أيام الشهر');
+                    return;
+                }
+                
+                const daysInWeek = Math.min(5, daysInMonth - weekStartDay + 1);
+                
+                // حساب إحصائيات الأسبوع
                 const studentStats = {};
                 
                 appData.students.forEach(student => {
@@ -3851,7 +3927,7 @@
                     };
                 });
                 
-                for (let day = 1; day <= daysInMonth; day++) {
+                for (let day = weekStartDay; day <= weekEndDay; day++) {
                     const dateKey = createHijriDateKey(year, month, day);
                     
                     if (appData.attendance[dateKey]) {
@@ -3889,7 +3965,7 @@
                 const pageElements = [];
                 
                 // 1. إنشاء صفحة الغلاف
-                const coverPage = createCoverPage('تقرير الحصاد اﻷسبوعي', reportDate, appData.halqaName, teacherName, reportDate);
+                const coverPage = createCoverPage('تقرير الحصاد الأسبوعي', reportTitle, appData.halqaName, teacherName, reportTitle);
                 pageElements.push(coverPage);
                 
                 // 2. إنشاء صفحات الطلاب
@@ -3898,16 +3974,16 @@
                     const end = Math.min(start + studentsPerPage - 1, totalStudents);
                     const pageStudents = appData.students.slice(start - 1, end);
                     
-                    const studentPage = createWeeklyStudentPage(pageStudents, start, end, studentStats, daysInMonth, hijriMonthNames[month-1], year);
+                    const studentPage = createWeeklyStudentPage(pageStudents, start, end, studentStats, weekNumber, weekNames[weekNumber-1], hijriMonthNames[month-1], year, daysInWeek);
                     pageElements.push(studentPage);
                 }
                 
                 // 3. إنشاء صفحة الإحصائيات
-                const statsPage = createWeeklyStatsPage(appData.students, studentStats, daysInMonth, hijriMonthNames[month-1], year);
+                const statsPage = createWeeklyStatsPage(appData.students, studentStats, weekNumber, weekNames[weekNumber-1], hijriMonthNames[month-1], year, daysInWeek);
                 pageElements.push(statsPage);
                 
                 // تصدير جميع الصفحات
-                await exportMultiplePagesToPdf(pageElements, `تقرير_الحصاد_اﻷسبوعي_${year}_${month}.pdf`);
+                await exportMultiplePagesToPdf(pageElements, `تقرير_الحصاد_الأسبوعي_${weekNames[weekNumber-1]}_${hijriMonthNames[month-1]}_${year}.pdf`);
                 
             } catch (error) {
                 console.error('خطأ في إنشاء PDF أسبوعي:', error);
