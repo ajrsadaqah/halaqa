@@ -1875,6 +1875,9 @@
             }
         };
 
+        // إعدادات عدد الطلاب في الصفحة - يمكن تغيير هذا الرقم حسب الحاجة
+        const STUDENTS_PER_PAGE = 10; // يمكن تغييره إلى 5، 15، 20، 25، 30، 50
+
         // التاريخ الهجري الحالي لكل صفحة
         let currentTarteebDate = { ...appData.hijriDate };
         let currentAttendanceDate = { ...appData.hijriDate };
@@ -3329,7 +3332,7 @@
         // دوال مساعدة لتصدير PDF متعدد الصفحات
         // ============================================
 
-        // دالة إنشاء صفحة غلاف للتقرير
+        // دالة إنشاء صفحة غلاف للتقرير (معدلة)
         function createCoverPage(title, date, halqaName, teacherName, hijriDate) {
             const cover = document.createElement('div');
             cover.style.cssText = `
@@ -3352,17 +3355,17 @@
                     <div style="margin: 60px 0;">
                         <div style="margin: 30px 0;">
                             <h3 style="color: #A65E00; margin-bottom: 10px; font-size: 24px;">اسم الحلقة</h3>
-                            <p style="background: #ffffff; border: 3px solid #F0C090; padding: 15px; border-radius: 10px; font-size: 22px; margin: 0 auto; max-width: 400px;">${halqaName}</p>
+                            <p style="background: #ffffff; font-size: 29px; margin: 0 auto; max-width: 400px; color: #000000;">${halqaName}</p>
                         </div>
                         
                         <div style="margin: 30px 0;">
                             <h3 style="color: #A65E00; margin-bottom: 10px; font-size: 24px;">اسم المعلم</h3>
-                            <p style="background: #ffffff; border: 3px solid #F0C090; padding: 15px; border-radius: 10px; font-size: 22px; margin: 0 auto; max-width: 400px;">${teacherName}</p>
+                            <p style="background: #ffffff; font-size: 29px; margin: 0 auto; max-width: 400px; color: #000000;">${teacherName}</p>
                         </div>
                         
                         <div style="margin: 30px 0;">
                             <h3 style="color: #A65E00; margin-bottom: 10px; font-size: 24px;">التاريخ الهجري</h3>
-                            <p style="background: #ffffff; border: 3px solid #F0C090; padding: 15px; border-radius: 10px; font-size: 22px; margin: 0 auto; max-width: 400px;">${hijriDate}</p>
+                            <p style="background: #ffffff; font-size: 29px; margin: 0 auto; max-width: 400px; color: #000000;">${hijriDate}</p>
                         </div>
                     </div>
                     
@@ -3372,7 +3375,7 @@
             return cover;
         }
 
-        // دالة إنشاء صفحة للطلاب (اليومي)
+        // دالة إنشاء صفحة للطلاب (اليومي) مع تذييل
         function createDailyStudentPage(students, startNum, endNum, dateKey, formattedDate) {
             const page = document.createElement('div');
             page.style.cssText = `
@@ -3383,6 +3386,7 @@
                 padding: 40px;
                 background: #ffffff;
                 box-sizing: border-box;
+                position: relative;
             `;
             
             let tableRows = '';
@@ -3421,8 +3425,10 @@
                 `;
             });
             
-            const currentPage = Math.ceil(startNum / 10) + 1; // +1 للغلاف
-            const totalPages = Math.ceil(appData.students.length / 10) + 2; // +2 للغلاف والإحصائيات
+            let teacherName = appData.teacherName;
+            if (!teacherName.startsWith('أ/')) {
+                teacherName = 'أ/ ' + teacherName;
+            }
             
             page.innerHTML = `
                 <div style="text-align: center; margin-bottom: 30px;">
@@ -3446,12 +3452,23 @@
                     </tbody>
                 </table>
                 
+                <!-- تذييل الصفحة -->
+                <div style="position: absolute; bottom: 40px; left: 40px; right: 40px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 20px;">
+                    <div style="text-align: left;">
+                        <div style="color: #A65E00; font-size: 18px;">اسم الحلقة</div>
+                        <div style="color: #000000; font-size: 21px; font-weight: bold;">${appData.halqaName}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="color: #A65E00; font-size: 18px;">اسم المعلم</div>
+                        <div style="color: #000000; font-size: 21px; font-weight: bold;">${teacherName}</div>
+                    </div>
+                </div>
             `;
             
             return page;
         }
 
-        // دالة إنشاء صفحة الإحصائيات اليومية
+        // دالة إنشاء صفحة الإحصائيات اليومية مع تذييل
         function createDailyStatsPage(students, dateKey, formattedDate) {
             const page = document.createElement('div');
             page.style.cssText = `
@@ -3462,6 +3479,7 @@
                 padding: 40px;
                 background: #ffffff;
                 box-sizing: border-box;
+                position: relative;
             `;
             
             let presentCount = 0;
@@ -3492,7 +3510,10 @@
             const savePercent = totalStudents > 0 ? Math.round(((saveDoneCount + bothDoneCount) / totalStudents) * 100) : 0;
             const reviewPercent = totalStudents > 0 ? Math.round(((reviewDoneCount + bothDoneCount) / totalStudents) * 100) : 0;
             
-            const totalPages = Math.ceil(appData.students.length / 10) + 2;
+            let teacherName = appData.teacherName;
+            if (!teacherName.startsWith('أ/')) {
+                teacherName = 'أ/ ' + teacherName;
+            }
             
             page.innerHTML = `
                 <div style="text-align: center; margin-bottom: 40px;">
@@ -3577,12 +3598,23 @@
                     </div>
                 </div>
                 
+                <!-- تذييل الصفحة -->
+                <div style="position: absolute; bottom: 40px; left: 40px; right: 40px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 20px;">
+                    <div style="text-align: left;">
+                        <div style="color: #A65E00; font-size: 18px;">اسم الحلقة</div>
+                        <div style="color: #000000; font-size: 21px; font-weight: bold;">${appData.halqaName}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="color: #A65E00; font-size: 18px;">اسم المعلم</div>
+                        <div style="color: #000000; font-size: 21px; font-weight: bold;">${teacherName}</div>
+                    </div>
+                </div>
             `;
             
             return page;
         }
 
-        // دالة إنشاء صفحة للطلاب (الأسبوعي)
+        // دالة إنشاء صفحة للطلاب (الأسبوعي) مع تذييل
         function createWeeklyStudentPage(students, startNum, endNum, studentStats, weekNumber, weekName, monthName, year, daysInWeek) {
             const page = document.createElement('div');
             page.style.cssText = `
@@ -3593,6 +3625,7 @@
                 padding: 40px;
                 background: #ffffff;
                 box-sizing: border-box;
+                position: relative;
             `;
             
             let tableRows = '';
@@ -3627,6 +3660,11 @@
                 `;
             });
             
+            let teacherName = appData.teacherName;
+            if (!teacherName.startsWith('أ/')) {
+                teacherName = 'أ/ ' + teacherName;
+            }
+            
             page.innerHTML = `
                 <div style="text-align: center; margin-bottom: 30px;">
                     <h1 style="color: #A65E00; margin: 0 0 10px 0; font-size: 28px;">الحصاد الأسبوعي</h1>
@@ -3649,12 +3687,23 @@
                     </tbody>
                 </table>
                 
+                <!-- تذييل الصفحة -->
+                <div style="position: absolute; bottom: 40px; left: 40px; right: 40px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 20px;">
+                    <div style="text-align: left;">
+                        <div style="color: #A65E00; font-size: 18px;">اسم الحلقة</div>
+                        <div style="color: #000000; font-size: 21px; font-weight: bold;">${appData.halqaName}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="color: #A65E00; font-size: 18px;">اسم المعلم</div>
+                        <div style="color: #000000; font-size: 21px; font-weight: bold;">${teacherName}</div>
+                    </div>
+                </div>
             `;
             
             return page;
         }
 
-        // دالة إنشاء صفحة الإحصائيات الأسبوعية
+        // دالة إنشاء صفحة الإحصائيات الأسبوعية مع تذييل
         function createWeeklyStatsPage(students, studentStats, weekNumber, weekName, monthName, year, daysInWeek) {
             const page = document.createElement('div');
             page.style.cssText = `
@@ -3665,6 +3714,7 @@
                 padding: 40px;
                 background: #ffffff;
                 box-sizing: border-box;
+                position: relative;
             `;
             
             let totalAttendanceSum = 0;
@@ -3690,6 +3740,11 @@
             const totalSaveRate = Math.round(totalSaveSum / totalStudents);
             const totalReviewRate = Math.round(totalReviewSum / totalStudents);
             const overallRate = Math.round(totalOverallSum / totalStudents);
+            
+            let teacherName = appData.teacherName;
+            if (!teacherName.startsWith('أ/')) {
+                teacherName = 'أ/ ' + teacherName;
+            }
             
             page.innerHTML = `
                 <div style="text-align: center; margin-bottom: 40px;">
@@ -3762,6 +3817,17 @@
                     </div>
                 </div>
                 
+                <!-- تذييل الصفحة -->
+                <div style="position: absolute; bottom: 40px; left: 40px; right: 40px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 20px;">
+                    <div style="text-align: left;">
+                        <div style="color: #A65E00; font-size: 18px;">اسم الحلقة</div>
+                        <div style="color: #000000; font-size: 21px; font-weight: bold;">${appData.halqaName}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="color: #A65E00; font-size: 18px;">اسم المعلم</div>
+                        <div style="color: #000000; font-size: 21px; font-weight: bold;">${teacherName}</div>
+                    </div>
+                </div>
             `;
             
             return page;
@@ -3833,8 +3899,8 @@
                 
                 const dateKey = createHijriDateKey(currentHarvestDate.year, currentHarvestDate.month, currentHarvestDate.day);
                 
-                // حساب عدد الصفحات للطلاب
-                const studentsPerPage = 10;
+                // حساب عدد الصفحات للطلاب باستخدام المتغير STUDENTS_PER_PAGE
+                const studentsPerPage = STUDENTS_PER_PAGE;
                 const totalStudents = appData.students.length;
                 const studentPages = Math.ceil(totalStudents / studentsPerPage);
                 
@@ -3956,8 +4022,8 @@
                     }
                 }
                 
-                // حساب عدد الصفحات للطلاب
-                const studentsPerPage = 10;
+                // حساب عدد الصفحات للطلاب باستخدام المتغير STUDENTS_PER_PAGE
+                const studentsPerPage = STUDENTS_PER_PAGE;
                 const totalStudents = appData.students.length;
                 const studentPages = Math.ceil(totalStudents / studentsPerPage);
                 
