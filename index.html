@@ -1630,6 +1630,192 @@
                 display: none !important;
             }
         }
+    
+
+    
+/* ============================================
+   إصلاح شامل للشريط السفلي على الهواتف
+============================================ */
+
+/* تحسينات للهواتف - الجزء الإضافي */
+@media (max-width: 768px) {
+    /* إصلاح padding-bottom لـ body */
+    body {
+        padding: 10px 10px 100px 10px !important; /* padding-bottom كبير للشريط السفلي */
+    }
+    
+    /* إضافة padding-bottom لجميع الصفحات الرئيسية */
+    #home,
+    #students,
+    #attendance,
+    #tarteeb,
+    #harvest,
+    #settings {
+        padding-bottom: 30px !important;
+        min-height: calc(100vh - 150px) !important;
+    }
+    
+    /* تحسين قوائم الطلاب */
+    .students-list {
+        margin-bottom: 20px !important;
+        padding-bottom: 20px !important;
+    }
+    
+    /* تحسين الجداول */
+    .students-table,
+    .attendance-table,
+    .tarteeb-table,
+    .weekly-table {
+        margin-bottom: 30px !important;
+    }
+    
+    /* تحسين حاويات الجداول */
+    .table-container,
+    .attendance-table-container,
+    .tarteeb-table-container,
+    .students-table-container {
+        margin-bottom: 20px !important;
+        padding-bottom: 10px !important;
+    }
+    
+    /* تحسين صفحة الحصاد */
+    .harvest-content {
+        padding-bottom: 30px !important;
+    }
+    
+    .stats-container {
+        margin-bottom: 30px !important;
+    }
+    
+    /* تحسين الأزرار في الأسفل */
+    .action-buttons,
+    .export-buttons,
+    .export-buttons-weekly {
+        margin-bottom: 30px !important;
+        padding-bottom: 20px !important;
+    }
+    
+    /* التأكد من أن الشريط دائماً ظاهر */
+    .mobile-nav-bar {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 10000 !important; /* أعلى من كل شيء */
+        background-color: var(--light-bg) !important;
+        box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.15) !important;
+    }
+    
+    body.dark-mode .mobile-nav-bar {
+        background-color: var(--dark-bg) !important;
+        box-shadow: 0 -2px 15px rgba(255, 255, 255, 0.1) !important;
+    }
+    
+    /* تحسين المحتوى لكي لا يتداخل مع الشريط */
+    .page-content,
+    .content-wrapper {
+        padding-bottom: 30px !important;
+    }
+}
+
+/* تحسينات للشاشات الصغيرة جداً */
+@media (max-width: 480px) {
+    body {
+        padding: 8px 8px 110px 8px !important;
+    }
+    
+    #home,
+    #students,
+    #attendance,
+    #tarteeb,
+    #harvest,
+    #settings {
+        padding-bottom: 40px !important;
+    }
+}
+
+
+    
+/* ============================================
+   تحسينات صفحة الحصاد الأسبوعي
+============================================ */
+
+/* إخفاء عمود الإجمالي على الهواتف فقط */
+@media (max-width: 768px) {
+    .weekly-table .total-column {
+        display: none !important;
+    }
+    
+    /* تحسين عرض الجدول الأسبوعي على الهواتف */
+    .weekly-table {
+        font-size: 0.85rem !important;
+    }
+    
+    .weekly-table th,
+    .weekly-table td {
+        padding: 8px 4px !important;
+        font-size: 0.85rem !important;
+    }
+    
+    .weekly-table .student-name {
+        max-width: 120px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    /* تحسين محتوى الحصاد الأسبوعي */
+    #weeklyContent {
+        padding-bottom: 30px !important;
+    }
+    
+    .week-title {
+        font-size: 1.1rem !important;
+        margin: 15px 0 !important;
+    }
+    
+    /* تحسين الإحصائيات */
+    .stat-present,
+    .stat-save,
+    .stat-review {
+        font-size: 0.85rem !important;
+    }
+    
+    /* تحسين ملاحظة طريقة الحساب */
+    .summary-period p {
+        font-size: 0.8rem !important;
+    }
+}
+
+/* إظهار عمود الإجمالي على التابلت والحاسب */
+@media (min-width: 769px) {
+    .weekly-table .total-column {
+        display: table-cell !important;
+    }
+}
+
+/* تحسينات إضافية للشاشات الصغيرة جداً */
+@media (max-width: 480px) {
+    .weekly-table {
+        font-size: 0.75rem !important;
+    }
+    
+    .weekly-table th,
+    .weekly-table td {
+        padding: 6px 2px !important;
+        font-size: 0.75rem !important;
+    }
+    
+    .weekly-table .student-name {
+        max-width: 100px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .week-title {
+        font-size: 1rem !important;
+        padding: 10px 5px !important;
+    }
+}
+
+
     </style>
 </head>
 <body>
@@ -3114,7 +3300,7 @@
                             <th>الحضور</th>
                             <th>الحفظ</th>
                             <th>المراجعة</th>
-                            <th>الإجمالي</th>
+                            <th class="total-column">الإجمالي</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -3145,7 +3331,7 @@
                         </td>
                         <td class="stat-save">${stats.saveSessions}/${daysInWeek}</td>
                         <td class="stat-review">${stats.reviewSessions}/${daysInWeek}</td>
-                        <td>
+                        <td class="total-column">
                             <div class="progress-container">
                                 <div class="progress-bar">
                                     <div class="progress-fill" style="width: ${totalRate}%"></div>
@@ -3197,7 +3383,7 @@
                             <td class="stat-present">${totalAttendanceRate}%</td>
                             <td class="stat-save">${totalSaveRate}%</td>
                             <td class="stat-review">${totalReviewRate}%</td>
-                            <td>${overallRate}%</td>
+                            <td class="total-column">${overallRate}%</td>
                         </tr>
                     </tfoot>
                 </table>
