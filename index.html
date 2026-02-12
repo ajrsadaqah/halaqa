@@ -286,12 +286,79 @@
             .buttons-container {
                 grid-template-columns: repeat(2, 1fr);
             }
+            
+            /* تحسين أزرار التعديل والحذف للحاسب */
+            .action-buttons-container {
+                min-width: 120px;
+            }
+            
+            #students .edit-btn,
+            #students .delete-btn {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
         }
 
         @media (max-width: 767px) {
             .buttons-container {
                 grid-template-columns: 1fr;
             }
+        }
+
+        #students .delete-btn,
+        #students .edit-btn {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            text-align: center;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #students .action-buttons-container {
+        display: flex;
+        flex-direction: row;   /* جنب بعض */
+        gap: 8px;
+        align-items: center;
+        justify-content: flex-start;
+        white-space: nowrap;
+        }
+
+        #students .edit-btn,
+        #students .delete-btn {
+        width: auto;        /* بدل 100% */
+        min-width: 70px;
+        }
+
+
+        #students .edit-btn {
+            background-color: rgba(46, 94, 12, 1) !important;
+            color: white !important;
+            border-color: rgba(46, 94, 12, 1) !important;
+        }
+
+        #students .edit-btn:focus {
+            outline: 2px solid rgba(46, 94, 12, 0.5);
+            outline-offset: 2px;
+        }
+
+        #students .delete-btn {
+            background-color: rgba(162, 68, 12, 1) !important;
+            color: white !important;
+            border-color: rgba(162, 68, 12, 1) !important;
+        }
+
+        #students .delete-btn:focus {
+            outline: 2px solid rgba(162, 68, 12, 0.5);
+            outline-offset: 2px;
         }
 
         .main-btn {
@@ -881,15 +948,8 @@
             font-weight: bold;
         }
 
-        .delete-btn {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 8px 15px;
-            cursor: pointer;
-            font-size: 0.95rem;
-        }
+        /* CSS عام قديم للـ delete-btn - محذوف لتجنب التعارض */
+        /* تم نقل جميع تنسيقات الأزرار إلى القسم الخاص بصفحة الطلاب */
 
         /* التنقل بين الصفحات */
         .active {
@@ -1024,6 +1084,11 @@
         body.dark-mode #editStudentNameInput:focus {
             box-shadow: 0 0 0 3px rgba(237, 209, 175, 0.1) !important;
         }
+        
+        /* المسافة بين محتوى النافذة والأزرار */
+        .modal-body {
+            margin-bottom: 20px;
+        }
 
         .modal-actions {
             display: flex;
@@ -1060,7 +1125,7 @@
         .student-name-in-confirm {
             font-weight: bold;
             color: var(--primary-color);
-            background-color: var(--hijri-date-bg);
+            background-color: rgba(166, 94, 0, 0.1);
             padding: 3px 10px;
             border-radius: 5px;
             margin: 0 5px;
@@ -1549,78 +1614,164 @@
                 transform: translateY(-1px);
             }
             
-            /* تحسين أزرار الحذف والتعديل في صفحة إدارة الطلاب */
+            /* ═══════════════════════════════════════════════════════════════════
+               أزرار التعديل والحذف في صفحة إدارة الطلاب/الطالبات
+               ═══════════════════════════════════════════════════════════════════ */
+            
+            /* التنسيقات الأساسية المشتركة للأزرار */
             #students .delete-btn,
             #students .edit-btn {
                 width: 100%;
-                padding: 8px 12px;
+                padding: 10px 12px;
                 font-size: 0.9rem;
                 font-weight: bold;
-                border: none;
-                border-radius: 5px;
+                border: 2px solid transparent;
+                border-radius: 8px;
                 cursor: pointer;
                 transition: all 0.3s ease;
                 white-space: nowrap;
                 text-align: center;
+                min-height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
             
-            /* زر التعديل */
+            /* ─────────────────────────────────────────────────────────────────
+               زر التعديل - النسق الصحراوي (الوضع العادي)
+               ───────────────────────────────────────────────────────────────── */
             #students .edit-btn {
-                background-color: #4CAF50;
-                color: white;
-                margin-bottom: 5px;
-            }
-            
-            #students .edit-btn:hover {
-                background-color: #45a049;
-                transform: translateY(-1px);
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                background-color: rgba(46, 94, 12, 1) !important;
+                color: white !important;
+                border-color: rgba(46, 94, 12, 1) !important;
             }
             
             #students .edit-btn:active {
-                transform: translateY(0);
+                box-shadow: 0 1px 3px rgba(46, 94, 12, 0.3);
             }
             
+            #students .edit-btn:focus {
+                outline: 2px solid rgba(46, 94, 12, 0.5);
+                outline-offset: 2px;
+            }
+            
+            body.dark-mode #students .edit-btn:focus {
+                outline-color: rgba(46, 125, 50, 0.5);
+            }
+            
+            /* ─────────────────────────────────────────────────────────────────
+               زر التعديل - النسق الصحراوي (الوضع الداكن)
+               ───────────────────────────────────────────────────────────────── */
+            
             body.dark-mode #students .edit-btn {
-                background-color: #388E3C;
+                background-color: rgba(46, 125, 50, 0.5);
+                border-color: rgba(46, 125, 50, 0.5);
             }
             
             body.dark-mode #students .edit-btn:hover {
-                background-color: #2E7D32;
+                background-color: rgba(46, 125, 50, 0.65);
+                border-color: rgba(46, 125, 50, 0.65);
             }
             
-            /* زر الحذف */
+            /* ─────────────────────────────────────────────────────────────────
+               زر الحذف - النسق الصحراوي (الوضع العادي)
+               ───────────────────────────────────────────────────────────────── */
+            
             #students .delete-btn {
-                background-color: #dc3545;
-                color: white;
+                background-color: rgba(162, 68, 12, 1) !important;
+                color: white !important;
+                border-color: rgba(162, 68, 12, 1) !important;
             }
             
-            #students .delete-btn:hover {
-                background-color: #c82333;
-                transform: translateY(-1px);
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            #students .delete-btn:focus {
+                outline: 2px solid rgba(162, 68, 12, 0.5);
+                outline-offset: 2px;
             }
             
-            #students .delete-btn:active {
-                transform: translateY(0);
+            body.dark-mode #students .delete-btn:focus {
+                outline-color: rgba(216, 67, 21, 0.5);
             }
+            
+            /* ─────────────────────────────────────────────────────────────────
+               زر الحذف - النسق الصحراوي (الوضع الداكن)
+               ───────────────────────────────────────────────────────────────── */
             
             body.dark-mode #students .delete-btn {
-                background-color: #a71d2a;
+                background-color: rgba(216, 67, 21, 0.5);
+                border-color: rgba(216, 67, 21, 0.5);
             }
             
             body.dark-mode #students .delete-btn:hover {
-                background-color: #8b1824;
+                background-color: rgba(216, 67, 21, 0.65);
+                border-color: rgba(216, 67, 21, 0.65);
             }
             
-            /* ترتيب الأزرار في خلية الإجراءات */
-            #students .students-table td:last-child {
+            /* ═══════════════════════════════════════════════════════════════════
+               ألوان الأزرار في النسق الإكليلي
+               ═══════════════════════════════════════════════════════════════════ */
+            
+            /* زر التعديل - النسق الإكليلي (الوضع العادي) */
+            body.theme-eklyli #students .edit-btn {
+                background-color: rgba(46, 94, 12, 1);
+                border-color: rgba(46, 94, 12, 1);
+            }
+            
+            body.theme-eklyli #students .edit-btn:hover {
+                background-color: rgba(46, 94, 12, 0.85);
+                border-color: rgba(46, 94, 12, 0.85);
+            }
+            
+            /* زر التعديل - النسق الإكليلي (الوضع الداكن) */
+            body.theme-eklyli.dark-mode #students .edit-btn {
+                background-color: rgba(46, 125, 50, 0.5);
+                border-color: rgba(46, 125, 50, 0.5);
+            }
+            
+            body.theme-eklyli.dark-mode #students .edit-btn:hover {
+                background-color: rgba(46, 125, 50, 0.65);
+                border-color: rgba(46, 125, 50, 0.65);
+            }
+            
+            /* زر الحذف - النسق الإكليلي (الوضع العادي) */
+            body.theme-eklyli #students .delete-btn {
+                background-color: rgba(162, 68, 12, 1);
+                border-color: rgba(162, 68, 12, 1);
+            }
+            
+            body.theme-eklyli #students .delete-btn:hover {
+                background-color: rgba(162, 68, 12, 0.85);
+                border-color: rgba(162, 68, 12, 0.85);
+            }
+            
+            /* زر الحذف - النسق الإكليلي (الوضع الداكن) */
+            body.theme-eklyli.dark-mode #students .delete-btn {
+                background-color: rgba(216, 67, 21, 0.5);
+                border-color: rgba(216, 67, 21, 0.5);
+            }
+            
+            body.theme-eklyli.dark-mode #students .delete-btn:hover {
+                background-color: rgba(216, 67, 21, 0.65);
+                border-color: rgba(216, 67, 21, 0.65);
+            }
+            
+            /* ═══════════════════════════════════════════════════════════════════
+               تخطيط وترتيب الأزرار في خلية الإجراءات
+               ═══════════════════════════════════════════════════════════════════ */
+            
+            /* container الأزرار في خلية الإجراءات */
+            .action-buttons-container {
                 display: flex;
                 flex-direction: column;
-                gap: 0;
-                padding: 8px;
+                gap: 8px;
+                width: 100%;
+                align-items: stretch;
+            }
+            
+            /* خلية الإجراءات نفسها */
+            #students .students-table td:last-child {
+                padding: 10px;
                 vertical-align: middle;
-                min-width: 100px;
+                min-width: 110px;
             }
             
             /* تحسين خلايا الجدول */
@@ -1630,15 +1781,25 @@
             
             /* تأثير hover على صفوف الجداول */
             .students-table.table-responsive tbody tr {
-                transition: background-color 0.2s ease;
+                transition: background-color 0.2s ease, transform 0.2s ease;
             }
             
             .students-table.table-responsive tbody tr:hover {
                 background-color: rgba(255, 216, 166, 0.3) !important;
+                transform: scale(1.005);
             }
             
             body.dark-mode .students-table.table-responsive tbody tr:hover {
                 background-color: rgba(255, 216, 166, 0.2) !important;
+            }
+            
+            /* تأثير hover للنسق الإكليلي */
+            body.theme-eklyli .students-table.table-responsive tbody tr:hover {
+                background-color: rgba(216, 182, 191, 0.25) !important;
+            }
+            
+            body.theme-eklyli.dark-mode .students-table.table-responsive tbody tr:hover {
+                background-color: rgba(216, 182, 191, 0.15) !important;
             }
             
             /* تحسينات خاصة لصفحة إدارة الطلاب */
@@ -1900,9 +2061,30 @@
                 font-size: 0.8rem;
             }
             
+            /* تحسين أزرار التعديل والحذف في الشاشات الصغيرة */
+            #students .edit-btn,
             #students .delete-btn {
                 padding: 8px 4px;
                 font-size: 0.8rem;
+            }
+            
+            /* زيادة المسافة في النوافذ المنبثقة للجوال */
+            .modal-body {
+                margin-bottom: 25px;
+            }
+            
+            /* تحسين أزرار النوافذ المنبثقة للجوال */
+            .modal-btn {
+                padding: 12px 18px;
+                font-size: 0.95rem;
+                min-width: 90px;
+            }
+            
+            /* تحسين حجم النوافذ المنبثقة للجوال */
+            .modal {
+                width: 95%;
+                max-width: 400px;
+                padding: 20px;
             }
         }
 
@@ -1932,6 +2114,17 @@
                 flex: 1;
                 min-width: 60px;
                 max-width: 70px;
+            }
+            
+            /* تحسين الأزرار في صفحة الطلاب للشاشات المتوسطة */
+            .action-buttons-container {
+                min-width: 110px;
+            }
+            
+            #students .edit-btn,
+            #students .delete-btn {
+                font-size: 0.85rem;
+                padding: 8px 10px;
             }
         }
 
@@ -4914,6 +5107,10 @@
                 
                 const actionCell = document.createElement('td');
                 
+                // إنشاء container للأزرار
+                const buttonsContainer = document.createElement('div');
+                buttonsContainer.className = 'action-buttons-container';
+                
                 // زر التعديل
                 const editBtn = document.createElement('button');
                 editBtn.textContent = 'تعديل';
@@ -4926,8 +5123,9 @@
                 deleteBtn.className = 'delete-btn';
                 deleteBtn.onclick = () => deleteStudent(index);
                 
-                actionCell.appendChild(editBtn);
-                actionCell.appendChild(deleteBtn);
+                buttonsContainer.appendChild(editBtn);
+                buttonsContainer.appendChild(deleteBtn);
+                actionCell.appendChild(buttonsContainer);
                 
                 row.appendChild(numberCell);
                 row.appendChild(nameCell);
@@ -7294,4 +7492,3 @@
     </script>
 </body>
 </html>
-
