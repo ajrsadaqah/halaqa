@@ -118,6 +118,8 @@
             min-height: 100vh;
             padding: 20px;
             position: relative;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
         body.dark-mode {
@@ -384,9 +386,32 @@
 
         /* الصفحات العامة */
         .page {
-            display: none;
+            display: none !important;
             max-width: 1200px;
             margin: 0 auto;
+            position: fixed !important;
+            left: -99999px !important;
+            top: -99999px !important;
+            width: 0 !important;
+            height: 0 !important;
+            overflow: hidden !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+        
+        .page.active {
+            display: block !important;
+            position: static !important;
+            left: auto !important;
+            top: auto !important;
+            width: auto !important;
+            height: auto !important;
+            max-width: 1200px !important;
+            overflow: visible !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            pointer-events: auto !important;
             animation: fadeIn 0.5s ease;
         }
 
@@ -949,11 +974,6 @@
 
         /* CSS عام قديم للـ delete-btn - محذوف لتجنب التعارض */
         /* تم نقل جميع تنسيقات الأزرار إلى القسم الخاص بصفحة الطلاب */
-
-        /* التنقل بين الصفحات */
-        .active {
-            display: block;
-        }
 
         .app-footer {
             text-align: center;
@@ -2353,7 +2373,7 @@
 
             .mobile-nav-bar .nav-btn.active {
                 color: var(--primary-color);
-                background-color: rgba(166, 94, 0, 0.1);
+                background-color: var(--hijri-date-bg);
             }
             
             body.dark-mode .mobile-nav-bar .nav-btn.active {
@@ -3242,7 +3262,7 @@
     </div>
 
     <!-- الصفحة الرئيسية -->
-    <div id="home" class="page active">
+    <div id="home" class="page">
         <div class="home-container">
             <h1 class="halqa-name" id="halqaNameDisplay">اسم الحلقة</h1>
             <h2 class="teacher-name" id="teacherNameDisplay">اسم المعلم</h2>
@@ -4747,6 +4767,12 @@
 
         // تهيئة التطبيق
         document.addEventListener('DOMContentLoaded', () => {
+            // إخفاء جميع الصفحات عند البداية
+            Object.keys(pages).forEach(key => {
+                pages[key].classList.remove('active');
+                pages[key].style.display = 'none';
+            });
+            
             loadData();
             updateUI();
             updateAllTexts();
@@ -4763,7 +4789,7 @@
             setupMonthSelector();
             setupThemeListeners();
             
-            // تهيئة واجهة الهواتف
+            // تهيئة واجهة الهواتف (سيقوم بإظهار الصفحة الصحيحة)
             initializeMobileUI();
         });
 
@@ -4791,22 +4817,53 @@
         function initializeMobileUI() {
             // التحقق إذا كان الجهاز هاتفاً
             if (window.innerWidth <= 768) {
-                // إخفاء الصفحة الرئيسية في الهواتف
-                pages.home.classList.remove('active');
+                // التحقق من الصفحة النشطة الحالية
+                let currentActivePage = null;
+                Object.keys(pages).forEach(key => {
+                    if (pages[key].classList.contains('active')) {
+                        currentActivePage = key;
+                    }
+                });
                 
-                // إظهار صفحة إدارة الطلاب كصفحة افتراضية
-                pages.students.classList.add('active');
+                // إذا لم تكن هناك صفحة نشطة، أو الصفحة النشطة هي home
+                // نظهر صفحة الطلاب كافتراضي
+                if (!currentActivePage || currentActivePage === 'home') {
+                    // إخفاء جميع الصفحات أولاً بشكل صريح
+                    Object.keys(pages).forEach(key => {
+                        pages[key].classList.remove('active');
+                        pages[key].style.display = 'none';
+                        pages[key].style.visibility = 'hidden';
+                        pages[key].style.opacity = '0';
+                    });
+                    
+                    // إظهار صفحة إدارة الطلاب كصفحة افتراضية بشكل صريح
+                    pages.students.classList.add('active');
+                    pages.students.style.display = 'block';
+                    pages.students.style.visibility = 'visible';
+                    pages.students.style.opacity = '1';
+                    
+                    // تحديث شريط التنقل السفلي
+                    updateMobileNavBar('students');
+                }
+                // إذا كانت هناك صفحة نشطة بالفعل (غير home)، لا نغيرها
                 
                 // إظهار حاوية التاريخ الهجري في صفحة إدارة الطلاب للهواتف
                 document.getElementById('mobileHijriDateContainer').style.display = 'block';
                 
-                // تحديث شريط التنقل السفلي
-                updateMobileNavBar('students');
-                
                 // إخفاء زر العودة في الهواتف
                 document.getElementById('backBtn').style.display = 'none';
             } else {
-                // في الحاسب، إخفاء حاوية التاريخ الهجري في صفحة إدارة الطلاب
+                // في الحاسب، إظهار الصفحة الرئيسية
+                Object.keys(pages).forEach(key => {
+                    pages[key].classList.remove('active');
+                    pages[key].style.display = 'none';
+                });
+                pages.home.classList.add('active');
+                pages.home.style.display = 'block';
+                pages.home.style.visibility = 'visible';
+                pages.home.style.opacity = '1';
+                
+                // إخفاء حاوية التاريخ الهجري في صفحة إدارة الطلاب
                 document.getElementById('mobileHijriDateContainer').style.display = 'none';
             }
         }
@@ -4929,13 +4986,22 @@
 
         // إظهار صفحة محددة
         function showPage(pageId) {
-            // إخفاء جميع الصفحات
-            Object.values(pages).forEach(page => {
-                page.classList.remove('active');
+            // العودة للأعلى عند تغيير الصفحة
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            
+            // إخفاء جميع الصفحات بشكل صريح
+            Object.keys(pages).forEach(key => {
+                pages[key].classList.remove('active');
+                pages[key].style.display = 'none';
+                pages[key].style.visibility = 'hidden';
+                pages[key].style.opacity = '0';
             });
             
-            // إظهار الصفحة المطلوبة
+            // إظهار الصفحة المطلوبة بشكل صريح
             pages[pageId].classList.add('active');
+            pages[pageId].style.display = 'block';
+            pages[pageId].style.visibility = 'visible';
+            pages[pageId].style.opacity = '1';
             
             // تحديث شريط التنقل السفلي في الهواتف
             if (window.innerWidth <= 768 && pageId !== 'home' && pageId !== 'settings') {
