@@ -37,8 +37,7 @@
             --sa-border-color: #ddd;
             --sa-dark-border-color: #3a2c1c;
             --sa-hijri-date-bg: rgba(166, 94, 0, 0.08);
-            --sa-hijri-date-bg: rgba(166, 94, 0, 0.08);
-            --sa-hijri-date-bg-dark: rgba(237, 209, 175, 0.1);
+            --sa-hijri-date-bg-dark: #2a1f15;
 
             /* ===== النسق الإكليلي (ek) ===== */
             --ek-primary-color: #7F6169;
@@ -56,8 +55,7 @@
             --ek-border-color: #E2D6DA;
             --ek-dark-border-color: #3D2A30;
             --ek-hijri-date-bg: rgba(127, 97, 105, 0.08);
-            --ek-hijri-date-bg: rgba(127, 97, 105, 0.08);
-            --ek-hijri-date-bg-dark: rgba(231, 214, 219, 0.1);
+            --ek-hijri-date-bg-dark: #2d2024;
 
 
             /* المتغيرات النشطة (افتراضيًا الصحراوي) */
@@ -126,10 +124,14 @@
             background-color: var(--dark-bg);
             color: var(--dark-text);
             --hijri-date-bg: var(--sa-hijri-date-bg-dark);
+            --border-color: var(--sa-hijri-date-bg-dark);
+            --dark-border-color: var(--sa-hijri-date-bg-dark);
         }
 
         body.dark-mode.theme-eklyli {
             --hijri-date-bg: var(--ek-hijri-date-bg-dark);
+            --border-color: var(--ek-hijri-date-bg-dark);
+            --dark-border-color: var(--ek-hijri-date-bg-dark);
         }
 
         /* الشريط العلوي */
@@ -219,7 +221,7 @@
         }
 
         body.dark-mode .teacher-name {
-            background-color: rgba(237, 209, 175, 0.1);
+            background-color: var(--hijri-date-bg);
         }
 
         /* تنسيق التاريخ الهجري في الصفحة الرئيسية */
@@ -482,7 +484,7 @@
         }
 
         body.dark-mode .theme-segmented-container {
-            background-color: rgba(237, 209, 175, 0.05);
+            background-color: var(--hijri-date-bg);
         }
 
         .theme-segmented-label {
@@ -540,7 +542,7 @@
         }
 
         body.dark-mode .toggle-container {
-            background-color: rgba(237, 209, 175, 0.05);
+            background-color: var(--hijri-date-bg);
         }
 
         .toggle-label {
@@ -637,7 +639,7 @@
         }
 
         body.dark-mode .current-hijri-date {
-            background-color: rgba(237, 209, 175, 0.1);
+            background-color: var(--hijri-date-bg);
         }
 
         .date-navigation {
@@ -829,6 +831,10 @@
             overflow: hidden;
         }
 
+        body.dark-mode .students-table {
+            border-color: var(--hijri-date-bg);
+        }
+
         .weekly-container {
             margin-top: 20px;
         }
@@ -851,7 +857,9 @@
 
         body.dark-mode .students-table th, 
         body.dark-mode .students-table td {
-            border-bottom-color: var(--dark-border-color);
+            border-bottom-color: var(--hijri-date-bg);
+            border-left-color: var(--hijri-date-bg);
+            background-color: var(--hijri-date-bg);
         }
 
         .students-table th {
@@ -861,7 +869,7 @@
         }
 
         body.dark-mode .students-table th {
-            background-color: rgba(237, 209, 175, 0.1);
+            background-color: var(--hijri-date-bg);
         }
 
         .students-table th:first-child,
@@ -1101,7 +1109,7 @@
         }
         
         body.dark-mode #editStudentNameInput:focus {
-            box-shadow: 0 0 0 3px rgba(237, 209, 175, 0.1) !important;
+            box-shadow: 0 0 0 3px var(--hijri-date-bg) !important;
         }
         
         /* المسافة بين محتوى النافذة والأزرار */
@@ -1304,7 +1312,7 @@
         }
 
         body.dark-mode .harvest-tabs {
-            background-color: rgba(237, 209, 175, 0.1);
+            background-color: var(--hijri-date-bg);
         }
 
         /* محتوى التبويبات */
@@ -1381,6 +1389,10 @@
             overflow: hidden;
         }
 
+        body.dark-mode .weekly-table {
+            border-color: var(--hijri-date-bg);
+        }
+
         .weekly-table th, .weekly-table td {
             padding: 15px 12px;
             text-align: center;
@@ -1408,12 +1420,14 @@
         }
 
         body.dark-mode .weekly-table th {
-            background-color: rgba(237, 209, 175, 0.1);
+            background-color: var(--hijri-date-bg);
         }
 
         body.dark-mode .weekly-table th, 
         body.dark-mode .weekly-table td {
-            border-bottom-color: var(--dark-border-color);
+            border-bottom-color: var(--hijri-date-bg);
+            border-left-color: var(--hijri-date-bg);
+            background-color: var(--hijri-date-bg);
         }
 
         .weekly-table .student-name {
@@ -1511,7 +1525,7 @@
             }
             
             body.dark-mode .students-table.table-responsive {
-                border-color: var(--dark-border-color);
+                border-color: var(--hijri-date-bg);
             }
             
             /* تحسين رأس الجدول */
@@ -1550,8 +1564,9 @@
             
             body.dark-mode .students-table.table-responsive th,
             body.dark-mode .students-table.table-responsive td {
-                border-bottom-color: var(--dark-border-color);
-                border-left-color: var(--dark-border-color);
+                border-bottom-color: var(--hijri-date-bg);
+                border-left-color: var(--hijri-date-bg);
+                background-color: var(--hijri-date-bg);
             }
             
             .students-table.table-responsive th {
@@ -1832,7 +1847,7 @@
             }
             
             body.dark-mode #students .add-student-form {
-                background-color: rgba(237, 209, 175, 0.05);
+                background-color: var(--hijri-date-bg);
             }
             
             #students .add-student-input {
@@ -1857,7 +1872,7 @@
             }
             
             body.dark-mode #attendance .date-container {
-                background-color: rgba(237, 209, 175, 0.05);
+                background-color: var(--hijri-date-bg);
             }
             
             /* تحسين عرض التاريخ الهجري في الهواتف */
@@ -1896,7 +1911,7 @@
             }
             
             body.dark-mode .weekly-table {
-                border-color: var(--dark-border-color);
+                border-color: var(--hijri-date-bg);
             }
             
             .weekly-table th,
@@ -1928,7 +1943,8 @@
             
             body.dark-mode .weekly-table th,
             body.dark-mode .weekly-table td {
-                border-left-color: var(--dark-border-color);
+                border-left-color: var(--hijri-date-bg);
+                background-color: var(--hijri-date-bg);
             }
             
             /* إزالة الفراغ السفلي على الهواتف فقط */
@@ -1977,7 +1993,7 @@
             }
             
             body.dark-mode #dailyTabContent .students-table {
-                border-color: var(--dark-border-color);
+                border-color: var(--hijri-date-bg);
             }
             
             #dailyTabContent .students-table thead {
@@ -2005,7 +2021,8 @@
             
             body.dark-mode #dailyTabContent .students-table th,
             body.dark-mode #dailyTabContent .students-table td {
-                border-bottom-color: var(--dark-border-color);
+                border-bottom-color: var(--hijri-date-bg);
+                background-color: var(--hijri-date-bg);
             }
             
             #dailyTabContent .students-table th {
@@ -2016,7 +2033,7 @@
             }
             
             body.dark-mode #dailyTabContent .students-table th {
-                background-color: rgba(237, 209, 175, 0.1);
+                background-color: var(--hijri-date-bg);
             }
             
             #dailyTabContent .students-table th:first-child,
@@ -2377,7 +2394,7 @@
             }
             
             body.dark-mode .mobile-nav-bar .nav-btn.active {
-                background-color: rgba(237, 209, 175, 0.15);
+                background-color: var(--hijri-date-bg);
             }
 
             .mobile-nav-bar .nav-btn i {
@@ -2835,7 +2852,7 @@
         }
 
         body.dark-mode .calendar-modal.month-only .calendar-days-container {
-            background-color: rgba(237, 209, 175, 0.05);
+            background-color: var(--hijri-date-bg);
             border-color: var(--dark-border-color);
         }
 
@@ -4417,7 +4434,7 @@
             
             // تطبيق الأنماط للوضع الداكن
             if (document.body.classList.contains('dark-mode')) {
-                calendarDays.style.backgroundColor = 'rgba(237, 209, 175, 0.05)';
+                calendarDays.style.backgroundColor = 'var(--hijri-date-bg)';
                 calendarDays.style.borderColor = 'var(--dark-border-color)';
             }
             
